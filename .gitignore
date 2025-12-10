@@ -43,4 +43,8 @@ insurance_system/storage/
 .DS_Store
 
 # Logs
-*.log
+# Docs
+*.txt
+!requirements.txt
+*.docx
+

@@ -124,7 +124,7 @@ We use an **LLM-as-a-judge** approach (`src/evaluation/run_eval.py`).
 ```bash
 python3.10 -m venv .venv
 source .venv/bin/activate
-pip install -r insurance_system/requirements.txt
+pip install -r requirements.txt
 cp .env.example .env
 # Add OPENAI_API_KEY
 ```
