@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+.venv/
+venv/
+ENV/
+
+# Environment Variables
+.env
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project Data & Storage
+# We keep data/ if it contains the sample pdf, but ignore generated indexes
+insurance_system/storage/
+# insurance_system/data/
+
+# MacOS
+.DS_Store
+
+# Logs
+*.log

@@ -1,0 +1,16 @@
+llama-index
+
+python-dotenv
+fpdf2
+mcp
+pytest
+openai
+chromadb
+llama-index-vector-stores-chroma
+llama-index-llms-openai
+llama-index-embeddings-openai
+black
+isort
+mypy
+
+sentence-transformers
