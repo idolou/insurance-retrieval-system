@@ -118,6 +118,22 @@ We use an **LLM-as-a-judge** approach (`src/evaluation/run_eval.py`).
 
 ---
 
+## ✨ Keep your code clean
+
+This project uses `isort` and `black` to maintain code quality and consistency.
+
+### 1. Run isort (Import Sorting)
+```bash
+isort .
+```
+
+### 2. Run Black (Code Formatting)
+```bash
+black .
+```
+
+---
+
 ## 🚀 Setup & Usage
 
 ### 1. Installation
