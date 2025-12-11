@@ -14,10 +14,13 @@ LLM_MODEL = "gpt-4o"
 
 # Reranker Configuration
 RERANKER_MODEL = "cross-encoder/ms-marco-MiniLM-L-12-v2"
-RERANKER_TOP_N = 3
+RERANKER_TOP_N = 20
 
 # Paths Configuration
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Points to 'insurance_system' directory
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -27,3 +30,7 @@ HIERARCHICAL_STORAGE_DIR = os.path.join(STORAGE_DIR, "hierarchical")
 SUMMARY_STORAGE_DIR = os.path.join(STORAGE_DIR, "summary")
 
 MCP_SERVER_PATH = os.path.join(PROJECT_ROOT, "mcp_server.py")
+
+# Environment / Debug Flags
+DEBUG = False
+VERBOSE = False

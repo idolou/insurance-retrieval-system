@@ -104,7 +104,7 @@ async def run_eval():
         create_summary_index(documents, persist_dir=SUMMARY_STORAGE_DIR)
 
     # Load the system
-    print("🚀 Initializing Agent for Evaluation...")
+    print("⚙️ Initializing Agent for Evaluation...")
     hierarchical_retriever = load_hierarchical_retriever(
         persist_dir=HIERARCHICAL_STORAGE_DIR
     )

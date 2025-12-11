@@ -77,12 +77,14 @@ def load_hierarchical_retriever(
 
     index = load_index_from_storage(storage_context)
 
+    from insurance_system.src.config import SIMILARITY_TOP_K, VERBOSE
+
     # The AutoMergingRetriever will retrieve leaf nodes and merge them into parent nodes
     # if enough siblings are retrieved.
     retriever = AutoMergingRetriever(
         index.as_retriever(similarity_top_k=SIMILARITY_TOP_K),  # type: ignore
         storage_context=storage_context,
-        verbose=True,
+        verbose=VERBOSE,
     )
 
     return retriever

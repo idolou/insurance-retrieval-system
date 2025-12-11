@@ -16,6 +16,7 @@ from llama_index.llms.openai import OpenAI
 
 from insurance_system.src.agents.manager_agent import ManagerAgent
 from insurance_system.src.config import (
+    DEBUG,
     EMBEDDING_MODEL,
     HIERARCHICAL_STORAGE_DIR,
     LLM_MODEL,
@@ -32,7 +33,7 @@ load_dotenv()
 
 
 def main() -> None:
-    print("🚀 Initializing Insurance Claim Retrieval System...")
+    print("⚙️ Initializing Insurance Claim Retrieval System...")
 
     # Check for API Keys
     if not os.getenv("OPENAI_API_KEY"):
@@ -40,14 +41,14 @@ def main() -> None:
         print("Please add 'OPENAI_API_KEY=sk-...' to your .env file.")
         return
 
-    print("🚀 Starting Insurance Retrieval System...")
+    print("⬆️ Starting Insurance Retrieval System...")
 
     # Set Global Settings (OpenAI Only)
     Settings.llm = OpenAI(model=LLM_MODEL)
     Settings.embed_model = OpenAIEmbedding(model=EMBEDDING_MODEL)
 
     # Enable LlamaIndex Callback Handler for Debugging (Optional)
-    if os.getenv("DEBUG", "False").lower() == "true":
+    if DEBUG:
         from llama_index.core.callbacks import CallbackManager, LlamaDebugHandler
 
         llama_debug = LlamaDebugHandler(print_trace_on_end=True)
@@ -82,21 +83,64 @@ def main() -> None:
         hierarchical_retriever, summary_persist_dir=summary_storage, llm=llm
     )
 
-    # Interactive Loop
-    print("\n✅ System Ready! Type 'exit' to quit.")
-    print("Sample queries:")
-    print(" - 'Summarize the claim timeline.'")
-    print(" - 'What is the total repair estimate?'")
-    print(" - 'Does the driver have a pre-existing condition?'")
+    # Initialize Rich Console
+    try:
+        from rich.console import Console
+        from rich.markdown import Markdown
+        from rich.panel import Panel
+        from rich.text import Text
+        CONSOLE = Console()
+    except ImportError:
+        print("❌ Error: 'rich' library not found.")
+        print("👉 Please run: pip install rich")
+        return
+
+    CONSOLE.print(Panel.fit("[bold blue]Insurance Retrieval Agent[/bold blue]"))
+    CONSOLE.print("[green]✅ System Ready![/green] Type [bold red]'exit'[/bold red] to quit.")
+    CONSOLE.print("Type [bold yellow]'1'[/bold yellow] to see more sample queries.\n")
+    
 
     while True:
-        user_input = input("\n👤 You: ")
-        if user_input.lower() in ["exit", "quit"]:
-            print("👋 Goodbye!")
+        try:
+            user_input = CONSOLE.input("\n[bold cyan]👤 User > [/bold cyan]")
+        except KeyboardInterrupt:
+            # Handle Ctrl+C gracefully
+            CONSOLE.print("\n[bold red]Goodbye![/bold red]")
             break
 
-        response = manager.query(user_input)
-        print(f"🤖 Agent: {response}")
+        if user_input.lower() in ["exit", "quit"]:
+            CONSOLE.print("\n[bold yellow]Shutting down. Goodbye![/bold yellow]")
+            break
+
+        if not user_input.strip():
+            continue
+
+        # Expand Samples
+        if user_input.strip() == "1":
+            CONSOLE.print("\n[bold yellow]Expanded Sample Queries:[/bold yellow]")
+            CONSOLE.print(" [bold]Needle (Fact) Queries:[/bold]")
+            CONSOLE.print(" - 'What is the date of the police report?'")
+            CONSOLE.print(" - 'Who is the witness listed?'")
+            CONSOLE.print(" - 'What is the deductible amount?'")
+            CONSOLE.print(" - 'List all line items related to drywall repairs.'")
+            
+            CONSOLE.print("\n [bold]Summary (High-Level) Queries:[/bold]")
+            CONSOLE.print(" - 'Give me a summary of the medical treatment history.'")
+            CONSOLE.print(" - 'Explain the sequence of events leading to the settlement.'")
+            CONSOLE.print(" - 'What are the main arguments for liability?'")
+
+            CONSOLE.print("\n [bold]Complex (Planning) Queries:[/bold]")
+            CONSOLE.print(" - 'Identify the claimant and calculate the total payout vs the policy limit.'")
+            CONSOLE.print(" - 'Compare the initial estimate with the final settlement figure.'")
+            continue
+
+        with CONSOLE.status("[bold green]Thinking...[/bold green]", spinner="dots"):
+            response = manager.query(user_input)
+        
+        # Render response as Markdown
+        CONSOLE.print("\n[bold yellow]🤖 Agent >[/bold yellow]")
+        CONSOLE.print(Markdown(str(response)))
+        CONSOLE.print("-" * 50, style="dim")
 
 
 if __name__ == "__main__":

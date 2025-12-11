@@ -11,7 +11,7 @@ from llama_index.core import Settings, SimpleDirectoryReader
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai import OpenAI
 
-from insurance_system.src.config import EMBEDDING_MODEL, LLM_MODEL
+from insurance_system.src.config import EMBEDDING_MODEL, LLM_MODEL, PROJECT_ROOT, HIERARCHICAL_STORAGE_DIR, SUMMARY_STORAGE_DIR
 from insurance_system.src.indices.hierarchical import create_hierarchical_index
 from insurance_system.src.indices.summary import create_summary_index
 
@@ -24,16 +24,14 @@ def build_indices() -> None:
     """
     print("🚀 Starting Data Indexing Process...")
 
-    # Determine robust base directory (insurance_system folder)
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-
     # 1. Verification
     if not os.getenv("OPENAI_API_KEY"):
         print("❌ Error: OPENAI_API_KEY not found in environment variables.")
         print("Please check your .env file.")
         return
 
-    data_dir = os.path.join(base_dir, "data")
+    # Use PROJECT_ROOT (insurance_system folder) to locate data
+    data_dir = os.path.join(PROJECT_ROOT, "data")
     if not os.path.exists(data_dir):
         print(f"❌ Error: Data directory '{data_dir}' not found.")
         print("Please ensure your PDFs are in this folder.")
@@ -51,15 +49,13 @@ def build_indices() -> None:
 
     # 4. Build Hierarchical Index
     print("\n🏗️  Building Hierarchical Index (Fact Retrieval)...")
-    hierarchical_dir = os.path.join(base_dir, "storage", "hierarchical")
-    create_hierarchical_index(documents, persist_dir=hierarchical_dir)
-    print(f"✅ Hierarchical Index saved to {hierarchical_dir}")
+    create_hierarchical_index(documents, persist_dir=HIERARCHICAL_STORAGE_DIR)
+    print(f"✅ Hierarchical Index saved to {HIERARCHICAL_STORAGE_DIR}")
 
     # 5. Build Summary Index
     print("\n🏗️  Building Summary Index (High-level Retrieval)...")
-    summary_dir = os.path.join(base_dir, "storage", "summary")
-    create_summary_index(documents, persist_dir=summary_dir)
-    print(f"✅ Summary Index saved to {summary_dir}")
+    create_summary_index(documents, persist_dir=SUMMARY_STORAGE_DIR)
+    print(f"✅ Summary Index saved to {SUMMARY_STORAGE_DIR}")
 
     print(
         "\n✨ Indexing Complete! You can now run the retrieval system using 'main.py'."

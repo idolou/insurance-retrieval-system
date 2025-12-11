@@ -13,3 +13,4 @@ black
 isort
 mypy
 sentence-transformers
+rich

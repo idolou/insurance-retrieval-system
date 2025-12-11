@@ -37,16 +37,13 @@ class ManagerAgent:
         )
 
     async def aquery(self, question: str) -> Any:
-        # Return full response object (with source_nodes) for Ragas
         response = await self.agent.achat(question)
 
-        # FIX: Propagate source nodes from inner tool execution if possible
         # Check if the response has 'sources' (AgentChatResponse) and if those sources have 'raw_output'
         # This is a best-effort attempt to expose the retrieval nodes to the top level
         if hasattr(response, "sources") and not hasattr(response, "source_nodes"):
             all_nodes = []
             for tool_output in response.sources:
-                # If the tool returned a response object, it might be in raw_output or content
                 # For QueryEngineTool, raw_output is usually the Response object
                 if hasattr(tool_output, "raw_output") and hasattr(
                     tool_output.raw_output, "source_nodes"
@@ -59,10 +56,8 @@ class ManagerAgent:
         return response
 
     def query(self, question: str) -> Any:
-        # Return full response object (with source_nodes) for Ragas
         response = self.agent.chat(question)
 
-        # FIX: Propagate source nodes (same as async)
         if hasattr(response, "sources") and not hasattr(response, "source_nodes"):
             all_nodes = []
             for tool_output in response.sources:
