@@ -13,7 +13,7 @@ The system follows a **Hub-and-Spoke Agentic Architecture**:
     -   **Summary Agent**: Uses the Summary Index to generate broad, narrative answers.
 -   **MCP Tools**: Integration of deterministic tools (e.g., Python functions) for calculations.
 
-![Architecture Diagram](architecture_diagram.md) *(See architecture_diagram.md)*
+![Architecture Diagram](architecture_diagram.png) *(See architecture_diagram.md)*
 
 ---
 
