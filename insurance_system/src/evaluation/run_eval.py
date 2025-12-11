@@ -12,13 +12,16 @@ from llama_index.llms.openai import OpenAI
 
 from insurance_system.src.agents.manager_agent import ManagerAgent
 from insurance_system.src.config import (
-    EMBEDDING_MODEL, LLM_MODEL, HIERARCHICAL_STORAGE_DIR, SUMMARY_STORAGE_DIR
+    EMBEDDING_MODEL,
+    HIERARCHICAL_STORAGE_DIR,
+    LLM_MODEL,
+    SUMMARY_STORAGE_DIR,
 )
 from insurance_system.src.indices.hierarchical import load_hierarchical_retriever
 from insurance_system.src.prompts import (
-    CORRECTNESS_EVAL_PROMPT, 
+    CONTEXT_RECALL_EVAL_PROMPT,
     CONTEXT_RELEVANCY_EVAL_PROMPT,
-    CONTEXT_RECALL_EVAL_PROMPT
+    CORRECTNESS_EVAL_PROMPT,
 )
 
 load_dotenv()
@@ -89,18 +92,15 @@ async def run_eval():
     # Load components
     from llama_index.core import SimpleDirectoryReader
 
-    from insurance_system.src.indices.hierarchical import \
-        create_hierarchical_index
+    from insurance_system.src.indices.hierarchical import create_hierarchical_index
     from insurance_system.src.indices.summary import create_summary_index
 
-    if not os.path.exists(
-        HIERARCHICAL_STORAGE_DIR
-    ) or not os.path.exists(SUMMARY_STORAGE_DIR):
+    if not os.path.exists(HIERARCHICAL_STORAGE_DIR) or not os.path.exists(
+        SUMMARY_STORAGE_DIR
+    ):
         print("Building indexes...")
         documents = SimpleDirectoryReader("insurance_system/data").load_data()
-        create_hierarchical_index(
-            documents, persist_dir=HIERARCHICAL_STORAGE_DIR
-        )
+        create_hierarchical_index(documents, persist_dir=HIERARCHICAL_STORAGE_DIR)
         create_summary_index(documents, persist_dir=SUMMARY_STORAGE_DIR)
 
     # Load the system
@@ -136,7 +136,7 @@ async def run_eval():
         },
         {
             "query": "What is the specific model of the TV claimed?",
-            "expected": "Samsung 65\" QLED TV",
+            "expected": 'Samsung 65" QLED TV',
         },
         {
             "query": "Was the sofa replacement approved fully?",
@@ -146,7 +146,7 @@ async def run_eval():
 
     import json
     import re
-    
+
     # Helper to parse JSON from LLM response
     def parse_json_score(text):
         try:
@@ -167,52 +167,52 @@ async def run_eval():
     correctness_scores = []
     relevancy_scores = []
     recall_scores = []
-    
+
     for case in test_cases:
         res = await evaluate_query(
             case["query"], case["expected"], manager, evaluator_llm
         )
-        
+
         # Parse scores
         c_score = parse_json_score(res["correctness"])
         rel_score = parse_json_score(res["relevancy"])
         rec_score = parse_json_score(res["recall"])
-        
+
         # Update result with parsed data
         res["correctness"] = c_score
         res["relevancy"] = rel_score
         res["recall"] = rec_score
-        
+
         res["correctness_score"] = c_score.get("score", 0)
         res["relevancy_score"] = rel_score.get("score", 0)
         res["recall_score"] = rec_score.get("score", 0)
-        
+
         correctness_scores.append(res["correctness_score"])
         relevancy_scores.append(res["relevancy_score"])
         recall_scores.append(res["recall_score"])
-        
+
         results.append(res)
-        
+
     # 4. Summary Report
     total = len(results)
     c_pass = sum(correctness_scores)
     rel_pass = sum(relevancy_scores)
     rec_pass = sum(recall_scores)
-    
-    print("\n" + "="*50)
+
+    print("\n" + "=" * 50)
     print("📊 EVALUATION SUMMARY")
-    print("="*50)
+    print("=" * 50)
     print(f"Total Queries: {total}")
     print(f"Answer Correctness: {c_pass/total*100:.1f}% ({c_pass}/{total})")
     print(f"Context Relevancy:  {rel_pass/total*100:.1f}% ({rel_pass}/{total})")
     print(f"Context Recall:     {rec_pass/total*100:.1f}% ({rec_pass}/{total})")
-    print("="*50)
-    
+    print("=" * 50)
+
     # Save to JSON
     output_file = "evaluation_results.json"
     with open(output_file, "w") as f:
         json.dump(results, f, indent=2)
-        
+
     print(f"\n📄 Detailed results saved to '{output_file}'")
 
 

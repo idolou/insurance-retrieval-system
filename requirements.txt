@@ -1,7 +1,7 @@
 llama-index
-
 python-dotenv
 fpdf2
+types-fpdf2
 mcp
 pytest
 openai
@@ -12,5 +12,4 @@ llama-index-embeddings-openai
 black
 isort
 mypy
-
 sentence-transformers

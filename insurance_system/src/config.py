@@ -18,6 +18,7 @@ RERANKER_TOP_N = 3
 
 # Paths Configuration
 import os
+
 # Points to 'insurance_system' directory
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 

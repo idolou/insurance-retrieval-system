@@ -2,8 +2,8 @@ from typing import Any, Optional
 
 from llama_index.core.tools import QueryEngineTool, ToolMetadata
 
-from insurance_system.src.indices.summary import get_summary_query_engine
 from insurance_system.src.config import SUMMARY_STORAGE_DIR
+from insurance_system.src.indices.summary import get_summary_query_engine
 
 
 class SummaryAgent:

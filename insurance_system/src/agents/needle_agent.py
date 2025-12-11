@@ -3,8 +3,7 @@ from typing import Any, Optional
 from llama_index.core.retrievers import AutoMergingRetriever
 from llama_index.core.tools import QueryEngineTool, ToolMetadata
 
-from insurance_system.src.indices.hierarchical import \
-    get_hierarchical_query_engine
+from insurance_system.src.indices.hierarchical import get_hierarchical_query_engine
 
 
 class NeedleAgent:

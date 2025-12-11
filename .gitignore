@@ -33,6 +33,7 @@ ENV/
 .vscode/
 *.swp
 *.swo
+.mypy_cache/
 
 # Project Data & Storage
 # We keep data/ if it contains the sample pdf, but ignore generated indexes

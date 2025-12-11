@@ -16,10 +16,15 @@ from llama_index.llms.openai import OpenAI
 
 from insurance_system.src.agents.manager_agent import ManagerAgent
 from insurance_system.src.config import (
-    EMBEDDING_MODEL, LLM_MODEL, HIERARCHICAL_STORAGE_DIR, SUMMARY_STORAGE_DIR
+    EMBEDDING_MODEL,
+    HIERARCHICAL_STORAGE_DIR,
+    LLM_MODEL,
+    SUMMARY_STORAGE_DIR,
 )
 from insurance_system.src.indices.hierarchical import (
-    create_hierarchical_index, load_hierarchical_retriever)
+    create_hierarchical_index,
+    load_hierarchical_retriever,
+)
 from insurance_system.src.indices.summary import create_summary_index
 
 # Load environment variables
@@ -43,8 +48,7 @@ def main() -> None:
 
     # Enable LlamaIndex Callback Handler for Debugging (Optional)
     if os.getenv("DEBUG", "False").lower() == "true":
-        from llama_index.core.callbacks import (CallbackManager,
-                                                LlamaDebugHandler)
+        from llama_index.core.callbacks import CallbackManager, LlamaDebugHandler
 
         llama_debug = LlamaDebugHandler(print_trace_on_end=True)
         callback_manager = CallbackManager([llama_debug])
