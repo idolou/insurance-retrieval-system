@@ -11,7 +11,13 @@ from llama_index.core import Settings, SimpleDirectoryReader
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai import OpenAI
 
-from insurance_system.src.config import EMBEDDING_MODEL, LLM_MODEL, PROJECT_ROOT, HIERARCHICAL_STORAGE_DIR, SUMMARY_STORAGE_DIR
+from insurance_system.src.config import (
+    EMBEDDING_MODEL,
+    HIERARCHICAL_STORAGE_DIR,
+    LLM_MODEL,
+    PROJECT_ROOT,
+    SUMMARY_STORAGE_DIR,
+)
 from insurance_system.src.indices.hierarchical import create_hierarchical_index
 from insurance_system.src.indices.summary import create_summary_index
 

@@ -24,7 +24,10 @@ class ManagerAgent:
         self.summary_agent = SummaryAgent(summary_persist_dir, llm=self.llm)
 
         # Get Tools
-        self.tools: List[Any] = [self.needle_agent.get_tool(), self.summary_agent.get_tool()]
+        self.tools: List[Any] = [
+            self.needle_agent.get_tool(),
+            self.summary_agent.get_tool(),
+        ]
 
         # Add MCP Tools (if any)
         self.tools.extend(get_mcp_tools())

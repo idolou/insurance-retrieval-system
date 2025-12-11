@@ -89,6 +89,7 @@ def main() -> None:
         from rich.markdown import Markdown
         from rich.panel import Panel
         from rich.text import Text
+
         CONSOLE = Console()
     except ImportError:
         print("❌ Error: 'rich' library not found.")
@@ -96,9 +97,10 @@ def main() -> None:
         return
 
     CONSOLE.print(Panel.fit("[bold blue]Insurance Retrieval Agent[/bold blue]"))
-    CONSOLE.print("[green]✅ System Ready![/green] Type [bold red]'exit'[/bold red] to quit.")
+    CONSOLE.print(
+        "[green]✅ System Ready![/green] Type [bold red]'exit'[/bold red] to quit."
+    )
     CONSOLE.print("Type [bold yellow]'1'[/bold yellow] to see more sample queries.\n")
-    
 
     while True:
         try:
@@ -123,20 +125,26 @@ def main() -> None:
             CONSOLE.print(" - 'Who is the witness listed?'")
             CONSOLE.print(" - 'What is the deductible amount?'")
             CONSOLE.print(" - 'List all line items related to drywall repairs.'")
-            
+
             CONSOLE.print("\n [bold]Summary (High-Level) Queries:[/bold]")
             CONSOLE.print(" - 'Give me a summary of the medical treatment history.'")
-            CONSOLE.print(" - 'Explain the sequence of events leading to the settlement.'")
+            CONSOLE.print(
+                " - 'Explain the sequence of events leading to the settlement.'"
+            )
             CONSOLE.print(" - 'What are the main arguments for liability?'")
 
             CONSOLE.print("\n [bold]Complex (Planning) Queries:[/bold]")
-            CONSOLE.print(" - 'Identify the claimant and calculate the total payout vs the policy limit.'")
-            CONSOLE.print(" - 'Compare the initial estimate with the final settlement figure.'")
+            CONSOLE.print(
+                " - 'Identify the claimant and calculate the total payout vs the policy limit.'"
+            )
+            CONSOLE.print(
+                " - 'Compare the initial estimate with the final settlement figure.'"
+            )
             continue
 
         with CONSOLE.status("[bold green]Thinking...[/bold green]", spinner="dots"):
             response = manager.query(user_input)
-        
+
         # Render response as Markdown
         CONSOLE.print("\n[bold yellow]🤖 Agent >[/bold yellow]")
         CONSOLE.print(Markdown(str(response)))

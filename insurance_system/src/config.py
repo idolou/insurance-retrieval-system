@@ -18,6 +18,7 @@ RERANKER_TOP_N = 20
 
 # Paths Configuration
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
