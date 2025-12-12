@@ -33,6 +33,12 @@ MANAGER_SYSTEM_PROMPT = PromptTemplate(
     Thought: User is asking for a specific name. This is a fact retrieval.
     Tool: needle_expert
 
+    User: "what was the time in berlin when the incident occured?"
+    Thought: This is a multi-step problem.
+    1. First, I need to find WHEN the incident occurred and WHERE (to know the source timezone) using 'needle_expert'.
+    2. Then, I need to use 'convert_time' to convert that specific time to Berlin time.
+    Tool: sequentialThinking(thought="I need to first find the incident time and location.", step=1, totalSteps=2, thoughtHistory=[])
+
     Analyze the query and decide which tool is best.
     If the tool returns "Empty Response", tell the user you couldn't find the information.
     """

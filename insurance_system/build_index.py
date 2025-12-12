@@ -1,4 +1,3 @@
-import logging
 import os
 import sys
 
@@ -18,8 +17,11 @@ from insurance_system.src.config import (
     PROJECT_ROOT,
     SUMMARY_STORAGE_DIR,
 )
-from insurance_system.src.indices.hierarchical import create_hierarchical_index
-from insurance_system.src.indices.summary import create_summary_index
+from insurance_system.src.indices.hierarchical import (
+    HierarchicalIndexError,
+    create_hierarchical_index,
+)
+from insurance_system.src.indices.summary import SummaryIndexError, create_summary_index
 
 load_dotenv()
 
@@ -54,14 +56,29 @@ def build_indices() -> None:
     print(f"✅ Loaded {len(documents)} document(s).")
 
     # 4. Build Hierarchical Index
+    # 4. Build Hierarchical Index
     print("\n🏗️  Building Hierarchical Index (Fact Retrieval)...")
-    create_hierarchical_index(documents, persist_dir=HIERARCHICAL_STORAGE_DIR)
-    print(f"✅ Hierarchical Index saved to {HIERARCHICAL_STORAGE_DIR}")
+    try:
+        create_hierarchical_index(documents, persist_dir=HIERARCHICAL_STORAGE_DIR)
+        print(f"✅ Hierarchical Index saved to {HIERARCHICAL_STORAGE_DIR}")
+    except HierarchicalIndexError as e:
+        print(f"❌ Failed to build hierarchical index: {e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"❌ Unexpected error building hierarchical index: {e}")
+        sys.exit(1)
 
     # 5. Build Summary Index
     print("\n🏗️  Building Summary Index (High-level Retrieval)...")
-    create_summary_index(documents, persist_dir=SUMMARY_STORAGE_DIR)
-    print(f"✅ Summary Index saved to {SUMMARY_STORAGE_DIR}")
+    try:
+        create_summary_index(documents, persist_dir=SUMMARY_STORAGE_DIR)
+        print(f"✅ Summary Index saved to {SUMMARY_STORAGE_DIR}")
+    except SummaryIndexError as e:
+        print(f"❌ Failed to build summary index: {e}")
+        sys.exit(1)
+    except Exception as e:
+        print(f"❌ Unexpected error building summary index: {e}")
+        sys.exit(1)
 
     print(
         "\n✨ Indexing Complete! You can now run the retrieval system using 'main.py'."

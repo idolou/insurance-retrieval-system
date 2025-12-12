@@ -1,11 +1,7 @@
-import logging
 import os
 import sys
 
 from dotenv import load_dotenv
-
-# Configure Logging to reduce noise
-logging.getLogger("llama_index").setLevel(logging.WARNING)
 
 # Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -14,7 +10,7 @@ from llama_index.core import Settings
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai import OpenAI
 
-from insurance_system.src.agents.manager_agent import ManagerAgent
+from insurance_system.src.agents.manager_agent import ManagerAgent, ManagerAgentError
 from insurance_system.src.config import (
     DEBUG,
     EMBEDDING_MODEL,
@@ -23,10 +19,10 @@ from insurance_system.src.config import (
     SUMMARY_STORAGE_DIR,
 )
 from insurance_system.src.indices.hierarchical import (
-    create_hierarchical_index,
+    HierarchicalIndexError,
     load_hierarchical_retriever,
 )
-from insurance_system.src.indices.summary import create_summary_index
+from insurance_system.src.indices.summary import SummaryIndexError
 
 # Load environment variables
 load_dotenv()
@@ -44,16 +40,25 @@ def main() -> None:
     print("⬆️ Starting Insurance Retrieval System...")
 
     # Set Global Settings (OpenAI Only)
-    Settings.llm = OpenAI(model=LLM_MODEL)
-    Settings.embed_model = OpenAIEmbedding(model=EMBEDDING_MODEL)
+    try:
+        Settings.llm = OpenAI(model=LLM_MODEL)
+        Settings.embed_model = OpenAIEmbedding(model=EMBEDDING_MODEL)
+    except Exception as e:
+        print(f"❌ Error configuring OpenAI models: {e}")
+        return
 
     # Enable LlamaIndex Callback Handler for Debugging (Optional)
     if DEBUG:
-        from llama_index.core.callbacks import CallbackManager, LlamaDebugHandler
+        try:
+            from llama_index.core.callbacks import CallbackManager, LlamaDebugHandler
 
-        llama_debug = LlamaDebugHandler(print_trace_on_end=True)
-        callback_manager = CallbackManager([llama_debug])
-        Settings.callback_manager = callback_manager
+            llama_debug = LlamaDebugHandler(print_trace_on_end=True)
+            callback_manager = CallbackManager([llama_debug])
+            Settings.callback_manager = callback_manager
+        except ImportError:
+            print(
+                "⚠️  Warning: Debug mode enabled but dependencies missing (llama-index-callbacks)."
+            )
 
     # Using centralized paths from config
     hierarchical_storage = HIERARCHICAL_STORAGE_DIR
@@ -70,18 +75,28 @@ def main() -> None:
         hierarchical_retriever = load_hierarchical_retriever(
             persist_dir=hierarchical_storage
         )
-    except Exception as e:
+    except (FileNotFoundError, HierarchicalIndexError, SummaryIndexError) as e:
         print(f"❌ Error loading indices: {e}")
         print("💡 You strictly need to build indices first.")
         print("👉 Run build_index.py first.")
         return
+    except Exception as e:
+        print(f"❌ Unexpected error loading indices: {e}")
+        return
 
     # Initialize Manager Agent
     print("🤖 Initializing Agents...")
-    llm = OpenAI(model=LLM_MODEL)
-    manager = ManagerAgent(
-        hierarchical_retriever, summary_persist_dir=summary_storage, llm=llm
-    )
+    try:
+        llm = OpenAI(model=LLM_MODEL)
+        manager = ManagerAgent(
+            hierarchical_retriever, summary_persist_dir=summary_storage, llm=llm
+        )
+    except ManagerAgentError as e:
+        print(f"❌ Error initializing Manager Agent: {e}")
+        return
+    except Exception as e:
+        print(f"❌ Unexpected error initializing agents: {e}")
+        return
 
     # Initialize Rich Console
     try:
@@ -111,7 +126,7 @@ def main() -> None:
             break
 
         if user_input.lower() in ["exit", "quit"]:
-            CONSOLE.print("\n[bold yellow]Shutting down. Goodbye![/bold yellow]")
+            CONSOLE.print("\n[green]Shutting down. Goodbye![/green]")
             break
 
         if not user_input.strip():
@@ -143,7 +158,14 @@ def main() -> None:
             continue
 
         with CONSOLE.status("[bold green]Thinking...[/bold green]", spinner="dots"):
-            response = manager.query(user_input)
+            try:
+                response = manager.query(user_input)
+            except ManagerAgentError as e:
+                CONSOLE.print(f"\n[bold red]Agent Error:[/bold red] {e}")
+                continue
+            except Exception as e:
+                CONSOLE.print(f"\n[bold red]Unexpected Error:[/bold red] {e}")
+                continue
 
         # Render response as Markdown
         CONSOLE.print("\n[bold yellow]🤖 Agent >[/bold yellow]")
