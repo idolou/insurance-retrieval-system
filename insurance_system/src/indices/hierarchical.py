@@ -135,13 +135,16 @@ def get_hierarchical_query_engine(
         from llama_index.core.postprocessor import SentenceTransformerRerank
         from llama_index.core.query_engine import RetrieverQueryEngine
 
-        from insurance_system.src.config import RERANKER_MODEL, RERANKER_TOP_N
+        from insurance_system.src.config import RERANKER_MODEL, RERANKER_TOP_N, USE_RERANKER
 
-        # Initialize Reranker
-        reranker = SentenceTransformerRerank(model=RERANKER_MODEL, top_n=RERANKER_TOP_N)
+        # Conditionally initialize Reranker
+        node_postprocessors = []
+        if USE_RERANKER:
+            reranker = SentenceTransformerRerank(model=RERANKER_MODEL, top_n=RERANKER_TOP_N)
+            node_postprocessors.append(reranker)
 
         return RetrieverQueryEngine.from_args(
-            retriever, llm=llm, node_postprocessors=[reranker]
+            retriever, llm=llm, node_postprocessors=node_postprocessors
         )
     except Exception as e:
         raise HierarchicalIndexError(f"Query engine creation failed: {e}") from e

@@ -82,47 +82,22 @@ class SimpleAgent:
 
         Raises:
             SimpleAgentError: If chat execution fails.
+            RuntimeError: If called from an async context.
         """
         if not user_query or not user_query.strip():
             raise ValueError("User query cannot be empty")
 
         try:
-            # Check if we're in an async context
-            try:
-                asyncio.get_running_loop()
-                # We're in an async context - can't use asyncio.run()
-                error_msg = (
-                    "Cannot use sync chat() in async context. Use achat() instead."
-                )
-                raise RuntimeError(error_msg)
-            except RuntimeError as e:
-                # Check if this is our intentional error (async context detected)
-                if "Cannot use sync chat()" in str(e):
-                    raise  # Re-raise our intentional error
-                # Otherwise, this is the natural RuntimeError from get_running_loop()
-                # when there's no running loop - proceed with sync execution
-                pass
+            asyncio.get_running_loop()
+            raise RuntimeError("Use achat() in async contexts")
+        except RuntimeError as e:
+            if "Use achat()" in str(e):
+                raise
+            # No running loop - safe to proceed
 
-            # No running loop - this is the expected case for sync execution
-            # Create new event loop for synchronous execution
-            try:
-                return asyncio.run(self.achat(user_query))
-            except RuntimeError as e:
-                if "no running event loop" in str(e).lower():
-                    # Try alternative approach: create new loop manually
-                    loop = asyncio.new_event_loop()
-                    asyncio.set_event_loop(loop)
-                    try:
-                        return loop.run_until_complete(self.achat(user_query))
-                    finally:
-                        loop.close()
-                else:
-                    raise
+        try:
+            return asyncio.run(self.achat(user_query))
         except ValueError:
             raise
-        except RuntimeError as e:
-            if "Cannot use sync chat()" in str(e):
-                raise  # Re-raise our intentional error
-            raise SimpleAgentError(f"Chat execution failed: {e}") from e
         except Exception as e:
             raise SimpleAgentError(f"Chat execution failed: {e}") from e

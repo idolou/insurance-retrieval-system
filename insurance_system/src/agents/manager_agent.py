@@ -1,3 +1,4 @@
+import logging
 from typing import Any, List, Optional
 
 from llama_index.core.retrievers import AutoMergingRetriever
@@ -8,12 +9,10 @@ from insurance_system.src.agents.simple_agent import SimpleAgent
 from insurance_system.src.agents.summary_agent import SummaryAgent
 
 from insurance_system.src.config import LLM_MODEL
-from insurance_system.src.mcp.tools import (
-    get_math_tools,
-    get_mcp_tools,
-    get_time_tools,
-)
+from insurance_system.src.mcp.tools import get_math_tools, get_time_tools
 from insurance_system.src.prompts import MANAGER_SYSTEM_PROMPT
+
+logger = logging.getLogger(__name__)
 
 
 class ManagerAgentError(Exception):
@@ -23,6 +22,26 @@ class ManagerAgentError(Exception):
 
 
 class ManagerAgent:
+    def _attach_source_nodes(self, response: Any) -> None:
+        """Attach source_nodes from tool outputs to response."""
+        if hasattr(response, "sources") and not hasattr(response, "source_nodes"):
+            all_nodes = [
+                node
+                for tool_output in response.sources
+                if hasattr(tool_output, "raw_output")
+                and hasattr(tool_output.raw_output, "source_nodes")
+                for node in tool_output.raw_output.source_nodes
+            ]
+            if all_nodes:
+                response.source_nodes = all_nodes
+
+    def _log_tools_called(self, response: Any) -> None:
+        """Log which tools were called during the query."""
+        if hasattr(response, "sources") and response.sources:
+            tool_names = [source.tool_name for source in response.sources]
+            logger.info("Tools called: %s", tool_names)
+            print(f"Tools called: {tool_names}")
+
     def __init__(
         self,
         hierarchical_retriever: AutoMergingRetriever,
@@ -42,7 +61,6 @@ class ManagerAgent:
         """
         try:
             self.llm = llm or OpenAI(model=LLM_MODEL)
-            self.llm = llm or OpenAI(model=LLM_MODEL)
 
             # Initialize Sub-Agents
             self.needle_agent = NeedleAgent(hierarchical_retriever, llm=self.llm)
@@ -54,18 +72,17 @@ class ManagerAgent:
                 self.summary_agent.get_tool(),
             ]
 
-            # Add MCP Tools (if any)
+            # Add MCP Tools (Time, Math)
             try:
-                mcp_tools = get_mcp_tools()
-                self.tools.extend(mcp_tools)
-
-                # Add Real MCP Tools (Time, Math)
                 time_tools = get_time_tools()
                 math_tools = get_math_tools()
                 self.tools.extend(time_tools)
                 self.tools.extend(math_tools)
-            except Exception:
-                pass  # Continue without MCP tools
+                logger.info("Loaded %d MCP tools", len(time_tools) + len(math_tools))
+            except Exception as e:
+                logger.warning("MCP tools unavailable: %s", e)
+
+            logger.info("Total tools available: %s", [t.metadata.name for t in self.tools])
 
             # Initialize the Manager (Router)
             self.agent = SimpleAgent(
@@ -96,24 +113,8 @@ class ManagerAgent:
 
         try:
             response = await self.agent.achat(question)
-
-            # Check if the response has 'sources' (AgentChatResponse) and if those sources have 'raw_output'
-            # This is a best-effort attempt to expose the retrieval nodes to the top level
-            if hasattr(response, "sources") and not hasattr(response, "source_nodes"):
-                all_nodes = []
-                for tool_output in response.sources:
-                    # For QueryEngineTool, raw_output is usually the Response object
-                    if hasattr(tool_output, "raw_output") and hasattr(
-                        tool_output.raw_output, "source_nodes"
-                    ):
-                        all_nodes.extend(tool_output.raw_output.source_nodes)
-
-                if all_nodes:
-                    response.source_nodes = all_nodes
-
-            # Cache the result
-
-
+            self._attach_source_nodes(response)
+            self._log_tools_called(response)
             return response
         except ValueError:
             raise
@@ -140,21 +141,8 @@ class ManagerAgent:
 
         try:
             response = self.agent.chat(question)
-
-            if hasattr(response, "sources") and not hasattr(response, "source_nodes"):
-                all_nodes = []
-                for tool_output in response.sources:
-                    if hasattr(tool_output, "raw_output") and hasattr(
-                        tool_output.raw_output, "source_nodes"
-                    ):
-                        all_nodes.extend(tool_output.raw_output.source_nodes)
-
-                if all_nodes:
-                    response.source_nodes = all_nodes
-
-            # Cache the result
-
-
+            self._attach_source_nodes(response)
+            self._log_tools_called(response)
             return response
         except ValueError:
             raise

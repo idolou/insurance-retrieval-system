@@ -115,7 +115,9 @@ async def run_eval():
     )
 
     # Test Cases
+    # NOTE: Update expected values based on the actual content of RAG_Enhanced_Claim_HO-2024-8892.pdf
     test_cases = [
+        # Basic Fact Retrieval
         {
             "query": "What was the date of the incident?",
             "expected": "November 16, 2024",
@@ -126,14 +128,21 @@ async def run_eval():
             "query": "Does Sarah Smith have a pre-existing condition?",
             "expected": "No information about Sarah Smith found in the documents.",
         },
+        # Summary/Timeline Queries
         {
             "query": "Summarize the claim timeline.",
             "expected": "Incident on Nov 16, 2024. Valve shutoff same day. Inspection on Nov 18. Settlement reached Nov 22. Final payment Nov 24.",
         },
+        # Calculation Queries (using math tools)
         {
             "query": "How many days passed between the incident and the adjuster inspection?",
             "expected": "2 days (Nov 16 to Nov 18).",
         },
+        {
+            "query": "What is the total repair cost plus 15% tax?",
+            "expected": "$14,260.00 (or $12,400.00 + 15% = $14,260.00)",
+        },
+        # Specific Detail Retrieval
         {
             "query": "What is the specific model of the TV claimed?",
             "expected": 'Samsung 65" QLED TV',
@@ -141,6 +150,20 @@ async def run_eval():
         {
             "query": "Was the sofa replacement approved fully?",
             "expected": "No, it was partially denied. Only $250 for cleaning was approved initially.",
+        },
+        # Time Conversion Queries (using convert_time tool)
+        {
+            "query": "What was the time in Berlin when the incident occurred?",
+            "expected": "The incident occurred at 11:22 AM CST (America/Chicago) on November 16, 2024, which is 6:22 PM CET (Europe/Berlin) on the same day.",
+        },
+        {
+            "query": "What was the time in Tokyo when the incident occurred?",
+            "expected": "The incident occurred at 11:22 AM CST (America/Chicago) on November 16, 2024, which is 2:22 AM JST (Asia/Tokyo) on November 17, 2024.",
+        },
+        # Multi-step Queries (retrieval + calculation)
+        {
+            "query": "What is the difference between the repair cost and the deductible?",
+            "expected": "The difference is $X.XX (repair cost minus deductible amount).",
         },
     ]
 

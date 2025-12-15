@@ -1,9 +1,9 @@
 llama-index
 python-dotenv
-fpdf2
-types-fpdf2
+reportlab
 mcp
-pytest
+mcp-server-time
+mcp-server-math
 openai
 chromadb
 llama-index-vector-stores-chroma

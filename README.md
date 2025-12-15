@@ -113,15 +113,13 @@ To empirically prove the benefit of our strategy, we ran a controlled experiment
 
 ## 🛠️ MCP Usage Explanation
 
-We integrate the **Model Context Protocol (MCP)** to give the agent structured reasoning capabilities.
+We integrate the **Model Context Protocol (MCP)** for utility tools.
 
-- **Server**: A local Python MCP server (`insurance_system/mcp_server.py`) implementing the `SequentialThinking` tool.
 - **Client**: The Manager Agent connects via the `mcp` Python SDK (`stdio_client`).
-- **Workflow**:
-  1.  User asks a complex multi-step question.
-  2.  Manager uses `sequentialThinking` tool to plan its approach step-by-step.
-  3.  Server echoes back the thought process (simulated "thinking" state).
-  4.  Manager then executes the plan using other tools.
+- **Tools**:
+  - `get_current_time`: Get current time in a specific timezone.
+  - `convert_time`: Convert time between timezones.
+  - `math_add` / `math_multiply`: Basic math operations for cost calculations.
 
 ---
 

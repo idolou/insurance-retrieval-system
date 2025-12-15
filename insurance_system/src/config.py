@@ -13,13 +13,12 @@ SIMILARITY_TOP_K: int = 20  # Number of leaf nodes to retrieve
 # Model Configuration - Configurable via environment variables
 EMBEDDING_MODEL: str = "text-embedding-3-small"
 LLM_MODEL: str = "gpt-4o"
-# Use "gpt-4o-mini" to save tokens/cost
-
+MANAGER_MODEL: str = "gpt-4o-mini"
 
 # Reranker Configuration
 RERANKER_MODEL: str = "cross-encoder/ms-marco-MiniLM-L-12-v2"
 RERANKER_TOP_N: int = 20
-
+USE_RERANKER: bool = False
 
 
 # Paths Configuration
@@ -28,6 +27,7 @@ RERANKER_TOP_N: int = 20
 from dotenv import load_dotenv
 
 load_dotenv()
+
 
 # Points to 'insurance_system' directory
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
