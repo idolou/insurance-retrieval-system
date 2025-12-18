@@ -66,9 +66,11 @@ Insurance-Retrieval-System/
 |   |   |   └── summery.py
 │   │   ├── evaluation/         # LLM-as-a-Judge Logic
 │   │   │   └── run_eval_langchain.py
-│   │   └── config.py           # Configuration (LLM models, Chunk sizes)
+│   │   ├── utils/              # Shared Utilities & Config
+│   │   │   ├── config.py       # Configuration (LLM models, Chunk sizes)
+│   │   │   └── prompts.py      # System Prompts
 │   ├── storage/                # Persisted Indices (ChromaDB)
-│   ├── main_langchain.py       # Interactive CLI Entry Point
+│   ├── main.py                 # Interactive CLI Entry Point
 │   ├── build_index.py          # Index Generation Script
 │   └── generate_claim.py       # Synthetic Data Generator
 ├── requirements.txt            # Python Dependencies
@@ -258,7 +260,7 @@ python3 insurance_system/build_index.py
 ### 3. Run the Agent (Interactive CLI)
 
 ```bash
-python3 insurance_system/main_langchain.py
+python3 insurance_system/main.py
 ```
 
 _Try queries like:_
