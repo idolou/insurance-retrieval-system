@@ -43,7 +43,10 @@ insurance_system/storage/
 
 # Logs
 # Docs
-*.txt
 !requirements.txt
 *.docx
 
+
+# Ignored specific files
+Midterm Ex - Agentic Patterns.docx
+instructions_temp.txt
