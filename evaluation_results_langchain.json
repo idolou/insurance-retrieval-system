@@ -1,0 +1,164 @@
+[
+  {
+    "query": "What was the date of the incident?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly states the date of the incident as November 16, 2024, which matches exactly with the expected answer."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent directly answered the specific question asked about the date of the incident. The response provided the exact date (November 16, 2024) that matches the expected answer. The information is completely relevant to the query context, and the agent included the specific date detail that implies it retrieved the correct information."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains the exact date (November 16, 2024) that is mentioned in the Expected Answer. All key information from the Expected Answer is present in the Actual Answer."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1
+  },
+  {
+    "query": "Who is the policyholder?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly identifies Alex Johnson as the policyholder, which matches exactly with the expected answer."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent directly answered the specific question asked by correctly identifying Alex Johnson as the policyholder. The response is concise, accurate, and directly relevant to the query. The agent provided the specific name requested without adding unnecessary information."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer correctly identifies Alex Johnson as the policyholder, containing all the key information present in the Expected Answer. The response is complete and accurate."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1
+  },
+  {
+    "query": "What is the total repair estimate cost?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly states the total repair estimate cost as $12,400.00, which matches exactly with the expected answer."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent directly answered the specific question asked about the total repair estimate cost. The answer provided the exact amount ($12,400.00) which matches the expected answer. The response is concise, accurate, and directly relevant to the query context about repair costs."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains the exact same total repair estimate cost ($12,400.00) as mentioned in the Expected Answer. All key information is present."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1
+  },
+  {
+    "query": "Does Sarah Smith have a pre-existing condition?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly states that there is no information about Sarah Smith's pre-existing condition in the documents, which aligns with the expected answer. The agent accurately acknowledges the lack of information rather than making assumptions or providing incorrect details. The additional offer to help with other questions is just a courtesy and doesn't detract from the core correct response."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent correctly stated that there is no information about Sarah Smith having a pre-existing condition in the claim documents. The response appropriately acknowledges the lack of information rather than making assumptions or providing incorrect details. The agent's answer matches the expected answer in substance, indicating that it properly evaluated the available information and recognized that the specific question could not be answered based on the documents provided."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer correctly conveys the key information from the Expected Answer - that there is no information about Sarah Smith having a pre-existing condition in the documents. The Actual Answer accurately reflects that this information is not available in the claim documents, which aligns with the Expected Answer stating 'No information about Sarah Smith found in the documents.'"
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1
+  },
+  {
+    "query": "Summarize the claim timeline. Include all dates, dollar amounts, and company names involved.",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer contains all the core correct facts from the expected answer. It includes the incident date (November 16, 2024), the valve shutoff (implied on the same day when the claim was reported), the inspection date (November 18, 2024), the authorization of DryFast Inc. for mitigation at $3,500, the settlement date (November 22, 2024), and the final payment date (November 24, 2024). The actual answer provides additional details beyond what was expected, but it correctly captures all the key dates, dollar amounts, and company names that were specified in the expected answer."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent's response effectively summarized the claim timeline with all relevant dates, dollar amounts, and company names. It included the key dates (Nov 16, 2024 for incident reporting, Nov 18 for inspection, Nov 20 for drying completion, Nov 22 for settlement, and Nov 24 for payment), all dollar amounts ($3,500 for mitigation, $12,400 for repairs, etc.), and mentioned the companies involved (DryFast Inc). The response actually provided more comprehensive information than the expected answer, including additional dollar amounts and details, which enhances rather than detracts from its relevance."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains all the key facts, dates, dollar amounts, and company names from the Expected Answer. It correctly mentions the November 16 incident and valve shutoff, the November 18 inspection, the authorization of DryFast Inc. for $3,500 mitigation, the November 22 settlement, and the November 24 final payment. The Actual Answer actually provides more detail than the Expected Answer, but it fully covers all the required information."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1
+  },
+  {
+    "query": "What was the time in New York when the water leak started?",
+    "correctness": {
+      "score": 0,
+      "explanation": "The actual answer states the leak started at 3:22 AM in New York on Wednesday, December 17th, 2025, which is completely different from the expected answer of 11:22 AM in New York (converted from 10:22 AM Austin time). Both the time (3:22 AM vs 11:22 AM) and the date (which wasn't even mentioned in the expected answer) are incorrect. The actual answer does not contain the core correct facts from the expected answer."
+    },
+    "relevancy": {
+      "score": 0,
+      "explanation": "The agent's answer is completely fabricated and does not match the expected answer. The agent claimed the leak started at 3:22 AM on Wednesday, December 17th, 2025 (a future date), while the expected answer indicates it started at 11:22 AM New York time (converted from 10:22 AM Austin time). The agent provided a specific time, date, and year that appears to be made up rather than retrieved from any legitimate source document. The answer fails on accuracy, relevance to the query context, and shows no evidence of retrieving the correct information."
+    },
+    "recall": {
+      "score": 0,
+      "explanation": "The Actual Answer states the time in New York was 3:22 AM on Wednesday, December 17th, 2025, which does not match the Expected Answer's statement that it was 11:22 AM in New York (converted from 10:22 AM Austin time). The Actual Answer provides a completely different time (3:22 AM vs 11:22 AM) and also includes a specific date (December 17th, 2025) that is not mentioned in the Expected Answer at all."
+    },
+    "correctness_score": 0,
+    "relevancy_score": 0,
+    "recall_score": 0
+  },
+  {
+    "query": "Look up the claim details using your tools. Find the location and date of the loss. Then check the weather for that location and date to see if it explains the loss.",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly identifies the core facts from the expected answer: the location (Austin, TX), the date (November 16, 2024), and the conclusion that the weather conditions (clear, with temperatures ranging from 12.1\u00b0C to 27.0\u00b0C) do not explain the loss. While the actual answer doesn't explicitly state that the loss was mechanical, it does correctly conclude that the weather conditions do not explain the loss, which aligns with the expected answer."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent successfully answered the specific question by identifying both the location (124 Maple Street, Austin, TX 78701) and date (November 16, 2024) of the loss. It then checked the weather for that location and date, providing specific details about temperature (12.1\u00b0C to 27.0\u00b0C), wind speed (18.4 km/h), and precipitation (none). The agent concluded that the weather conditions do not suggest any adverse events that might explain the loss, which directly addresses the query's request to determine if weather explains the loss."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains all the key facts from the Expected Answer. It correctly identifies the location (Austin, TX) and the date (November 16, 2024). It also provides weather information showing mild/clear conditions with temperatures up to 27.0\u00b0C, which matches the Expected Answer's description. The Actual Answer correctly concludes that the weather does not explain the loss, which aligns with the Expected Answer's conclusion that the weather does not explain the mechanical loss."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1
+  },
+  {
+    "query": "What is the specific model of the TV claimed?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer perfectly matches the expected answer, correctly identifying the specific TV model as the Samsung QN90C Series."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent directly answered the specific question asked by correctly identifying the TV model as 'Samsung QN90C Series'. The answer is concise, accurate, and directly relevant to the query about the specific TV model being claimed. The agent provided the exact model information requested without adding unnecessary details or deviating from the question."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains the exact same information as the Expected Answer. It correctly identifies the specific TV model as 'Samsung QN90C Series' with no missing details."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1
+  },
+  {
+    "query": "Was the sofa replacement approved fully or partially?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly states that the sofa replacement was partially approved with an amount of $250.00, which aligns with the expected answer that indicates only $250 for cleaning was approved initially, not the full replacement. The actual answer captures the core fact that the request was partially approved rather than fully approved."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent correctly answered that the sofa replacement was partially approved, specifying the exact amount of $250.00 that was approved. This matches the expected answer which states that only $250 for cleaning was approved initially. The agent provided the specific cost detail ($250.00) which suggests it retrieved the correct claim information. The response directly addresses the question about whether the approval was full or partial."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer correctly states that the sofa replacement was partially approved with an amount of $250.00, which aligns with the Expected Answer's statement that it was partially denied and only $250 for cleaning was approved initially. The Actual Answer captures the key fact that the approval was partial and includes the specific amount ($250) mentioned in the Expected Answer."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1
+  }
+]

@@ -34,8 +34,47 @@ class NeedleAgent:
         """
         try:
             self.query_engine = get_hierarchical_query_engine(retriever, llm=llm)
+
+            # Inject strict prompt for precision
+            from llama_index.core import PromptTemplate
+
+            qa_prompt_tmpl = (
+                "Context information is below.\n"
+                "---------------------\n"
+                "{context_str}\n"
+                "---------------------\n"
+                "Given the context information and not prior knowledge, "
+                "answer the query specifically and precisely.\n"
+                "If the answer is finding a specific value, date, or name, provide it directly.\n"
+                "If the information is not in the context, say 'Information not found'.\n"
+                "Query: {query_str}\n"
+                "Answer: "
+            )
+            self.query_engine.update_prompts(
+                {
+                    "response_synthesizer:text_qa_template": PromptTemplate(
+                        qa_prompt_tmpl
+                    )
+                }
+            )
+
         except Exception as e:
             raise NeedleAgentError(f"Agent initialization failed: {e}") from e
+
+    def robust_query(self, query_str: str) -> str:
+        """
+        Query with validation.
+        """
+        response = self.query_engine.query(query_str)
+
+        # Simple check: if no source nodes, we might want to inform the user
+        if not response.source_nodes:
+            # We could implement retry logic here (e.g. rephrasing),
+            # but for now we'll just ensure the output reflects the lack of info.
+            if "not found" not in str(response).lower():
+                return f"No specific information found in documents for: {query_str}"
+
+        return str(response)
 
     def get_tool(self) -> QueryEngineTool:
         """

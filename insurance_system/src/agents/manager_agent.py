@@ -82,7 +82,9 @@ class ManagerAgent:
             except Exception as e:
                 logger.warning("MCP tools unavailable: %s", e)
 
-            logger.info("Total tools available: %s", [t.metadata.name for t in self.tools])
+            logger.info(
+                "Total tools available: %s", [t.metadata.name for t in self.tools]
+            )
 
             # Initialize the Manager (Router)
             self.agent = SimpleAgent(
@@ -109,8 +111,6 @@ class ManagerAgent:
         if not question or not question.strip():
             raise ValueError("Question cannot be empty")
 
-
-
         try:
             response = await self.agent.achat(question)
             self._attach_source_nodes(response)
@@ -136,8 +136,6 @@ class ManagerAgent:
         """
         if not question or not question.strip():
             raise ValueError("Question cannot be empty")
-
-
 
         try:
             response = self.agent.chat(question)

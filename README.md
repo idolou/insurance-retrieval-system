@@ -1,6 +1,23 @@
-# Insurance Claim Timeline Retrieval System
+# Insurance Claim Timeline Retrieval System (LangChain + MCP)
 
-A **Multi-Agent RAG System** built with **LlamaIndex** to investigate complex insurance claims. It combines hierarchical retrieval for specific facts with summary indexing for high-level context, all orchestrated by a routing agent.
+A **Multi-Agent RAG System** built with **LangChain & LangGraph** to investigate complex insurance claims. It combines hierarchical retrieval for specific facts with summary indexing for high-level context, all orchestrated by a routing agent capable of using **Model Context Protocol (MCP)** tools.
+
+---
+
+---
+
+## 📋 Table of Contents
+
+1. [Architecture Explanation](#-architecture-explanation)
+2. [Key Features](#-key-features)
+3. [Design Decisions & Rationale](#-design-decisions--rationale)
+   - [Hierarchical Indexing](#1-hierarchical-indexing-configuration)
+   - [Smart Routing Strategy](#3-smart-routing-strategy)
+   - [Needle Agent Precision](#4-needle-agent-precision)
+4. [Index Schemas](#-index-schemas)
+5. [Limitations & Trade-offs](#-limitations--trade-offs)
+6. [Evaluation](#-evaluation)
+7. [Setup & Usage](#-setup--usage)
 
 ---
 
@@ -8,151 +25,170 @@ A **Multi-Agent RAG System** built with **LlamaIndex** to investigate complex in
 
 The system follows a **Hub-and-Spoke Agentic Architecture**:
 
-- **Manager Agent (Router)**: The central brain. It analyzes the user's intent and routes queries to the most appropriate sub-agent or tool.
-- **Specialized Sub-Agents**:
-
-  - **Needle Agent**: Uses the Hierarchical Index to find precise "needle-in-a-haystack" facts.
-  - **Summary Agent**: Uses the Summary Index to generate broad, narrative answers.
-
-- **MCP Tools**: Integration of deterministic tools (e.g., Python functions) for calculations.
-
-![Architecture Diagram](architecture_diagram.png)
+- **Manager Agent (LangGraph Supervisor)**: The central brain. It routes user queries to the most appropriate tool or sub-agent.
+- **Specialized Sub-Agents (Tools)**:
+  - **Needle Expert**: Uses the Hierarchical Index (Auto-Merging Retriever) for precise facts.
+  - **Summary Expert**: Uses the Summary Index for broad, narrative answers.
+- **MCP Tools**: Integration of external capabilities via the Model Context Protocol.
+  - **Time Server**: Provides current time and timezone conversion.
+  - **Weather Server**: Provides real-time weather data and historical checks.
 
 ---
 
-## 📊 Data Segmentation Decisions
+## 🚀 Key Features
 
-To handle the complexity of an insurance claim file (which contains dense logs, receipts, and narratives), we employ a **Multi-Granularity Strategy**:
+1. **LangGraph Orchestration**:
 
-1. **Granularity**: We do not treat the document as a flat list of pages. We segment it into:
+   - Utilizes a state machine for robust orchestration, providing explicit control over state transitions and superior observability.
+   - Uses OpenAI's tool-calling capabilities for reliable routing.
 
-   - **Roots (2048 tokens)**: Large context windows (e.g., full incident reports).
-   - **Intermediates (512 tokens)**: Logical sections (e.g., a specific table of receipts).
-   - **Leaves (128 tokens)**: Small, precise snippets (e.g., a single log entry timestamp).
-
-2. **Why?**:
-
-   - Small chunks allow us to match specific queries ("What happened at 10:22 AM?") with high similarity scores.
-   - Large chunks provide the necessary context for the LLM to generate a coherent answer once the relevant section is found.
-
-## 🧠 Segmentation & Retrieval Strategy
-
-This section details our configuration choices to maximize retrieval accuracy (refer to `src/config.py`).
-
-### 1. Chunk Size Strategy
-
-We employ a **Hierarchical Node Parser** with three levels of granularity:
-
-- **Roots (2048 tokens)**: Capture broad context (e.g., full incident reports).
-- **Intermediates (512 tokens)**: Logical sections (e.g., tables, specific clauses).
-- **Leaves (128 tokens)**: Precise snippets to match granular queries.
-
-**Why?** Small chunks (128) enable high-similarity matching for specific facts ("What is the deductible?"), while large chunks (2048) provide the LLM with the full surrounding context needed to answer correctly.
-
-### 2. Overlap Strategy
-
-We use a **20-token overlap** between chunks.
-
-- **Reasoning**: Prevents semantic information from being "cut" at the boundary of a chunk. This ensures that a sentence split across two chunks is still intelligible in at least one of them.
-
-### 3. Hierarchy Depth Rationale
-
-We chose a **depth of 3** (Root -> Intermediate -> Leaf).
-
-- **Why?**: A depth of 2 is often too shallow (jumping from a small sentence to a massive document), losing the specific section context. A depth of 4+ becomes computationally expensive to index. Depth 3 offers the perfect balance: retrieving the **specific section** (512 tokens) is often more useful than just the sentence or the entire document.
-
-### 4. How Segmentation Improves Recall
-
-We utilize **Auto-Merging Retrieval**:
-
-- **Mechanism**: If the system retrieves multiple "Leaf" nodes that belong to the same parent, it automatically **discards the leaves and replaces them with the Parent Node**.
-- **Impact on Recall**: This dramatically improves recall by providing the **complete context** (the paragraph) rather than fragmented sentences. It ensures the model sees the "whole picture" when multiple relevant facts are clustered together.
-
-### 5. Reviewing the Mechanism (Trace Example)
-
-To empirically prove the benefit of our strategy, we ran a controlled experiment comparing Flat vs. Hierarchical retrieval on the query _"What is the deductible amount?"_.
-
-**Results:**
-
-| Metric           | Flat (Naive)     | Hierarchical (Ours) | Impact                       |
-| :--------------- | :--------------- | :------------------ | :--------------------------- |
-| **Merged?**      | ❌ No            | ✅ **Yes**          | 7 leaves merged into parents |
-| **Context Size** | ~180 chars       | **~417 chars**      | **+133% Context**            |
-| **Content**      | Fragmented lines | Full Paragraphs     | Complete readability         |
-
-**Conclusion**: The hierarchical system recognized that the small fragments belonged together and served the LLM the **entire section**, proving that "Auto-Merging" successfully reconstructs context.
+2. **MCP Integration (Model Context Protocol)**:
+   - **Extensibility**: Tools are not hardcoded. We use MCP servers to dynamically discover and register tools.
+   - **Supported MCP Servers**: `mcp-time`, `mcp-weather` (includes custom historical weather tool).
 
 ---
 
-## 🤖 Agent Design + Prompt Structure
+## 🧠 Design Decisions & Rationale
 
-### Manager Agent (Router)
+We made specific architectural choices to balance **precision** (finding specific facts) with **context** (understanding the story).
 
-- **Type**: ReAct / Tool-Use Agent with **Chain-of-Thought (CoT)** reasoning.
-- **Prompt**: "You are a Router. Think step-by-step. Use 'needle_expert' for facts. Use 'summary_expert' for broad overviews."
-- **Robustness**:
+### 1. Hierarchical Indexing Configuration
 
-  - **Few-Shot Examples**: The system prompt includes concrete examples of user queries and the expected thought process/tool selection.
-  - **Prompts as Functions**: All prompts are encapsulated in `src/prompts.py` using `PromptTemplate` objects, treating them as code artifacts rather than magic strings.
+**The Problem**: In standard RAG, large chunks (e.g., 1000 tokens) dilute the meaning of small facts (like a specific date or dollar amount), making them hard to find via vector similarity. Small chunks (e.g., 100 tokens) find the fact but lose the surrounding context needed to answer "why".
 
-- **Goal**: Prevent "hallucinated summaries" when the user asks for specific data.
+**The Solution**: We implementation a **3-Level Hierarchy**:
 
-### Sub-Agents
+- **Root (2048 tokens)**: Full sections (e.g., "Scope of Work").
+- **Intermediate (512 tokens)**: Paragraphs.
+- **Leaf (128 tokens)**: Specific facts.
 
-- **Needle Agent**:
+**Example**:
 
-  - **Description**: "The DEFAULT tool. Use for facts, dates, costs, names."
-  - **Tool**: `QueryEngineTool` -> `AutoMergingRetriever`.
+> _Query_: "What is the deductible?"
+>
+> 1. **Retrieval**: The system searches **Leaf Attributes**. It finds a tiny 128-token chunk containing "Deductible: $1,000". This has very high vector similarity.
+> 2. **Context Expansion**: The **Auto-Merging Retriever** sees this leaf belongs to a larger "Policy Declarations" block. It retrieves the **parent 512-token chunk** instead, providing the LLM with the fact ($1,000) AND the context (Policy Type, Coverage Limits).
 
-- **Summary Agent**:
+### 3. Smart Routing Strategy
 
-  - **Description**: "Use ONLY for broad summaries."
-  - **Tool**: `QueryEngineTool` -> `SummaryIndex` (TreeSummarize).
+**The Problem**: General-purpose agents often "hallucinate" tool usage—using a Summary tool for specific questions (resulting in vague answers) or a Needle tool for broad questions (resulting in missing the big picture).
+
+**The Solution**: We injected a **Strict System Prompt** into the Supervisor Agent (Smart Router).
+
+- **Rule**: "Always use Needle for 'how much', 'when', 'who'."
+- **Rule**: "Use Summary ONLY for 'tell me the story'."
+
+**Example**:
+
+> _User_: "How much was the repair estimate?"
+> _Router Decision_: "The user is asking for a specific amount ('How much'). I MUST route this to `needle_expert`."
+> _Result_: Precision tool is called. No time wasted on summary generation.
+
+### 4. Needle Agent Precision
+
+**The Problem**: Even with good retrieval, LLMs can be "lazy" and gloss over specific details if the prompt is too generic.
+
+**The Solution**: The `NeedleAgent` uses a **Precise System Prompt**: "Answer specifically and precisely. If the answer is a specific value, date, or name, provide it directly."
+
+**Example**:
+
+> _Context_: "The sofa cleaning was approved for $250 on Nov 22."
+> _Standard Agent Answer_: "The document mentions the sofa cleaning was approved." (Vague)
+> _Our Needle Agent Answer_: "The sofa replacement was partially approved for **$250.00**." (Precise)
 
 ---
 
-## 🛠️ MCP Usage Explanation
-
-We integrate the **Model Context Protocol (MCP)** for utility tools.
-
-- **Client**: The Manager Agent connects via the `mcp` Python SDK (`stdio_client`).
-- **Tools**:
-  - `get_current_time`: Get current time in a specific timezone.
-  - `convert_time`: Convert time between timezones.
-  - `math_add` / `math_multiply`: Basic math operations for cost calculations.
-
 ---
 
-## ⚖️ Evaluation Methodology + Examples
+## 🗂️ Index Schemas
 
-We use an **LLM-as-a-judge** approach (`src/evaluation/run_eval.py`).
+### 1. Hierarchical Index (ChromaDB)
 
-- **Judge**: GPT-4o (impartial prompt).
-- **Metrics** (Strict Compliance):
+Optimized for precise fact retrieval.
 
-  1.  **Answer Correctness**: Does the answer match the ground truth factually?
-  2.  **Context Relevancy**: Did the agent use relevant details/indexes to answer the query?
-  3.  **Context Recall**: Did the agent retrieve _all_ key facts from the ground truth?
+- **Collection**: `hierarchical_claims`
+- **Metadata Fields**:
+  - `document_id`: "HO-2024-8892"
+  - `chunk_type`: "root" | "intermediate" | "leaf"
+  - `parent_id`: ID of the parent node (for auto-merging)
+  - `page_label`: Source page number
 
-- **Test Suite**: 8 automated queries covering facts, summaries, and negative constraints.
+### 2. Summary Index (LlamaIndex)
 
-### 🏆 System Evaluation Results
+Optimized for high-level narrative queries.
 
-| Metric                 | Score      | Pass Rate |
-| :--------------------- | :--------- | :-------- |
-| **Answer Correctness** | **100.0%** | (8/8)     |
-| **Context Relevancy**  | **100.0%** | (8/8)     |
-| **Context Recall**     | **87.5%**  | (7/8)     |
-
-> Full detailed results (including reasoning) are available in `src/evaluation/evaluation_results.json`.
+- **Structure**: List Index
+- **Content**: Full document text synthesized into high-level summaries.
+- **Usage**: Accessed by the `Summary Expert` agent when the user asks broad questions like "Tell me the story of what happened."
 
 ---
 
 ## ⚠️ Limitations & Trade-offs
 
-1. **Cost vs. Latency**: The `SummaryAgent` reads the entire document. This is slow and costly (tokens) but necessary for accurate summaries. We mitigate this by defaulting to the `NeedleAgent`.
-2. **PDF Parsing**: `SimpleDirectoryReader` uses PyMuPDF, which may lose layout information for complex tables.
-3. **Indexing Time**: Hierarchical indexing takes 3x longer than flat indexing due to the number of nodes generated.
+(Deep Dive into Architectural Bottlenecks)
+
+### 1. The "Serial Router" Bottleneck
+
+**Architecture Fact**: The `ManagerAgent` (Supervisor) must process every query before any retrieval happens.
+**Implication**: This creates a strict **Serial Dependency**.
+
+- _Latency_: Minimum latency is always `Latency(Supervisor) + Latency(SubAgent)`. We cannot speculatively run retrieval in parallel with intent classification.
+- _Single Point of Failure_: If the Supervisor misinterprets a query (e.g., routing "What is the deductible?" to `summary_expert`), the downstream agent has no chance to recover. The graph is currently a DAG (Directed Acyclic Graph) without a "correction loop" to circle back if a sub-agent fails.
+
+### 2. The "Leaf Isolation" Problem in Hierarchical Retrieval
+
+**Architecture Fact**: We index 128-token leaves for precision.
+**Trade-off**: While this finds exact numbers, it can miss **Distributed Facts**.
+
+- _Scenario_: If a sentence says "The total cost was..." and the actual number "$10,000" appears in the _next_ 128-token chunk, the vector similarity for the number chunk might be low for the query "What was the cost?".
+- _Mitigation_: We rely on `CHUNK_OVERLAP=20`, but if the semantic gap is larger than 20 tokens, we might miss the connection entirely.
+
+### 3. Context Pollution via Auto-Merging
+
+**Architecture Fact**: When a leaf matches, we retrieve the **Parent (512 or 2048 tokens)**.
+**Trade-off**: This assumes the Parent is _mostly_ relevant.
+
+- _Risk_: A 2048-token parent "Scope of Work" might contain the target fact (1 line) and 100 lines of irrelevant repair codes.
+- _Effect_: Inspecting the parent node injects noise into the LLM's context window. This increases the chance of "Lost in the Middle" phenomenon where the LLM ignores the specific fact because it's buried in a large, mostly irrelevant chunk.
+
+### 4. Error Propagation in Tool Chains
+
+**Architecture Fact**: We use a `Supervisor -> Tool` pattern.
+**Limitation**: The current Supervisor does not see the _content_ of the tool output before deciding it's done. It hands off to the tool, which returns a string.
+
+- _Real limitation_: If `NeedleAgent` returns "No information found", the Supervisor currently accepts that as the final answer. It lacks a **Reflective Loop** to say "Wait, if Needle failed, maybe I should try Summary?" (though we could implement this in LangGraph, it is a current architectural gap).
+
+### 5. Static Indexing vs. Dynamic Claims
+
+**Architecture Fact**: We build a static vector index at startup.
+**Real World Friction**: Insurance claims are dynamic. New documents (e.g., a "Supplement 1" estimate) arrive daily.
+
+- _Bottleneck_: Our architecture requires a **Full Re-index** to incorporate new files. There is no "Incremental Indexing" pipeline implemented. In a production scenario, this would be a major blocking factor for real-time claim handling.
+
+---
+
+## ⚖️ Evaluation
+
+We use an **LLM-as-a-judge** approach (`src/evaluation/run_eval_langchain.py`) to rigorously test the system. The evaluation output is enhanced with the `rich` library for readability.
+
+- **Judge**: Claude 3.7 Sonnet (via Anthropic API) or GPT-4o.
+- **Methodology**:
+  - We evaluate **Answer Correctness**, **Context Relevancy**, and **Context Recall**.
+  - The test suite includes complex queries that require:
+    - **Fact Retrieval**: "What is the deductible?"
+    - **Summarization**: "Summarize the timeline."
+    - **Tool Usage**: "What is the weather in Berlin?" (tests MCP integration).
+    - **Claim Verification**: "Check if the claim story matches the weather at that location/date." (Historical weather check).
+
+### 🏆 Evaluation Results
+
+| Metric                 | Score     | Pass Rate |
+| :--------------------- | :-------- | :-------- |
+| **Answer Correctness** | **88.9%** | (8/9)     |
+| **Context Relevancy**  | **77.8%** | (7/9)     |
+| **Context Recall**     | **66.7%** | (6/9)     |
+
+> Detailed results: `evaluation_results_langchain.json`
 
 ---
 
@@ -161,28 +197,34 @@ We use an **LLM-as-a-judge** approach (`src/evaluation/run_eval.py`).
 ### 1. Installation
 
 ```bash
-python3.10 -m venv .venv
+python3.13 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-# Add OPENAI_API_KEY
+# Add OPENAI_API_KEY and ANTHROPIC_API_KEY (for evaluation)
 ```
 
-### 2. Generate & Index Data
+### 2. Generate Data & Index
 
 ```bash
 python3 insurance_system/generate_claim.py
 python3 insurance_system/build_index.py
 ```
 
-### 3. Run
+### 3. Run the Agent (Interactive CLI)
 
 ```bash
-python3 insurance_system/main.py
+python3 insurance_system/main_langchain.py
 ```
 
-### 4. Evaluate
+_Try queries like:_
+
+- "Summarize the claim."
+- "What is the weather in Berlin?"
+- "What time is it in London?"
+
+### 4. Run Evaluation
 
 ```bash
-python3 insurance_system/src/evaluation/run_eval.py
+python3 insurance_system/src/evaluation/run_eval_langchain.py
 ```

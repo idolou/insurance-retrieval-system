@@ -3,7 +3,7 @@ python-dotenv
 reportlab
 mcp
 mcp-server-time
-mcp-server-math
+mcp_weather_server
 openai
 chromadb
 llama-index-vector-stores-chroma
@@ -11,3 +11,8 @@ llama-index-llms-openai
 llama-index-embeddings-openai
 sentence-transformers
 rich
+llama-index-llms-gemini
+langchain
+langgraph
+langchain-openai
+llama-index-llms-anthropic

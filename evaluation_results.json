@@ -3,15 +3,15 @@
     "query": "What was the date of the incident?",
     "correctness": {
       "score": 1,
-      "explanation": "The actual answer contains the core correct facts from the expected answer, including the correct date of the incident, November 16, 2024. The additional information about the day of the week does not alter the correctness of the core fact."
+      "explanation": "The actual answer correctly states the date of the incident as November 16, 2024, which matches exactly with the expected answer."
     },
     "relevancy": {
       "score": 1,
-      "explanation": "The agent answered the specific question asked by providing the date of the incident, which is the information requested. The answer contains a specific detail, the date 'Saturday, November 16, 2024,' indicating that it retrieved the correct information. The information is relevant to the query context as it directly addresses the question about the date of the incident."
+      "explanation": "The agent directly answered the specific question asked about the date of the incident. The response provided the exact date (November 16, 2024) that matches the expected answer. The information is completely relevant to the query context, and the agent included the specific date detail that implies it retrieved the correct information."
     },
     "recall": {
       "score": 1,
-      "explanation": "The Actual Answer contains all the key facts, numbers, dates, and entities present in the Expected Answer. The addition of 'Saturday' does not detract from the recall of the key information, which is the date 'November 16, 2024'."
+      "explanation": "The Actual Answer contains the exact date (November 16, 2024) that was specified in the Expected Answer. All key information from the Expected Answer is present in the Actual Answer."
     },
     "correctness_score": 1,
     "relevancy_score": 1,
@@ -21,15 +21,15 @@
     "query": "Who is the policyholder?",
     "correctness": {
       "score": 1,
-      "explanation": "The actual answer contains the core correct fact from the expected answer, which is identifying Alex Johnson as the policyholder."
+      "explanation": "The actual answer correctly identifies Alex Johnson as the policyholder, which matches exactly with the expected answer. The agent provided the complete and accurate information requested in the query."
     },
     "relevancy": {
       "score": 1,
-      "explanation": "The agent answered the specific question by providing the name of the policyholder, Alex Johnson. This implies that it retrieved the correct information relevant to the query context."
+      "explanation": "The agent directly answered the specific question asked by correctly identifying Alex Johnson as the policyholder. The response is concise, accurate, and directly relevant to the query context. The agent provided the specific name requested without adding unnecessary information."
     },
     "recall": {
       "score": 1,
-      "explanation": "The Actual Answer contains all the key facts and entities present in the Expected Answer. Both identify 'Alex Johnson' as the policyholder, which is the only detail required for full recall."
+      "explanation": "The Actual Answer correctly identifies Alex Johnson as the policyholder, containing all the key information present in the Expected Answer. The response includes the complete name without omitting any details."
     },
     "correctness_score": 1,
     "relevancy_score": 1,
@@ -39,15 +39,15 @@
     "query": "What is the total repair estimate cost?",
     "correctness": {
       "score": 1,
-      "explanation": "The actual answer contains the core correct fact from the expected answer, which is the total repair estimate cost of $12,400.00."
+      "explanation": "The actual answer correctly states the total repair estimate cost as $12,400.00, which matches exactly with the expected answer."
     },
     "relevancy": {
       "score": 1,
-      "explanation": "The agent answered the specific question asked by providing the total repair estimate cost. The answer contains a specific detail, the cost of $12,400.00, which implies it retrieved the correct information. The information is relevant to the query context as it directly addresses the question."
+      "explanation": "The agent directly answered the specific question asked about the total repair estimate cost. The answer provided the exact dollar amount ($12,400.00) that matches the expected answer. The response is concise, relevant to the query context, and contains the specific cost detail that implies the agent retrieved the correct information from the claim documents."
     },
     "recall": {
       "score": 1,
-      "explanation": "The Actual Answer contains all the key facts and numbers present in the Expected Answer, specifically the total repair estimate cost of $12,400.00."
+      "explanation": "The Actual Answer correctly includes the exact total repair estimate cost of $12,400.00, which matches the Expected Answer perfectly. All key information from the Expected Answer is present in the Actual Answer."
     },
     "correctness_score": 1,
     "relevancy_score": 1,
@@ -57,15 +57,15 @@
     "query": "Does Sarah Smith have a pre-existing condition?",
     "correctness": {
       "score": 1,
-      "explanation": "The actual answer conveys the same core fact as the expected answer, which is that there is no information available about Sarah Smith's pre-existing condition in the documents."
+      "explanation": "The actual answer correctly conveys the core fact from the expected answer, which is that there is no information available about Sarah Smith having a pre-existing condition. Both answers indicate that no information about Sarah Smith's medical condition was found."
     },
     "relevancy": {
       "score": 1,
-      "explanation": "The agent answered the specific question by stating it couldn't find any information about Sarah Smith having a pre-existing condition. The response is relevant to the query context as it directly addresses the question asked."
+      "explanation": "The agent's response is appropriate and relevant. The agent correctly acknowledged that there is no information available about Sarah Smith having a pre-existing condition, which aligns with the expected answer. The agent did not fabricate details or make assumptions about Sarah Smith's medical history when no information was available. The response directly addresses the specific question asked in a clear and accurate manner."
     },
     "recall": {
       "score": 1,
-      "explanation": "The Actual Answer contains all the key facts and entities present in the Expected Answer. Both indicate that there is no information about Sarah Smith's pre-existing condition in the documents."
+      "explanation": "The Actual Answer correctly conveys the same key information as the Expected Answer - that no information about Sarah Smith having a pre-existing condition was found. Both answers indicate the absence of information about Sarah Smith, which is the essential fact in the ground truth."
     },
     "correctness_score": 1,
     "relevancy_score": 1,
@@ -75,33 +75,33 @@
     "query": "Summarize the claim timeline.",
     "correctness": {
       "score": 1,
-      "explanation": "The actual answer contains the core correct facts from the expected answer. Both timelines mention the incident on November 16, the inspection on November 18, the settlement reached on November 22, and the final payment on November 24. Although the actual answer provides additional details, it does not contradict the expected answer."
+      "explanation": "The actual answer contains all the core correct facts from the expected answer. It correctly mentions the incident on November 16, 2024, valve shutoff (implied by 'emergency mitigation') on the same day, inspection on November 18, settlement reached on November 22, and final payment on November 24. The actual answer provides additional details but includes all the key dates and events specified in the expected answer."
     },
     "relevancy": {
       "score": 1,
-      "explanation": "The agent provided a detailed timeline of the claim, including specific dates, names, and costs, which directly addresses the query about summarizing the claim timeline. The information is relevant and implies that the correct claim documents or segments were retrieved."
+      "explanation": "The agent's response is highly relevant and addresses the specific question asked. It correctly summarizes the claim timeline with all the key dates matching the expected answer (incident on Nov 16, valve shutoff same day, inspection on Nov 18, settlement on Nov 22, final payment on Nov 24). The agent also provided additional relevant details that enhance the timeline (emergency mitigation authorization, coverage confirmation, drying completion) without contradicting the expected information. The response demonstrates that the agent retrieved and synthesized the correct claim information."
     },
     "recall": {
-      "score": 0,
-      "explanation": "The Actual Answer does not contain all the key facts present in the Expected Answer. Specifically, it omits the 'Valve shutoff same day' detail from November 16, 2024, which is mentioned in the Expected Answer. Therefore, it does not meet the criteria for full recall."
+      "score": 1,
+      "explanation": "The Actual Answer contains all the key facts, dates, and events mentioned in the Expected Answer. It correctly includes: the incident on November 16, 2024; valve shutoff on the same day (implied by 'emergency mitigation... authorized the same day'); inspection on November 18; settlement reached on November 22; and final payment on November 24. The Actual Answer provides additional details but doesn't miss any of the required information from the Expected Answer."
     },
     "correctness_score": 1,
     "relevancy_score": 1,
-    "recall_score": 0
+    "recall_score": 1
   },
   {
     "query": "How many days passed between the incident and the adjuster inspection?",
     "correctness": {
       "score": 1,
-      "explanation": "The actual answer contains the core correct facts from the expected answer. It correctly identifies the dates of the incident and the adjuster inspection as November 16, 2024, and November 18, 2024, respectively, and accurately calculates the difference as 2 days."
+      "explanation": "The actual answer correctly states that 2 days passed between the incident and the adjuster inspection, which matches the expected answer. The agent provided the exact correct information."
     },
     "relevancy": {
       "score": 1,
-      "explanation": "The agent answered the specific question asked by providing the number of days between the incident and the adjuster inspection. The answer includes specific dates, which implies that the agent retrieved the correct information. The information is relevant to the query context as it directly addresses the question."
+      "explanation": "The agent directly answered the specific question asked about the number of days between the incident and the adjuster inspection. The answer of '2 days' matches exactly with the expected answer. The agent provided the correct timeframe without adding irrelevant information, demonstrating that it retrieved and understood the relevant claim information."
     },
     "recall": {
       "score": 1,
-      "explanation": "The Actual Answer contains all the key facts, numbers, dates, and entities present in the Expected Answer. Both answers state that 2 days passed between November 16 and November 18, 2024."
+      "explanation": "The Actual Answer correctly states that 2 days passed between the incident and the adjuster inspection, which matches exactly with the Expected Answer of '2 days (Nov 16 to Nov 18)'. While the Actual Answer doesn't include the specific dates (Nov 16 to Nov 18), the key numerical fact (2 days) is present, which is the direct answer to the query about how many days passed."
     },
     "correctness_score": 1,
     "relevancy_score": 1,
@@ -111,15 +111,15 @@
     "query": "What is the specific model of the TV claimed?",
     "correctness": {
       "score": 1,
-      "explanation": "The actual answer contains the core correct facts from the expected answer, as it correctly identifies the TV model as a Samsung 65\" QLED TV."
+      "explanation": "The actual answer perfectly matches the expected answer, correctly identifying the specific TV model as the Samsung QN90C Series."
     },
     "relevancy": {
       "score": 1,
-      "explanation": "The agent answered the specific question asked by providing the model of the TV, which is a Samsung 65\" QLED TV. This response contains specific details that imply the agent retrieved the correct information, making it relevant to the query context."
+      "explanation": "The agent correctly answered the specific question asked by identifying the exact TV model as 'Samsung QN90C Series'. The answer is direct, accurate, and contains the specific model name that was requested in the query. The response is fully relevant to the context of the question about a TV claim."
     },
     "recall": {
       "score": 1,
-      "explanation": "The Actual Answer contains all the key facts, numbers, and entities present in the Expected Answer. Both mention 'Samsung 65\" QLED TV', fulfilling the recall criteria."
+      "explanation": "The Actual Answer contains the exact same information as the Expected Answer. It correctly identifies the specific TV model as 'Samsung QN90C Series' with no missing details."
     },
     "correctness_score": 1,
     "relevancy_score": 1,
@@ -129,15 +129,15 @@
     "query": "Was the sofa replacement approved fully?",
     "correctness": {
       "score": 1,
-      "explanation": "The actual answer contains the core correct facts from the expected answer. It correctly states that the sofa replacement was partially denied and that $250 was approved for cleaning. Additionally, it provides extra context about the possibility of revisiting the replacement if cleaning is unsuccessful, which does not contradict the expected answer."
+      "explanation": "The actual answer correctly states that the sofa replacement was not fully approved, which aligns with the expected answer's 'No, it was partially denied.' The actual answer also correctly mentions that only $250 was approved for cleaning, which matches the expected answer's statement that 'Only $250 for cleaning was approved initially.' The actual answer provides additional context about the damage being assessed as cosmetic and the cleaning being for leather, but it contains all the core correct facts from the expected answer."
     },
     "relevancy": {
       "score": 1,
-      "explanation": "The agent answered the specific question by stating that the sofa replacement was partially denied and provided details about the approval of $250 for cleaning. This information is relevant to the query context as it directly addresses the approval status of the sofa replacement."
+      "explanation": "The agent correctly answered the specific question asked, stating that the sofa replacement was not fully approved. The agent provided relevant specific details that indicate it retrieved the correct information - namely that only a $250.00 allowance for professional leather cleaning and conditioning was approved instead of a full replacement, as the damage was assessed as cosmetic. This matches the expected answer that the request was partially denied with only $250 for cleaning being approved initially."
     },
     "recall": {
       "score": 1,
-      "explanation": "The Actual Answer contains all the key facts and numbers present in the Expected Answer. It mentions that the sofa replacement was partially denied and that $250 was approved for cleaning, which matches the Expected Answer. Additionally, the Actual Answer provides extra context about revisiting the replacement possibility if cleaning is unsuccessful, but this does not detract from the recall of the key facts."
+      "explanation": "The Actual Answer correctly states that the sofa replacement was not fully approved, which matches the Expected Answer's statement that it was 'partially denied.' The Actual Answer also includes the specific detail that $250 was approved for cleaning, which matches the Expected Answer's mention that 'Only $250 for cleaning was approved initially.' The Actual Answer provides additional context about the damage being assessed as cosmetic and the cleaning being recommended, but it contains all the key facts from the Expected Answer."
     },
     "correctness_score": 1,
     "relevancy_score": 1,
