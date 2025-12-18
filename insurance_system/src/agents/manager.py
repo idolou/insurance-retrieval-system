@@ -1,3 +1,11 @@
+"""
+Manager Agent (Supervisor)
+
+This module defines the LangGraph state machine that acts as the central Supervisor/Manager.
+It orchestrates the conversation, routing user queries to the appropriate specialized agents
+(Needle Agent for facts, Summary Agent for overviews) or external tools.
+"""
+
 import operator
 from typing import Annotated, Sequence, TypedDict
 
@@ -6,7 +14,7 @@ from langchain_openai import ChatOpenAI
 from langgraph.graph import END, StateGraph
 from langgraph.prebuilt import ToolNode
 
-from insurance_system.src.langchain_agents.tools import get_langchain_tools
+from insurance_system.src.agents.tools import get_langchain_tools
 from insurance_system.src.utils.config import LLM_MODEL
 
 

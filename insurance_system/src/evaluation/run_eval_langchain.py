@@ -2,6 +2,9 @@ import asyncio
 import json
 import os
 import sys
+
+# Suppress HuggingFace Tokenizer warnings
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 from typing import Any
 
 # Add project root to path
@@ -19,8 +22,8 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
+from insurance_system.src.agents.manager import build_graph
 from insurance_system.src.evaluation.models import EvaluationResult
-from insurance_system.src.langchain_agents.graph import build_graph
 from insurance_system.src.utils.config import (EMBEDDING_MODEL,
                                                EVALUATOR_MODEL, LLM_MODEL)
 from insurance_system.src.utils.prompts import (CONTEXT_RECALL_EVAL_PROMPT,
@@ -198,6 +201,11 @@ async def run_eval():
         {
             "query": "Was the sofa replacement approved fully or partially?",
             "expected": "No, it was partially denied. Only $250 for cleaning was approved initially.",
+        },
+        # LlamaParse Table Extraction (Sensor Logs)
+        {
+            "query": "What was the Total Vol recorded by Flow_Meter_01 at 11:15:00 AM?",
+            "expected": "448.5 Gal (or 448.5 gallons). This is a precise value from the high-resolution sensor log table.",
         },
     ]
 

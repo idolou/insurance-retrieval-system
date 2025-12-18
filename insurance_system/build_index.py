@@ -48,7 +48,30 @@ def build_indices() -> None:
 
     # 3. Load Documents
     print(f"📂 Loading Documents from {data_dir}...")
-    documents = SimpleDirectoryReader(data_dir).load_data()
+
+    # Check for LlamaCloud API Key for enhanced parsing (Tables)
+    llama_cloud_key = os.getenv("LLAMA_CLOUD_API_KEY")
+    if llama_cloud_key:
+        print(
+            "🦙 LlamaCloud API Key found! Using LlamaParse for enhanced table extraction."
+        )
+        from llama_parse import LlamaParse
+
+        parser = LlamaParse(
+            api_key=llama_cloud_key,
+            result_type="markdown",  # Markdown is best for retaining table structure
+            verbose=True,
+        )
+        file_extractor = {".pdf": parser}
+        documents = SimpleDirectoryReader(
+            data_dir, file_extractor=file_extractor
+        ).load_data()
+    else:
+        print(
+            "⚠️  LLAMA_CLOUD_API_KEY not found. Using standard PDF loader (tables may be messy)."
+        )
+        documents = SimpleDirectoryReader(data_dir).load_data()
+
     print(f"✅ Loaded {len(documents)} document(s).")
 
     # 4. Build Hierarchical Index

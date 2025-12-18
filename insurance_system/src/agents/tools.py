@@ -2,12 +2,12 @@ from typing import List
 
 from langchain_core.tools import Tool
 
+from insurance_system.src.agents.mcp_tools import (get_langchain_time_tools,
+                                                   get_langchain_weather_tools)
 from insurance_system.src.agents.needle_agent import NeedleAgent
 from insurance_system.src.agents.summary_agent import SummaryAgent
 from insurance_system.src.indices.hierarchical import \
     load_hierarchical_retriever
-from insurance_system.src.langchain_agents.mcp_tools import (
-    get_langchain_time_tools, get_langchain_weather_tools)
 from insurance_system.src.utils.config import (HIERARCHICAL_STORAGE_DIR,
                                                SUMMARY_STORAGE_DIR)
 
@@ -58,8 +58,7 @@ def get_langchain_tools() -> List[Tool]:
     # tools.extend(get_langchain_weather_tools())
 
     # Add our custom robust weather tool
-    from insurance_system.src.langchain_agents.weather_tool import \
-        get_historical_weather
+    from insurance_system.src.agents.mcp_tools import get_historical_weather
 
     tools.append(get_historical_weather)
 

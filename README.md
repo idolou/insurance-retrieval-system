@@ -52,19 +52,6 @@ A **Multi-Agent RAG System** built with **LangChain & LangGraph** to investigate
 ```text
 Insurance-Retrieval-System/
 ├── insurance_system/
-│   ├── data/                   # Input PDFs and claims
-│   │   └── RAG_Enhanced_Claim_HO-2024-8892.pdf
-│   ├── src/
-│   │   ├── agents/             # LlamaIndex Agents (Needle/Summary)
-│   │   │   └── needle_agent.py
-│   │   │   └── summary_agent.py
-│   │   ├── langchain_agents/   # LangGraph Supervisor & Tools
-│   │   │   ├── graph.py        # Main State Machine
-│   │   │   └── tools.py        # Tool definitions
-│   │   ├── indices/            # Retrievers & Index Builders
-│   │   │   └── hierarchical.py
-|   |   |   └── summery.py
-│   │   ├── evaluation/         # LLM-as-a-Judge Logic
 │   │   │   └── run_eval_langchain.py
 │   │   ├── utils/              # Shared Utilities & Config
 │   │   │   ├── config.py       # Configuration (LLM models, Chunk sizes)
@@ -91,6 +78,12 @@ Insurance-Retrieval-System/
 
    - **Extensibility**: Tools are not hardcoded. We use MCP servers to dynamically discover and register tools.
    - **Supported MCP Servers**: `mcp-time`, `mcp-weather` (includes custom historical weather tool).
+
+3. **Advanced Table Extraction (LlamaParse)**:
+
+   - **Feature**: Integrates `LlamaParse` to convert complex PDF tables into Markdown.
+   - **Benefit**: Allows the agent to accurately retrieve dense numerical data (like sensor logs, financial estimates, and psychrometric readings) that standard parsers often garble.
+   - **Mechanism**: The `build_index.py` script automatically detects `LLAMA_CLOUD_API_KEY` and switches to enhanced parsing mode.
 
 ---
 
@@ -158,6 +151,7 @@ Optimized for precise fact retrieval.
   - `chunk_type`: "root" | "intermediate" | "leaf"
   - `parent_id`: ID of the parent node (for auto-merging)
   - `page_label`: Source page number
+- **Content**: Text chunks using **Markdown Tables** (via LlamaParse) to preserve row/column structure for dense data.
 
 ### 2. Summary Index (LlamaIndex)
 
@@ -230,9 +224,9 @@ We use an **LLM-as-a-judge** approach (`src/evaluation/run_eval_langchain.py`) t
 
 | Metric                 | Score     | Pass Rate |
 | :--------------------- | :-------- | :-------- |
-| **Answer Correctness** | **88.9%** | (8/9)     |
-| **Context Relevancy**  | **77.8%** | (7/9)     |
-| **Context Recall**     | **66.7%** | (6/9)     |
+| **Answer Correctness** | **80.0%** | (8/10)    |
+| **Context Relevancy**  | **90.0%** | (9/10)    |
+| **Context Recall**     | **90.0%** | (9/10)    |
 
 > Detailed results: `evaluation_results_langchain.json`
 
@@ -248,6 +242,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
 # Add OPENAI_API_KEY and ANTHROPIC_API_KEY (for evaluation)
+# Optional: Add LLAMA_CLOUD_API_KEY for enhanced table parsing (Get key at https://cloud.llamaindex.ai)
 ```
 
 ### 2. Generate Data & Index
@@ -267,7 +262,10 @@ _Try queries like:_
 
 - "Summarize the claim."
 - "What is the deductible amount?"
+- "Summarize the claim."
+- "What is the deductible amount?"
 - "What is the incident timeline?"
+- "What was the Total Vol recorded by Flow_Meter_01 at 11:15:00 AM?" (Table Query)
 
 ### 4. Run Evaluation
 

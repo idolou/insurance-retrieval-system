@@ -20,7 +20,7 @@ from rich.panel import Panel
 # Load environment variables
 load_dotenv()
 
-from insurance_system.src.langchain_agents.graph import build_graph
+from insurance_system.src.agents.manager import build_graph
 
 # Initialize Rich Console
 CONSOLE = Console()
@@ -93,16 +93,23 @@ async def main():
         # Run LangGraph app
         CONSOLE.print("\n[bold yellow]🤖 Agent >[/bold yellow]")
 
-        # Start the spinner
-        with CONSOLE.status(
-            "[bold green]Thinking...[/bold green]", spinner="dots"
-        ) as status:
+        from rich.live import Live
+        from rich.spinner import Spinner
+
+        # Buffer for the final answer
+        response_buffer = ""
+        # Initial renderable (Spinner)
+        current_renderable = Spinner(
+            "dots", text="[bold green]Thinking...[/bold green]"
+        )
+
+        with Live(current_renderable, console=CONSOLE, refresh_per_second=10) as live:
             try:
                 messages = [HumanMessage(content=user_input)]
-                final_content = ""
-                first_token_received = False
 
-                # Use astream_events v2 to capture both tool calls and token streaming
+                # State tracking
+                is_streaming_answer = False
+
                 async for event in app.astream_events(
                     {"messages": messages}, version="v2"
                 ):
@@ -111,69 +118,49 @@ async def main():
                     # 1. Tool Call Start
                     if kind == "on_tool_start":
                         tool_name = event["name"]
-                        # Skip internal LangChain tools or trivial ones if any
                         if tool_name not in ["__start__", "_interruption"]:
                             inputs = event["data"].get("input")
-                            CONSOLE.print(
+                            # Print ABOVE the live display
+                            live.console.print(
                                 f"[dim]🛠️ Called Tool: [bold cyan]{tool_name}[/bold cyan][/dim]"
                             )
-                            CONSOLE.print(inputs, style="dim")
+                            live.console.print(inputs, style="dim")
 
                     # 2. Tool Output
                     elif kind == "on_tool_end":
                         tool_name = event["name"]
                         output = event["data"].get("output")
-
-                        # Extract content if it's a ToolMessage object
                         content = output
                         if hasattr(output, "content"):
                             content = output.content
 
-                        CONSOLE.print(f"[dim]   → Result ({tool_name}):[/dim]")
+                        live.console.print(f"[dim]   → Result ({tool_name}):[/dim]")
 
-                        # Try to parse as JSON for pretty (but faded) printing
-                        try:
-                            if isinstance(content, str):
-                                json_obj = json.loads(content)
-                                # Use json.dumps to get a string, then print it dim
-                                formatted_json = json.dumps(json_obj, indent=2)
-                                CONSOLE.print(f"[dim]{formatted_json}[/dim]")
-                            elif isinstance(content, (dict, list)):
-                                formatted_json = json.dumps(content, indent=2)
-                                CONSOLE.print(f"[dim]{formatted_json}[/dim]")
-                            else:
-                                # Truncate if too long and not JSON
-                                output_str = str(content)
-                                if len(output_str) > 500:
-                                    output_str = output_str[:500] + "... (truncated)"
-                                CONSOLE.print(f"[dim]{output_str}[/dim]")
-                        except Exception:
-                            # Fallback for non-JSON text
-                            output_str = str(content)
-                            if len(output_str) > 500:
-                                output_str = output_str[:500] + "... (truncated)"
-                            CONSOLE.print(f"[dim]{output_str}[/dim]")
+                        # Use simple truncation for tool output to keep it clean
+                        output_str = str(content)
+                        if len(output_str) > 500:
+                            output_str = output_str[:500] + "... (truncated)"
+                        live.console.print(f"[dim]{output_str}[/dim]")
 
                     # 3. LLM Streaming (Main Answer)
                     elif kind == "on_chat_model_stream":
-                        # Stop spinner on first token
-                        if not first_token_received:
-                            status.stop()
-                            first_token_received = True
+                        chunk_content = event["data"]["chunk"].content
+                        if chunk_content:
+                            if not is_streaming_answer:
+                                is_streaming_answer = True
+                                # Switch from Spinner to Markdown
+                                # We treat the accumulated text as Markdown
+                                pass
 
-                        content = event["data"]["chunk"].content
-                        if content:
-                            # Print content directly to console as it arrives
-                            CONSOLE.print(content, end="")
-                            final_content += content
-
-                # Print a newline at the end since streaming used end=""
-                CONSOLE.print()
-                CONSOLE.print("-" * 50, style="dim")
+                            response_buffer += chunk_content
+                            live.update(Markdown(response_buffer))
 
             except Exception as e:
-                CONSOLE.print(f"\n[bold red]Agent Error:[/bold red] {e}")
+                live.console.print(f"\n[bold red]Agent Error:[/bold red] {e}")
                 continue
+
+        # End of stream, print separator
+        CONSOLE.print("-" * 50, style="dim")
 
 
 if __name__ == "__main__":

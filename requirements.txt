@@ -16,3 +16,4 @@ langchain
 langgraph
 langchain-openai
 llama-index-llms-anthropic
+llama-parse
