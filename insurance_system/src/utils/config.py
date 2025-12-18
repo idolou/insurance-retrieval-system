@@ -35,7 +35,7 @@ if os.getenv("CLAUDE_API_KEY") and not os.getenv("ANTHROPIC_API_KEY"):
 
 
 # Points to 'insurance_system' directory
-PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 STORAGE_DIR = os.path.join(PROJECT_ROOT, "storage")
 HIERARCHICAL_STORAGE_DIR = os.path.join(STORAGE_DIR, "hierarchical")

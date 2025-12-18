@@ -6,7 +6,7 @@ from llama_index.core import (Document, StorageContext, SummaryIndex,
 from llama_index.core.base.base_query_engine import BaseQueryEngine
 from llama_index.core.response_synthesizers import TreeSummarize
 
-from insurance_system.src.config import SUMMARY_STORAGE_DIR
+from insurance_system.src.utils.config import SUMMARY_STORAGE_DIR
 
 
 class SummaryIndexError(Exception):

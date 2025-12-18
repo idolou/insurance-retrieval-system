@@ -6,8 +6,8 @@ from langchain_openai import ChatOpenAI
 from langgraph.graph import END, StateGraph
 from langgraph.prebuilt import ToolNode
 
-from insurance_system.src.config import LLM_MODEL
 from insurance_system.src.langchain_agents.tools import get_langchain_tools
+from insurance_system.src.utils.config import LLM_MODEL
 
 
 # 1. Define State

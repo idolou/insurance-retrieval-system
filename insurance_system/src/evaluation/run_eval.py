@@ -12,14 +12,14 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai import OpenAI
 
 from insurance_system.src.agents.manager_agent import ManagerAgent
-from insurance_system.src.config import (EMBEDDING_MODEL,
-                                         HIERARCHICAL_STORAGE_DIR, LLM_MODEL,
-                                         SUMMARY_STORAGE_DIR)
 from insurance_system.src.indices.hierarchical import \
     load_hierarchical_retriever
-from insurance_system.src.prompts import (CONTEXT_RECALL_EVAL_PROMPT,
-                                          CONTEXT_RELEVANCY_EVAL_PROMPT,
-                                          CORRECTNESS_EVAL_PROMPT)
+from insurance_system.src.utils.config import (EMBEDDING_MODEL,
+                                               HIERARCHICAL_STORAGE_DIR,
+                                               LLM_MODEL, SUMMARY_STORAGE_DIR)
+from insurance_system.src.utils.prompts import (CONTEXT_RECALL_EVAL_PROMPT,
+                                                CONTEXT_RELEVANCY_EVAL_PROMPT,
+                                                CORRECTNESS_EVAL_PROMPT)
 
 load_dotenv()
 
@@ -109,7 +109,7 @@ async def run_eval():
     llm = OpenAI(model=LLM_MODEL)
 
     # Initialize Evaluator (Judge)
-    from insurance_system.src.config import EVALUATOR_MODEL
+    from insurance_system.src.utils.config import EVALUATOR_MODEL
 
     if "claude" in EVALUATOR_MODEL:
         from llama_index.llms.anthropic import Anthropic

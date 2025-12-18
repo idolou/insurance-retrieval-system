@@ -1,113 +1,42 @@
+import asyncio
 import os
 import sys
 
+# Suppress tokenizers warning
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+# Ensure module visibility
+sys.path.append(os.getcwd())
+
+import json
+
 from dotenv import load_dotenv
-
-# Add project root to path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-from llama_index.core import Settings
-from llama_index.embeddings.openai import OpenAIEmbedding
-from llama_index.llms.openai import OpenAI
-
-from insurance_system.src.agents.manager_agent import (ManagerAgent,
-                                                       ManagerAgentError)
-from insurance_system.src.config import (DEBUG, EMBEDDING_MODEL,
-                                         HIERARCHICAL_STORAGE_DIR, LLM_MODEL,
-                                         SUMMARY_STORAGE_DIR)
-from insurance_system.src.indices.hierarchical import (
-    HierarchicalIndexError, load_hierarchical_retriever)
-from insurance_system.src.indices.summary import SummaryIndexError
+from langchain_core.messages import HumanMessage
+from rich.console import Console
+from rich.json import JSON
+from rich.markdown import Markdown
+from rich.panel import Panel
 
 # Load environment variables
 load_dotenv()
 
+from insurance_system.src.langchain_agents.graph import build_graph
 
-def main() -> None:
-    print("⚙️ Initializing Insurance Claim Retrieval System...")
+# Initialize Rich Console
+CONSOLE = Console()
 
-    # Check for API Keys
-    if not os.getenv("OPENAI_API_KEY"):
-        print("⚠️  Warning: OPENAI_API_KEY not found in environment variables.")
-        print("Please add 'OPENAI_API_KEY=sk-...' to your .env file.")
-        return
 
-    print("⬆️ Starting Insurance Retrieval System...")
-
-    # Set Global Settings (OpenAI Only)
-    try:
-        Settings.llm = OpenAI(model=LLM_MODEL)
-        Settings.embed_model = OpenAIEmbedding(model=EMBEDDING_MODEL)
-    except Exception as e:
-        print(f"❌ Error configuring OpenAI models: {e}")
-        return
-
-    # Enable LlamaIndex Callback Handler for Debugging (Optional)
-    if DEBUG:
-        try:
-            from llama_index.core.callbacks import (CallbackManager,
-                                                    LlamaDebugHandler)
-
-            llama_debug = LlamaDebugHandler(print_trace_on_end=True)
-            callback_manager = CallbackManager([llama_debug])
-            Settings.callback_manager = callback_manager
-        except ImportError:
-            print(
-                "⚠️  Warning: Debug mode enabled but dependencies missing (llama-index-callbacks)."
-            )
-
-    # Using centralized paths from config
-    hierarchical_storage = HIERARCHICAL_STORAGE_DIR
-    summary_storage = SUMMARY_STORAGE_DIR
-
-    # Load Retrievers/Indices
-    print("📂 Loading Indices (ChromaDB + OpenAI Embeddings)...")
-    try:
-        if not os.path.exists(hierarchical_storage) or not os.path.exists(
-            summary_storage
-        ):
-            raise FileNotFoundError("Index storage not found.")
-
-        hierarchical_retriever = load_hierarchical_retriever(
-            persist_dir=hierarchical_storage
-        )
-    except (FileNotFoundError, HierarchicalIndexError, SummaryIndexError) as e:
-        print(f"❌ Error loading indices: {e}")
-        print("💡 You strictly need to build indices first.")
-        print("👉 Run build_index.py first.")
-        return
-    except Exception as e:
-        print(f"❌ Unexpected error loading indices: {e}")
-        return
-
-    # Initialize Manager Agent
-    print("🤖 Initializing Agents...")
-    try:
-        llm = OpenAI(model=LLM_MODEL)
-        manager = ManagerAgent(
-            hierarchical_retriever, summary_persist_dir=summary_storage, llm=llm
-        )
-    except ManagerAgentError as e:
-        print(f"❌ Error initializing Manager Agent: {e}")
-        return
-    except Exception as e:
-        print(f"❌ Unexpected error initializing agents: {e}")
-        return
-
-    # Initialize Rich Console
-    try:
-        from rich.console import Console
-        from rich.markdown import Markdown
-        from rich.panel import Panel
-        from rich.text import Text
-
-        CONSOLE = Console()
-    except ImportError:
-        print("❌ Error: 'rich' library not found.")
-        print("👉 Please run: pip install rich")
-        return
-
+async def main():
     CONSOLE.print(Panel.fit("[bold blue]Insurance Retrieval Agent[/bold blue]"))
+
+    # Initialize Graph
+    CONSOLE.print("⚙️ Initializing Insurance Claim Retrieval System...")
+    try:
+        app = build_graph()
+    except Exception as e:
+        CONSOLE.print(f"[bold red]❌ Error initializing graph:[/bold red] {e}")
+        return
+
     CONSOLE.print(
         "[green]✅ System Ready![/green] Type [bold red]'exit'[/bold red] to quit."
     )
@@ -115,20 +44,25 @@ def main() -> None:
 
     while True:
         try:
+            # Note: console.input is blocking, but acceptable for this CLI loop
             user_input = CONSOLE.input("\n[bold cyan]👤 User > [/bold cyan]")
         except KeyboardInterrupt:
             # Handle Ctrl+C gracefully
             CONSOLE.print("\n[bold red]Goodbye![/bold red]")
             break
 
-        if user_input.lower() in ["exit", "quit"]:
+        if user_input.lower() in ["exit", "quit", "q"]:
             CONSOLE.print("\n[green]Shutting down. Goodbye![/green]")
             break
+
+        if user_input.lower() == "clear":
+            CONSOLE.clear()
+            continue
 
         if not user_input.strip():
             continue
 
-        # Expand Samples
+        # Expand Samples logic matched from main.py
         if user_input.strip() == "1":
             CONSOLE.print("\n[bold yellow]Expanded Sample Queries:[/bold yellow]")
             CONSOLE.print(" [bold]Needle (Fact) Queries:[/bold]")
@@ -151,23 +85,100 @@ def main() -> None:
             CONSOLE.print(
                 " - 'Compare the initial estimate with the final settlement figure.'"
             )
+            CONSOLE.print(
+                " - 'What was the time in Berlin when the incident occurred?'"
+            )
             continue
 
-        with CONSOLE.status("[bold green]Thinking...[/bold green]", spinner="dots"):
+        # Run LangGraph app
+        CONSOLE.print("\n[bold yellow]🤖 Agent >[/bold yellow]")
+
+        # Start the spinner
+        with CONSOLE.status(
+            "[bold green]Thinking...[/bold green]", spinner="dots"
+        ) as status:
             try:
-                response = manager.query(user_input)
-            except ManagerAgentError as e:
+                messages = [HumanMessage(content=user_input)]
+                final_content = ""
+                first_token_received = False
+
+                # Use astream_events v2 to capture both tool calls and token streaming
+                async for event in app.astream_events(
+                    {"messages": messages}, version="v2"
+                ):
+                    kind = event["event"]
+
+                    # 1. Tool Call Start
+                    if kind == "on_tool_start":
+                        tool_name = event["name"]
+                        # Skip internal LangChain tools or trivial ones if any
+                        if tool_name not in ["__start__", "_interruption"]:
+                            inputs = event["data"].get("input")
+                            CONSOLE.print(
+                                f"[dim]🛠️ Called Tool: [bold cyan]{tool_name}[/bold cyan][/dim]"
+                            )
+                            CONSOLE.print(inputs, style="dim")
+
+                    # 2. Tool Output
+                    elif kind == "on_tool_end":
+                        tool_name = event["name"]
+                        output = event["data"].get("output")
+
+                        # Extract content if it's a ToolMessage object
+                        content = output
+                        if hasattr(output, "content"):
+                            content = output.content
+
+                        CONSOLE.print(f"[dim]   → Result ({tool_name}):[/dim]")
+
+                        # Try to parse as JSON for pretty (but faded) printing
+                        try:
+                            if isinstance(content, str):
+                                json_obj = json.loads(content)
+                                # Use json.dumps to get a string, then print it dim
+                                formatted_json = json.dumps(json_obj, indent=2)
+                                CONSOLE.print(f"[dim]{formatted_json}[/dim]")
+                            elif isinstance(content, (dict, list)):
+                                formatted_json = json.dumps(content, indent=2)
+                                CONSOLE.print(f"[dim]{formatted_json}[/dim]")
+                            else:
+                                # Truncate if too long and not JSON
+                                output_str = str(content)
+                                if len(output_str) > 500:
+                                    output_str = output_str[:500] + "... (truncated)"
+                                CONSOLE.print(f"[dim]{output_str}[/dim]")
+                        except Exception:
+                            # Fallback for non-JSON text
+                            output_str = str(content)
+                            if len(output_str) > 500:
+                                output_str = output_str[:500] + "... (truncated)"
+                            CONSOLE.print(f"[dim]{output_str}[/dim]")
+
+                    # 3. LLM Streaming (Main Answer)
+                    elif kind == "on_chat_model_stream":
+                        # Stop spinner on first token
+                        if not first_token_received:
+                            status.stop()
+                            first_token_received = True
+
+                        content = event["data"]["chunk"].content
+                        if content:
+                            # Print content directly to console as it arrives
+                            CONSOLE.print(content, end="")
+                            final_content += content
+
+                # Print a newline at the end since streaming used end=""
+                CONSOLE.print()
+                CONSOLE.print("-" * 50, style="dim")
+
+            except Exception as e:
                 CONSOLE.print(f"\n[bold red]Agent Error:[/bold red] {e}")
                 continue
-            except Exception as e:
-                CONSOLE.print(f"\n[bold red]Unexpected Error:[/bold red] {e}")
-                continue
-
-        # Render response as Markdown
-        CONSOLE.print("\n[bold yellow]🤖 Agent >[/bold yellow]")
-        CONSOLE.print(Markdown(str(response)))
-        CONSOLE.print("-" * 50, style="dim")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("\nGoodbye!")
+        sys.exit(0)
