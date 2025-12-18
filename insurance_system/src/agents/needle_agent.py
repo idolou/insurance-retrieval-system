@@ -69,8 +69,6 @@ class NeedleAgent:
 
         # Simple check: if no source nodes, we might want to inform the user
         if not response.source_nodes:
-            # We could implement retry logic here (e.g. rephrasing),
-            # but for now we'll just ensure the output reflects the lack of info.
             if "not found" not in str(response).lower():
                 return f"No specific information found in documents for: {query_str}"
 

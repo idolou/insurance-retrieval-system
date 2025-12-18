@@ -5,9 +5,9 @@ import sys
 from typing import Any, Dict, List, Type
 
 from langchain_core.tools import StructuredTool
-from pydantic import BaseModel, create_model, Field
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
+from pydantic import BaseModel, Field, create_model
 
 logger = logging.getLogger(__name__)
 
@@ -22,7 +22,6 @@ async def run_module_mcp_tool(module_name: str, tool_name: str, arguments: dict)
     """
     Generic runner for Python module-based MCP tools.
     """
-    # Disable tokenizers parallelism to avoid fork warnings
     env = os.environ.copy()
     env["TOKENIZERS_PARALLELISM"] = "false"
 
@@ -77,7 +76,7 @@ def _create_pydantic_model_from_schema(
         elif field_type_str in ["number", "integer"]:
             py_type = float
         elif field_type_str == "array":
-            py_type = List[float]  # Assuming math tools for now
+            py_type = List[float]
         elif field_type_str == "boolean":
             py_type = bool
         else:
@@ -85,7 +84,6 @@ def _create_pydantic_model_from_schema(
 
         description = field_schema.get("description", "")
 
-        # Determine if required (defaulting to ... if required, else None)
         if field_name in required:
             default = ...
         else:
@@ -144,7 +142,7 @@ def _create_langchain_tool_wrapper(
             description += " Use IANA timezone names (e.g., 'America/New_York')."
 
     return StructuredTool.from_function(
-        func=None,  # Sync version not implemented
+        func=None,
         coroutine=tool_wrapper,
         name=tool_name,
         description=description,

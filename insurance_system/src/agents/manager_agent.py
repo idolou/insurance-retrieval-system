@@ -7,7 +7,6 @@ from llama_index.llms.openai import OpenAI
 from insurance_system.src.agents.needle_agent import NeedleAgent
 from insurance_system.src.agents.simple_agent import SimpleAgent
 from insurance_system.src.agents.summary_agent import SummaryAgent
-
 from insurance_system.src.config import LLM_MODEL
 from insurance_system.src.mcp.tools import get_math_tools, get_time_tools
 from insurance_system.src.prompts import MANAGER_SYSTEM_PROMPT

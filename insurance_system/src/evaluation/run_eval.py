@@ -7,23 +7,19 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.
 
 from dotenv import load_dotenv
 from llama_index.core import Settings
+from llama_index.core.program import LLMTextCompletionProgram
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai import OpenAI
 
 from insurance_system.src.agents.manager_agent import ManagerAgent
-from llama_index.core.program import LLMTextCompletionProgram
-from insurance_system.src.config import (
-    EMBEDDING_MODEL,
-    HIERARCHICAL_STORAGE_DIR,
-    LLM_MODEL,
-    SUMMARY_STORAGE_DIR,
-)
-from insurance_system.src.indices.hierarchical import load_hierarchical_retriever
-from insurance_system.src.prompts import (
-    CONTEXT_RECALL_EVAL_PROMPT,
-    CONTEXT_RELEVANCY_EVAL_PROMPT,
-    CORRECTNESS_EVAL_PROMPT,
-)
+from insurance_system.src.config import (EMBEDDING_MODEL,
+                                         HIERARCHICAL_STORAGE_DIR, LLM_MODEL,
+                                         SUMMARY_STORAGE_DIR)
+from insurance_system.src.indices.hierarchical import \
+    load_hierarchical_retriever
+from insurance_system.src.prompts import (CONTEXT_RECALL_EVAL_PROMPT,
+                                          CONTEXT_RELEVANCY_EVAL_PROMPT,
+                                          CORRECTNESS_EVAL_PROMPT)
 
 load_dotenv()
 
@@ -128,7 +124,8 @@ async def run_eval():
     from llama_index.core import SimpleDirectoryReader
     from llama_index.core.program import LLMTextCompletionProgram
 
-    from insurance_system.src.indices.hierarchical import create_hierarchical_index
+    from insurance_system.src.indices.hierarchical import \
+        create_hierarchical_index
     from insurance_system.src.indices.summary import create_summary_index
 
     if not os.path.exists(HIERARCHICAL_STORAGE_DIR) or not os.path.exists(

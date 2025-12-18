@@ -1,36 +1,31 @@
 import asyncio
+import json
 import os
 import sys
-import json
 from typing import Any
 
 # Add project root to path
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../..")))
 
 from dotenv import load_dotenv
+from langchain_core.messages import HumanMessage
 from llama_index.core import Settings
+from llama_index.core.program import LLMTextCompletionProgram
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai import OpenAI
-from langchain_core.messages import HumanMessage
 from rich.console import Console
+from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.table import Table
-from rich.markdown import Markdown
 from rich.text import Text
 
-from insurance_system.src.config import (
-    EMBEDDING_MODEL,
-    LLM_MODEL,
-    EVALUATOR_MODEL,
-)
+from insurance_system.src.config import (EMBEDDING_MODEL, EVALUATOR_MODEL,
+                                         LLM_MODEL)
 from insurance_system.src.evaluation.models import EvaluationResult
-from insurance_system.src.prompts import (
-    CONTEXT_RECALL_EVAL_PROMPT,
-    CONTEXT_RELEVANCY_EVAL_PROMPT,
-    CORRECTNESS_EVAL_PROMPT,
-)
-from llama_index.core.program import LLMTextCompletionProgram
 from insurance_system.src.langchain_agents.graph import build_graph
+from insurance_system.src.prompts import (CONTEXT_RECALL_EVAL_PROMPT,
+                                          CONTEXT_RELEVANCY_EVAL_PROMPT,
+                                          CORRECTNESS_EVAL_PROMPT)
 
 load_dotenv()
 

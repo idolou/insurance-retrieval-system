@@ -4,7 +4,8 @@ from llama_index.core import PromptTemplate
 
 # Manager Agent System Prompt with Chain-of-Thought
 MANAGER_SYSTEM_PROMPT = PromptTemplate(
-    dedent("""
+    dedent(
+        """
     You are the Manager Agent for an insurance claim retrieval system.
     Your role is strictly to ROUTE the user's query to the correct tool.
 
@@ -58,12 +59,14 @@ MANAGER_SYSTEM_PROMPT = PromptTemplate(
 
     Analyze the query and decide which tool is best.
     If the tool returns "Empty Response", tell the user you couldn't find the information.
-    """).strip()
+    """
+    ).strip()
 )
 
 # Evaluation Prompts (LLM-as-a-judge)
 CORRECTNESS_EVAL_PROMPT = PromptTemplate(
-    dedent("""
+    dedent(
+        """
     You are an impartial judge evaluating an AI agent's answer.
 
     Query: {query}
@@ -72,12 +75,14 @@ CORRECTNESS_EVAL_PROMPT = PromptTemplate(
 
     Does the actual answer contain the core correct facts from the expected answer?
     Return ONLY valid JSON, no markdown: {{"score": 1, "explanation": "..."}} or {{"score": 0, "explanation": "..."}}
-    """).strip()
+    """
+    ).strip()
 )
 
 # Context Relevancy: Did the agent use the correct information/index?
 CONTEXT_RELEVANCY_EVAL_PROMPT = PromptTemplate(
-    dedent("""
+    dedent(
+        """
     You are an impartial judge evaluating the relevancy of an AI agent's response.
 
     Query: {query}
@@ -90,12 +95,14 @@ CONTEXT_RELEVANCY_EVAL_PROMPT = PromptTemplate(
     - Is the information relevant to the query context?
 
     Return ONLY valid JSON, no markdown: {{"score": 1, "explanation": "..."}} or {{"score": 0, "explanation": "..."}}
-    """).strip()
+    """
+    ).strip()
 )
 
 # Context Recall: Did the system retrieve the correct chunk(s)?
 CONTEXT_RECALL_EVAL_PROMPT = PromptTemplate(
-    dedent("""
+    dedent(
+        """
     You are an impartial judge evaluating the recall of an AI agent's response.
 
     Query: {query}
@@ -107,5 +114,6 @@ CONTEXT_RECALL_EVAL_PROMPT = PromptTemplate(
     - If the Expected Answer mentions a specific detail (e.g. "$12,400"), the Actual Answer MUST contain it to pass.
 
     Return ONLY valid JSON, no markdown: {{"score": 1, "explanation": "..."}} or {{"score": 0, "explanation": "..."}}
-    """).strip()
+    """
+    ).strip()
 )

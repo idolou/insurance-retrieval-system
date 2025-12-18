@@ -1,42 +1,67 @@
 # Architecture Diagram
 
 ```mermaid
-graph TD
-    User[User] -->|Query| Manager[Manager Agent (LangGraph Supervisor)]
+---
+config:
+  layout: dagre
+  theme: neo
+---
+flowchart TB
+ subgraph subGraph0["<b>Routing Layer</b>"]
+        Supervisor{{"<b>🤖 Manager Agent<br>(Supervisor)</b>"}}
+  end
+ subgraph subGraph1["<b>Specialized Agents</b>"]
+        NeedleAgent["<b>📍 Needle Expert</b>"]
+        SummaryAgent["<b>📝 Summary Expert</b>"]
+        TimeTool["<b>🕰️ Time Tool</b>"]
+        WeatherTool["<b>🌦️ Weather Tool</b>"]
+  end
+ subgraph subGraph2["<b>Data &amp; Retrieval Layer</b>"]
+        ChromaDB[("<b>🗄️ Hierarchical Index<br>ChromaDB</b>")]
+        SummaryInd[("<b>📑 Summary Index<br>LlamaIndex</b>")]
+        MCPTime["<b>MCP Time Server</b>"]
+        MCPWeather["<b>MCP Weather Server</b>"]
+  end
+    User(["<b>👤 User</b>"]) -- Natural Language Query --> Supervisor
+    Supervisor -- Specific Fact/Metric --> NeedleAgent
+    Supervisor -- Broad Narrative --> SummaryAgent
+    Supervisor -- Date/Time Info --> TimeTool
+    Supervisor -- Live/Past Weather --> WeatherTool
 
-    subgraph "Data Layer"
-        PDF[Original PDF] -->|Chunking| HNP[Hierarchical Node Parser]
-        HNP -->|Leaf Nodes (128t)| Chroma[ChromaDB Vector Store]
-        HNP -->|All Nodes| DocStore[Document Store]
+    subgraph subGraphRetrieval["<b>Hierarchical Retrieval Flow</b>"]
+            direction TB
+            LeafSearch["<b>🔍 Vector Search<br>(Leaf Nodes)</b>"]
+            MergeLogic["<b>🔄 Auto-Merge Logic</b>"]
+            ParentFetch["<b>📄 Parent Node Fetch<br>(Context Window)</b>"]
 
-        Chroma -->|Retrieves Leafs| AMR[Auto-Merging Retriever]
-        AMR -->|Fetches Parents| DocStore
-
-        DocStore -->|Source for| SumIndex[Summary Index]
+            LeafSearch -->|"Top-K Similarity"| MergeLogic
+            MergeLogic -->|"If > 50% children found"| ParentFetch
+            MergeLogic -->|"Else"| LeafSearch
     end
 
-    subgraph "Agent Layer"
-        Manager -->|Route: Facts/Dates| Needle[Needle Expert]
-        Manager -->|Route: High-level/Timeline| Summary[Summary Expert]
+    NeedleAgent -- "Query" --> LeafSearch
+    ParentFetch -->|"Rich Context"| NeedleAgent
+    LeafSearch -->|"Raw Facts"| NeedleAgent
 
-        Needle -->|Query| NeedleEngine[Hierarchical Query Engine]
-        NeedleEngine -->|Retrieve| AMR
+    ChromaDB -.->|"Index Data"| LeafSearch
+    ChromaDB -.->|"Parent Nodes"| ParentFetch
 
-        Summary -->|Query| SumEngine[Summary Query Engine]
-        SumEngine -->|MapReduce| SumIndex
-    end
+    SummaryAgent -- List Retriever --> SummaryInd
+    TimeTool -- API --> MCPTime
+    WeatherTool -- API --> MCPWeather
 
-    subgraph "MCP Tools Layer"
-         Manager -.->|Tool Call| Time[MCP Tool: Time Server]
-         Manager -.->|Tool Call| Weather[MCP Tool: Live Weather]
-         Manager -.->|Tool Call| HistWeather[Custom Tool: Historical Weather]
-    end
+    SummaryInd -- Summaries --> SummaryAgent
+    NeedleAgent -- Response --> Supervisor
+    SummaryAgent -- Response --> Supervisor
+    TimeTool -- Response --> Supervisor
+    WeatherTool -- Response --> Supervisor
+    Supervisor -- Final Answer --> User
 
-    Needle -->|Response| Manager
-    Summary -->|Response| Manager
-    Time -->|Current Time| Manager
-    Weather -->|Forecast| Manager
-    HistWeather -->|Archive Data| Manager
-
-    Manager -->|Final Answer| User
+     Supervisor:::agent
+     NeedleAgent:::agent
+     SummaryAgent:::agent
+     ChromaDB:::storage
+     SummaryInd:::storage
+    classDef storage fill:#6cdbea1c, stroke:#333, stroke-width:2px, stroke-dasharray:2
+    classDef agent fill:#dea452a1, stroke:#333, stroke-width:2px, stroke-dasharray:0
 ```

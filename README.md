@@ -11,9 +11,11 @@ A **Multi-Agent RAG System** built with **LangChain & LangGraph** to investigate
 1. [Architecture Explanation](#-architecture-explanation)
 2. [Key Features](#-key-features)
 3. [Design Decisions & Rationale](#-design-decisions--rationale)
+
    - [Hierarchical Indexing](#1-hierarchical-indexing-configuration)
    - [Smart Routing Strategy](#3-smart-routing-strategy)
    - [Needle Agent Precision](#4-needle-agent-precision)
+
 4. [Index Schemas](#-index-schemas)
 5. [Limitations & Trade-offs](#-limitations--trade-offs)
 6. [Evaluation](#-evaluation)
@@ -23,8 +25,6 @@ A **Multi-Agent RAG System** built with **LangChain & LangGraph** to investigate
 
 ## 🏗️ Architecture Explanation
 
-The system follows a **Hub-and-Spoke Agentic Architecture**:
-
 - **Manager Agent (LangGraph Supervisor)**: The central brain. It routes user queries to the most appropriate tool or sub-agent.
 - **Specialized Sub-Agents (Tools)**:
   - **Needle Expert**: Uses the Hierarchical Index (Auto-Merging Retriever) for precise facts.
@@ -33,9 +33,52 @@ The system follows a **Hub-and-Spoke Agentic Architecture**:
   - **Time Server**: Provides current time and timezone conversion.
   - **Weather Server**: Provides real-time weather data and historical checks.
 
+### 📐 System Flow Diagram
+
+![alt text](architecture_diagram1.png)
+
+### 🧩 Core Components
+
+| Component              | Role                                                                                                                                                     | Technology Stack                              |
+| :--------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------- |
+| **Manager Agent**      | **Router & Orchestrator**. Analyzes user intent and selects the single best tool for the job. Prevents "lazy" agents by enforcing strict system prompts. | `LangGraph Supervisor`, `GPT-4o`              |
+| **Needle Expert**      | **Precision Retrieval**. Handles questions involving specific dates, dollar amounts, names, and granular details.                                        | `LlamaIndex AutoMergingRetriever`, `ChromaDB` |
+| **Summary Expert**     | **Contextual Understanding**. Handles high-level questions like "What happened?" or "Tell me the story."                                                 | `LlamaIndex ListIndex`                        |
+| **Hierarchical Index** | **Data Storage**. Stores document chunks in 3 levels (Root, Intermediate, Leaf) to balance precision and context.                                        | `HierarchicalNodeParser`                      |
+| **MCP Servers**        | **External Capability**. Provides standard interfaces for Time and Weather data, keeping the core code clean of API integrations.                        | `Model Context Protocol`                      |
+
+### 📂 Project Directory Structure
+
+```text
+Insurance-Retrieval-System/
+├── insurance_system/
+│   ├── data/                   # Input PDFs and claims
+│   │   └── RAG_Enhanced_Claim_HO-2024-8892.pdf
+│   ├── src/
+│   │   ├── agents/             # LlamaIndex Agents (Needle/Summary)
+│   │   │   └── needle_agent.py
+│   │   │   └── summary_agent.py
+│   │   ├── langchain_agents/   # LangGraph Supervisor & Tools
+│   │   │   ├── graph.py        # Main State Machine
+│   │   │   └── tools.py        # Tool definitions
+│   │   ├── indices/            # Retrievers & Index Builders
+│   │   │   └── hierarchical.py
+|   |   |   └── summery.py
+│   │   ├── evaluation/         # LLM-as-a-Judge Logic
+│   │   │   └── run_eval_langchain.py
+│   │   └── config.py           # Configuration (LLM models, Chunk sizes)
+│   ├── storage/                # Persisted Indices (ChromaDB)
+│   ├── main_langchain.py       # Interactive CLI Entry Point
+│   ├── build_index.py          # Index Generation Script
+│   └── generate_claim.py       # Synthetic Data Generator
+├── requirements.txt            # Python Dependencies
+├── README.md                   # Documentation
+└── evaluation_results_langchain.json # Latest Test Results
+```
+
 ---
 
-## 🚀 Key Features
+## ✅ Key Features
 
 1. **LangGraph Orchestration**:
 
@@ -43,6 +86,7 @@ The system follows a **Hub-and-Spoke Agentic Architecture**:
    - Uses OpenAI's tool-calling capabilities for reliable routing.
 
 2. **MCP Integration (Model Context Protocol)**:
+
    - **Extensibility**: Tools are not hardcoded. We use MCP servers to dynamically discover and register tools.
    - **Supported MCP Servers**: `mcp-time`, `mcp-weather` (includes custom historical weather tool).
 
@@ -220,8 +264,8 @@ python3 insurance_system/main_langchain.py
 _Try queries like:_
 
 - "Summarize the claim."
-- "What is the weather in Berlin?"
-- "What time is it in London?"
+- "What is the deductible amount?"
+- "What is the incident timeline?"
 
 ### 4. Run Evaluation
 

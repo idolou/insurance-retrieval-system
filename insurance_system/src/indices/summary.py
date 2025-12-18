@@ -1,12 +1,8 @@
 import os
 from typing import Any, List, Optional
 
-from llama_index.core import (
-    Document,
-    StorageContext,
-    SummaryIndex,
-    load_index_from_storage,
-)
+from llama_index.core import (Document, StorageContext, SummaryIndex,
+                              load_index_from_storage)
 from llama_index.core.base.base_query_engine import BaseQueryEngine
 from llama_index.core.response_synthesizers import TreeSummarize
 

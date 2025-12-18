@@ -88,7 +88,6 @@ async def main():
             continue
 
         # Run LangGraph app
-        # Run LangGraph app with streaming
         CONSOLE.print("\n[bold yellow]🤖 Agent >[/bold yellow]")
 
         try:
