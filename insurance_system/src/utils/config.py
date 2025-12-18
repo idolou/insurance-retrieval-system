@@ -29,10 +29,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Map CLAUDE_API_KEY to ANTHROPIC_API_KEY if present
-if os.getenv("CLAUDE_API_KEY") and not os.getenv("ANTHROPIC_API_KEY"):
-    os.environ["ANTHROPIC_API_KEY"] = os.getenv("CLAUDE_API_KEY")
-
 
 # Points to 'insurance_system' directory
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))

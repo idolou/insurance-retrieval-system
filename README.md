@@ -52,9 +52,21 @@ A **Multi-Agent RAG System** built with **LangChain & LangGraph** to investigate
 ```text
 Insurance-Retrieval-System/
 ├── insurance_system/
+│   │   ├── agents/             # Agents & Tools
+│   │   │   ├── manager.py      # SUPERVISOR: Orchestrates the conversation
+│   │   │   ├── needle_agent.py # LlamaIndex: Fact retrieval engine
+│   │   │   ├── summary_agent.py# LlamaIndex: Summarization engine
+│   │   │   ├── tools.py        # LangChain Tool wrappers
+│   │   │   └── mcp_tools.py    # MCP & External Tools (Time, Weather)
+│   │   ├── indices/            # Retrievers & Index Builders
+│   │   │   ├── hierarchical.py
+│   │   │   └── summary.py
+│   │   ├── evaluation/         # LLM-as-a-Judge Logic
+│   │   │   ├── models.py       # Pydantic models for evaluation
 │   │   │   └── run_eval_langchain.py
 │   │   ├── utils/              # Shared Utilities & Config
-│   │   │   ├── config.py       # Configuration (LLM models, Chunk sizes)
+│   │   │   ├── config.py       # Configuration
+│   │   │   ├── mcp_utils.py    # MCP Connection Helpers
 │   │   │   └── prompts.py      # System Prompts
 │   ├── storage/                # Persisted Indices (ChromaDB)
 │   ├── main.py                 # Interactive CLI Entry Point
@@ -165,8 +177,6 @@ Optimized for high-level narrative queries.
 
 ## ⚠️ Limitations & Trade-offs
 
-(Deep Dive into Architectural Bottlenecks)
-
 ### 1. The "Serial Router" Bottleneck
 
 **Architecture Fact**: The `ManagerAgent` (Supervisor) must process every query before any retrieval happens.
@@ -196,7 +206,7 @@ Optimized for high-level narrative queries.
 **Architecture Fact**: We use a `Supervisor -> Tool` pattern.
 **Limitation**: The current Supervisor does not see the _content_ of the tool output before deciding it's done. It hands off to the tool, which returns a string.
 
-- _Real limitation_: If `NeedleAgent` returns "No information found", the Supervisor currently accepts that as the final answer. It lacks a **Reflective Loop** to say "Wait, if Needle failed, maybe I should try Summary?" (though we could implement this in LangGraph, it is a current architectural gap).
+- _Real limitation_: If `NeedleAgent` returns "No information found", the Supervisor currently accepts that as the final answer. It lacks a **Reflective Loop** to say "Wait, if Needle failed, maybe I should try Summary?" (though we could implement retry mechanism, it is a current architectural gap).
 
 ### 5. Static Indexing vs. Dynamic Claims
 
