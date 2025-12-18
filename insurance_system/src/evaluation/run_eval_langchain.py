@@ -24,11 +24,16 @@ from rich.text import Text
 
 from insurance_system.src.agents.manager import build_graph
 from insurance_system.src.evaluation.models import EvaluationResult
-from insurance_system.src.utils.config import (EMBEDDING_MODEL,
-                                               EVALUATOR_MODEL, LLM_MODEL)
-from insurance_system.src.utils.prompts import (CONTEXT_RECALL_EVAL_PROMPT,
-                                                CONTEXT_RELEVANCY_EVAL_PROMPT,
-                                                CORRECTNESS_EVAL_PROMPT)
+from insurance_system.src.utils.config import (
+    EMBEDDING_MODEL,
+    EVALUATOR_MODEL,
+    LLM_MODEL,
+)
+from insurance_system.src.utils.prompts import (
+    CONTEXT_RECALL_EVAL_PROMPT,
+    CONTEXT_RELEVANCY_EVAL_PROMPT,
+    CORRECTNESS_EVAL_PROMPT,
+)
 
 load_dotenv()
 
@@ -166,48 +171,17 @@ async def run_eval():
     app = build_graph()
     manager = LangGraphWrapper(app)
 
-    # Test Cases (Crucial: Keep same as run_eval.py)
-    test_cases = [
-        # Basic Fact Retrieval
-        {
-            "query": "What was the date of the incident?",
-            "expected": "November 16, 2024",
-        },
-        {"query": "Who is the policyholder?", "expected": "Alex Johnson"},
-        {"query": "What is the total repair estimate cost?", "expected": "$12,400.00"},
-        {
-            "query": "Does Sarah Smith have a pre-existing condition?",
-            "expected": "No information about Sarah Smith found in the documents.",
-        },
-        # Summary/Timeline Queries
-        {
-            "query": "Summarize the claim timeline. Include all dates, dollar amounts, and company names involved.",
-            "expected": "Incident on Nov 16, 2024. Valve shutoff same day. Inspection on Nov 18. Adjuster authorized mitigation (DryFast Inc, $3,500). Settlement reached Nov 22. Final payment Nov 24.",
-        },
-        # MCP Tool Queries (Time & Weather)
-        {
-            "query": "What was the time in New York when the water leak started?",
-            "expected": "The leak started at approx 10:22 AM Austin time (CST). New York (EST) is 1 hour ahead, so it was 11:22 AM in New York.",
-        },
-        {
-            "query": "Look up the claim details using your tools. Find the location and date of the loss. Then check the weather for that location and date to see if it explains the loss.",
-            "expected": "The agent identifies the location (Austin, TX) and date (Nov 16, 2024). It concludes that the weather (mild/clear, ~27°C) DOES NOT explain the loss (which was mechanical).",
-        },
-        # Specific Detail Retrieval
-        {
-            "query": "What is the specific model of the TV claimed?",
-            "expected": "Samsung QN90C Series",
-        },
-        {
-            "query": "Was the sofa replacement approved fully or partially?",
-            "expected": "No, it was partially denied. Only $250 for cleaning was approved initially.",
-        },
-        # LlamaParse Table Extraction (Sensor Logs)
-        {
-            "query": "What was the Total Vol recorded by Flow_Meter_01 at 11:15:00 AM?",
-            "expected": "448.5 Gal (or 448.5 gallons). This is a precise value from the high-resolution sensor log table.",
-        },
-    ]
+    # Load Test Cases from JSON
+    queries_file = os.path.join(os.path.dirname(__file__), "eval_queries.json")
+    try:
+        with open(queries_file, "r") as f:
+            test_cases = json.load(f)
+        console.print(
+            f"📄 [dim]Loaded {len(test_cases)} test cases from {queries_file}[/dim]"
+        )
+    except FileNotFoundError:
+        console.print(f"[bold red]Error:[/bold red] Could not find {queries_file}")
+        return
 
     # 3. Aggregate Results
     results = []

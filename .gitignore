@@ -37,8 +37,6 @@ ENV/
 
 # Project Data & Storage
 insurance_system/storage/
-insurance_system/data/
-*.pdf
 
 # MacOS
 .DS_Store

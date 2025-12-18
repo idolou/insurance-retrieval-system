@@ -1,6 +1,6 @@
-# Insurance Claim Timeline Retrieval System (LangChain + MCP)
+# Insurance Claim Agentic RAG System
 
-A **Multi-Agent RAG System** built with **LangChain & LangGraph** to investigate complex insurance claims. It combines hierarchical retrieval for specific facts with summary indexing for high-level context, all orchestrated by a routing agent capable of using **Model Context Protocol (MCP)** tools.
+An intelligent **Agentic RAG System** built with **LangChain & LlamaIndex** that orchestrates specialized agents and **MCP Tools** to investigate complex insurance claims. It combines hierarchical retrieval for precision ("Needle") with summary indexing for context ("Haystack").
 
 ---
 
@@ -147,7 +147,18 @@ We made specific architectural choices to balance **precision** (finding specifi
 > _Standard Agent Answer_: "The document mentions the sofa cleaning was approved." (Vague)
 > _Our Needle Agent Answer_: "The sofa replacement was partially approved for **$250.00**." (Precise)
 
----
+### 5. Reranking for Precision
+
+**The Problem**: Vector search (embedding similarity) is fast but sometimes retrieves irrelevant chunks that share keywords but not meaning.
+
+**The Solution**: We implemented a **Two-Step Retrieval Funnel**:
+
+1.  **High Recall (Broad Net)**: First, we retrieve the top **60** matches (`SIMILARITY_TOP_K`) using fast vector search.
+2.  **High Precision (Refinement)**: Then, a **Cross-Encoder Reranker** (`cross-encoder/ms-marco-MiniLM-L-12-v2`) re-scores them and selects the top **20** (`RERANKER_TOP_N`) for the Agent.
+
+This ensures we don't miss obscure facts (by casting a wide net) but don't confuse the LLM with irrelevant noise (by filtering aggressively).
+
+- **Toggle**: Enable/disable in `src/utils/config.py` via `USE_RERANKER`.
 
 ---
 
@@ -255,14 +266,21 @@ cp .env.example .env
 # Optional: Add LLAMA_CLOUD_API_KEY for enhanced table parsing (Get key at https://cloud.llamaindex.ai)
 ```
 
-### 2. Generate Data & Index
+### 2. Generate Data
+
+**Note**: The system uses PDF documents for indexing. You can skip this step and replace `insurance_system/data/RAG_Claim_HO-2024-8892.pdf` with your own PDF file before running the indexing step.
 
 ```bash
 python3 insurance_system/generate_claim.py
+```
+
+### 3. Build Index
+
+```bash
 python3 insurance_system/build_index.py
 ```
 
-### 3. Run the Agent (Interactive CLI)
+### 4. Run the Agent (Interactive CLI)
 
 ```bash
 python3 insurance_system/main.py
@@ -277,7 +295,7 @@ _Try queries like:_
 - "What is the incident timeline?"
 - "What was the Total Vol recorded by Flow_Meter_01 at 11:15:00 AM?" (Table Query)
 
-### 4. Run Evaluation
+### 5. Run Evaluation
 
 ```bash
 python3 insurance_system/src/evaluation/run_eval_langchain.py
