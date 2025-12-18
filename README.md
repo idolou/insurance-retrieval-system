@@ -16,10 +16,11 @@ An intelligent **Agentic RAG System** built with **LangChain & LlamaIndex** that
    - [Smart Routing Strategy](#3-smart-routing-strategy)
    - [Needle Agent Precision](#4-needle-agent-precision)
 
-4. [Index Schemas](#-index-schemas)
-5. [Limitations & Trade-offs](#-limitations--trade-offs)
-6. [Evaluation](#-evaluation)
-7. [Setup & Usage](#-setup--usage)
+4. [MCP Usage & Demonstration](#-mcp-usage--demonstration)
+5. [Index Schemas](#-index-schemas)
+6. [Limitations & Trade-offs](#-limitations--trade-offs)
+7. [Evaluation](#-evaluation)
+8. [Setup & Usage](#-setup--usage)
 
 ---
 
@@ -35,7 +36,7 @@ An intelligent **Agentic RAG System** built with **LangChain & LlamaIndex** that
 
 ### 📐 System Flow Diagram
 
-![alt text](architecture_diagram1.png)
+![alt text](architecture_diagram.png)
 
 ### 🧩 Core Components
 
@@ -63,7 +64,7 @@ Insurance-Retrieval-System/
 │   │   │   └── summary.py
 │   │   ├── evaluation/         # LLM-as-a-Judge Logic
 │   │   │   ├── models.py       # Pydantic models for evaluation
-│   │   │   └── run_eval_langchain.py
+│   │   │   └── run_eval.py
 │   │   ├── utils/              # Shared Utilities & Config
 │   │   │   ├── config.py       # Configuration
 │   │   │   ├── mcp_utils.py    # MCP Connection Helpers
@@ -162,6 +163,22 @@ This ensures we don't miss obscure facts (by casting a wide net) but don't confu
 
 ---
 
+## 🔌 MCP Usage & Demonstration
+
+Our system uses **Model Context Protocol (MCP)** tools to fetch real-time or external data. This prevents hallucinations by grounding the agent in actual data sources.
+
+### Example: Historical Weather Check
+
+**Query**: _"Find the location and date of the incident from the claim, then check the historical weather for that day to see if it contributed to the loss."_
+
+1.  **Context Retrieval**: The agent first uses the `needle_expert` to find the location (Austin, TX) and date (Nov 16, 2024).
+2.  **Tool Execution**: It then calls the `get_historical_weather` MCP tool with these exact parameters.
+3.  **Synthesis**: The agent combines the claim details with the weather report (e.g., "Max Wind Speed: 18.4 km/h") to determine if weather was a factor.
+
+👉 **See the full transcript of this interaction:** [System Walkthrough](insurance_system/System%20Walkthrough.md)
+
+---
+
 ## 🗂️ Index Schemas
 
 ### 1. Hierarchical Index (ChromaDB)
@@ -230,7 +247,7 @@ Optimized for high-level narrative queries.
 
 ## ⚖️ Evaluation
 
-We use an **LLM-as-a-judge** approach (`src/evaluation/run_eval_langchain.py`) to rigorously test the system. The evaluation output is enhanced with the `rich` library for readability.
+We use an **LLM-as-a-judge** approach (`src/evaluation/run_eval.py`) to rigorously test the system. The evaluation output is enhanced with the `rich` library for readability.
 
 - **Judge**: Claude 3.7 Sonnet (via Anthropic API) or GPT-4o.
 - **Methodology**:
@@ -298,5 +315,5 @@ _Try queries like:_
 ### 5. Run Evaluation
 
 ```bash
-python3 insurance_system/src/evaluation/run_eval_langchain.py
+python3 insurance_system/src/evaluation/run_eval.py
 ```

@@ -166,8 +166,8 @@ async def run_eval():
         console.print(f"👨‍⚖️ Judge initialized with OpenAI: [bold]{LLM_MODEL}[/bold]")
         evaluator_llm = OpenAI(model=LLM_MODEL)
 
-    # Load LangGraph System
-    console.print("⚙️ [dim]Initializing LangGraph Agent...[/dim]")
+    # Load System
+    console.print("⚙️ [dim]Initializing Agent...[/dim]")
     app = build_graph()
     manager = LangGraphWrapper(app)
 
@@ -205,7 +205,6 @@ async def run_eval():
         res["recall_score"] = rec_score
 
         # Convert Pydantic objects to dict for JSON serialization
-        # Use model_dump instead of dict() to avoid DeprecationWarning
         res["correctness"] = res["correctness"].model_dump()
         res["relevancy"] = res["relevancy"].model_dump()
         res["recall"] = res["recall"].model_dump()
