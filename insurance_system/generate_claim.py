@@ -5,8 +5,15 @@ from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT
 from reportlab.lib.pagesizes import LETTER
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
-from reportlab.platypus import (Image, PageBreak, Paragraph, SimpleDocTemplate,
-                                Spacer, Table, TableStyle)
+from reportlab.platypus import (
+    Image,
+    PageBreak,
+    Paragraph,
+    SimpleDocTemplate,
+    Spacer,
+    Table,
+    TableStyle,
+)
 
 
 def create_rag_dataset_report(filename):
@@ -753,4 +760,10 @@ def create_rag_dataset_report(filename):
 
 
 if __name__ == "__main__":
-    create_rag_dataset_report("RAG_Claim_HO-2024-8892.pdf")
+    import os
+
+    # Ensure data directory exists
+    output_dir = os.path.join(os.path.dirname(__file__), "data")
+    os.makedirs(output_dir, exist_ok=True)
+    output_path = os.path.join(output_dir, "RAG_Claim_HO-2024-8892.pdf")
+    create_rag_dataset_report(output_path)

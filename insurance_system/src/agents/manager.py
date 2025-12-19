@@ -60,11 +60,13 @@ def supervisor_node(state: AgentState):
 
                 MCP TOOLS (if available):
                 - Use 'get_historical_weather' if the user asks about weather at the time of the incident.
+                - Use 'convert_time' to convert times between zones. CRITICAL: When converting an event's time, infer the 'source_timezone' from the event's LOCATION (e.g., 'America/Chicago' for Texas, 'America/New_York' for NYC). DO NOT use your current system timezone as the source unless explicitly asked.
 
                 IMPORTANT INSTRUCTIONS:
                 1. Always use a tool to get information before answering.
-                2. If the user asks for specific details, DO NOT use the summary tool. Use the needle_expert.
-                3. After getting the tool result, answer the user's question directly.
+                2. When querying for event times (start time, incident date), ALWAYS ask for the LOCATION (City/State) in the same tool call. You need the location to determine the correct timezone.
+                3. If the user asks for specific details, DO NOT use the summary tool. Use the needle_expert.
+                4. After getting the tool result, answer the user's question directly.
 """
     )
 

@@ -8,7 +8,7 @@ from typing import List
 # Indexing Configuration
 CHUNK_SIZES: List[int] = [2048, 512, 128]  # [Root, Intermediate, Leaf]
 CHUNK_OVERLAP: int = 20  # Default overlap between chunks
-SIMILARITY_TOP_K: int = 60  # Number of leaf nodes to retrieve
+SIMILARITY_TOP_K: int = 80  # Increased to capture deep table nodes
 
 # Model Configuration - Configurable via environment variables
 EMBEDDING_MODEL: str = "text-embedding-3-small"
@@ -18,7 +18,7 @@ EVALUATOR_MODEL: str = "claude-3-7-sonnet-20250219"
 
 # Reranker Configuration
 RERANKER_MODEL: str = "cross-encoder/ms-marco-MiniLM-L-12-v2"
-RERANKER_TOP_N: int = 20
+RERANKER_TOP_N: int = 40  # Increased to ensure table nodes survive reranking
 USE_RERANKER: bool = True
 
 

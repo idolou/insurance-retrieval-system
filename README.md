@@ -96,14 +96,7 @@ Insurance-Retrieval-System/
 
    - **Feature**: Integrates `LlamaParse` to convert complex PDF tables into Markdown.
    - **Benefit**: Allows the agent to accurately retrieve dense numerical data (like sensor logs, financial estimates, and psychrometric readings) that standard parsers often garble.
-   - **Cost Optimization**: Enabled `auto_mode_trigger_on_table_in_page=True` to significantly reduce credit usage. LlamaParse only switches to "Premium" mode (GPT-4V powered) when it specifically detects a table on a page, using fast mode for standard text.
    - **Mechanism**: The `build_index.py` script automatically detects `LLAMA_CLOUD_API_KEY` and switches to enhanced parsing mode.
-
-4. **Page-Aware Retrieval**:
-
-   - **Feature**: Metadata injection during indexing allows users to query by specific page numbers.
-   - **Example**: "What is on the first page of the claim?"
-   - **Mechanism**: `build_index.py` manually injects standardized `page_label` metadata into every document chunk, ensuring precise page-level addressing even if the upstream parser misses it.
 
 ---
 

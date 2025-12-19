@@ -65,7 +65,8 @@ def build_indices() -> None:
             api_key=llama_cloud_key,
             result_type="markdown",  # Markdown is best for retaining table structure
             split_by_page=True,  # Split into page-level documents
-            auto_mode_trigger_on_table_in_page=True,  # Optimize cost: use premium only if table detected
+            premium_mode=True,  # Force Premium Mode for table extraction
+            invalidate_cache=True,  # Force re-parsing to clear bad cache
             verbose=True,
         )
         file_extractor = {".pdf": parser}
