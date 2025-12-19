@@ -2,24 +2,17 @@ import os
 from typing import Any, List, Optional
 
 import chromadb
-from llama_index.core import (
-    Document,
-    StorageContext,
-    VectorStoreIndex,
-    load_index_from_storage,
-)
+from llama_index.core import (Document, StorageContext, VectorStoreIndex,
+                              load_index_from_storage)
 from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.retrievers import AutoMergingRetriever
 from llama_index.core.storage.docstore import SimpleDocumentStore
 from llama_index.vector_stores.chroma import ChromaVectorStore
 
-from insurance_system.src.utils.config import (
-    CHUNK_OVERLAP,
-    CHUNK_SIZES,
-    HIERARCHICAL_STORAGE_DIR,
-    SIMILARITY_TOP_K,
-)
+from insurance_system.src.utils.config import (CHUNK_OVERLAP, CHUNK_SIZES,
+                                               HIERARCHICAL_STORAGE_DIR,
+                                               SIMILARITY_TOP_K)
 
 
 class HierarchicalIndexError(Exception):
@@ -51,6 +44,13 @@ def create_hierarchical_index(
         chroma_path = os.path.join(persist_dir, "chroma")
         try:
             chroma_client = chromadb.PersistentClient(path=chroma_path)
+
+            # Clean up existing collection to prevent stale embeddings
+            try:
+                chroma_client.delete_collection("hierarchical_claims")
+            except Exception:
+                pass  # Collection might not exist, which is fine
+
             chroma_collection = chroma_client.get_or_create_collection(
                 "hierarchical_claims"
             )
@@ -135,11 +135,9 @@ def get_hierarchical_query_engine(
         from llama_index.core.postprocessor import SentenceTransformerRerank
         from llama_index.core.query_engine import RetrieverQueryEngine
 
-        from insurance_system.src.utils.config import (
-            RERANKER_MODEL,
-            RERANKER_TOP_N,
-            USE_RERANKER,
-        )
+        from insurance_system.src.utils.config import (RERANKER_MODEL,
+                                                       RERANKER_TOP_N,
+                                                       USE_RERANKER)
 
         # Conditionally initialize Reranker
         node_postprocessors = []

@@ -103,16 +103,23 @@ async def main():
             "dots", text="[bold green]Thinking...[/bold green]"
         )
 
+        # Persist conversation history
+        if "chat_history" not in locals():
+            chat_history = []
+
+        # Add user message to history
+        chat_history.append(HumanMessage(content=user_input))
+
         with Live(current_renderable, console=CONSOLE, refresh_per_second=10) as live:
             try:
-                messages = [HumanMessage(content=user_input)]
-
                 # State tracking
                 is_streaming_answer = False
 
+                # Stream events with FULL history
                 async for event in app.astream_events(
-                    {"messages": messages}, version="v2"
+                    {"messages": chat_history}, version="v2"
                 ):
+                    kind = event["event"]
                     kind = event["event"]
 
                     # 1. Tool Call Start
@@ -154,6 +161,17 @@ async def main():
 
                             response_buffer += chunk_content
                             live.update(Markdown(response_buffer))
+
+                            live.update(Markdown(response_buffer))
+
+                # After interaction completes, update history with the Agent's response
+                # Ideally, we should get the final state from the graph to ensure we have the tool calls too.
+                # But a simple way for CLI is to append the final AIMessage if we only care about text.
+                # BETTER: Invoke locally or verify state.
+                # For this simple loop, let's append the final text response.
+                from langchain_core.messages import AIMessage
+
+                chat_history.append(AIMessage(content=response_buffer))
 
             except Exception as e:
                 live.console.print(f"\n[bold red]Agent Error:[/bold red] {e}")

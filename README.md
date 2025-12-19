@@ -1,6 +1,6 @@
 # Insurance Claim Agentic RAG System
 
-An intelligent **Agentic RAG System** built with **LangChain & LlamaIndex** that orchestrates specialized agents and **MCP Tools** to investigate complex insurance claims. It combines hierarchical retrieval for precision ("Needle") with summary indexing for context ("Haystack").
+An intelligent **Agentic RAG System** built with **LangChain & LlamaIndex** that orchestrates specialized agents and **MCP Tools** to investigate insurance claim. It combines hierarchical retrieval for precision ("Needle") with summary indexing for context ("Haystack") as well as using MCP tools to provide external capabilities.
 
 ---
 
@@ -96,7 +96,14 @@ Insurance-Retrieval-System/
 
    - **Feature**: Integrates `LlamaParse` to convert complex PDF tables into Markdown.
    - **Benefit**: Allows the agent to accurately retrieve dense numerical data (like sensor logs, financial estimates, and psychrometric readings) that standard parsers often garble.
+   - **Cost Optimization**: Enabled `auto_mode_trigger_on_table_in_page=True` to significantly reduce credit usage. LlamaParse only switches to "Premium" mode (GPT-4V powered) when it specifically detects a table on a page, using fast mode for standard text.
    - **Mechanism**: The `build_index.py` script automatically detects `LLAMA_CLOUD_API_KEY` and switches to enhanced parsing mode.
+
+4. **Page-Aware Retrieval**:
+
+   - **Feature**: Metadata injection during indexing allows users to query by specific page numbers.
+   - **Example**: "What is on the first page of the claim?"
+   - **Mechanism**: `build_index.py` manually injects standardized `page_label` metadata into every document chunk, ensuring precise page-level addressing even if the upstream parser misses it.
 
 ---
 

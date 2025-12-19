@@ -24,16 +24,11 @@ from rich.text import Text
 
 from insurance_system.src.agents.manager import build_graph
 from insurance_system.src.evaluation.models import EvaluationResult
-from insurance_system.src.utils.config import (
-    EMBEDDING_MODEL,
-    EVALUATOR_MODEL,
-    LLM_MODEL,
-)
-from insurance_system.src.utils.prompts import (
-    CONTEXT_RECALL_EVAL_PROMPT,
-    CONTEXT_RELEVANCY_EVAL_PROMPT,
-    CORRECTNESS_EVAL_PROMPT,
-)
+from insurance_system.src.utils.config import (EMBEDDING_MODEL,
+                                               EVALUATOR_MODEL, LLM_MODEL)
+from insurance_system.src.utils.prompts import (CONTEXT_RECALL_EVAL_PROMPT,
+                                                CONTEXT_RELEVANCY_EVAL_PROMPT,
+                                                CORRECTNESS_EVAL_PROMPT)
 
 load_dotenv()
 

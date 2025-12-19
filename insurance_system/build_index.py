@@ -11,13 +11,17 @@ from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai import OpenAI
 
 from insurance_system.src.indices.hierarchical import (
-    HierarchicalIndexError, create_hierarchical_index)
-from insurance_system.src.indices.summary import (SummaryIndexError,
-                                                  create_summary_index)
-from insurance_system.src.utils.config import (EMBEDDING_MODEL,
-                                               HIERARCHICAL_STORAGE_DIR,
-                                               LLM_MODEL, PROJECT_ROOT,
-                                               SUMMARY_STORAGE_DIR)
+    HierarchicalIndexError,
+    create_hierarchical_index,
+)
+from insurance_system.src.indices.summary import SummaryIndexError, create_summary_index
+from insurance_system.src.utils.config import (
+    EMBEDDING_MODEL,
+    HIERARCHICAL_STORAGE_DIR,
+    LLM_MODEL,
+    PROJECT_ROOT,
+    SUMMARY_STORAGE_DIR,
+)
 
 load_dotenv()
 
@@ -60,12 +64,30 @@ def build_indices() -> None:
         parser = LlamaParse(
             api_key=llama_cloud_key,
             result_type="markdown",  # Markdown is best for retaining table structure
+            split_by_page=True,  # Split into page-level documents
+            auto_mode_trigger_on_table_in_page=True,  # Optimize cost: use premium only if table detected
             verbose=True,
         )
         file_extractor = {".pdf": parser}
         documents = SimpleDirectoryReader(
             data_dir, file_extractor=file_extractor
         ).load_data()
+
+        # Manually Inject Page Numbers (since LlamaParse metadata varies).
+        current_file = ""
+        page_count = 1
+
+        for doc in documents:
+            f_name = doc.metadata.get("file_name", "")
+            if f_name != current_file:
+                current_file = f_name
+                page_count = 1
+
+            # Inject standardized page label
+            doc.metadata["page_label"] = str(page_count)
+            page_count += 1
+
+        print(f"✅ Injected page numbers for {len(documents)} pages.")
     else:
         print(
             "⚠️  LLAMA_CLOUD_API_KEY not found. Using standard PDF loader (tables may be messy)."
