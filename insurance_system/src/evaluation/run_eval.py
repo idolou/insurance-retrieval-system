@@ -17,22 +17,25 @@ from llama_index.core.program import LLMTextCompletionProgram
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.llms.openai import OpenAI
 from rich.console import Console
-from rich.markdown import Markdown
 from rich.panel import Panel
 from rich.table import Table
-from rich.text import Text
 
 from insurance_system.src.agents.manager import build_graph
 from insurance_system.src.evaluation.models import EvaluationResult
-from insurance_system.src.utils.config import (EMBEDDING_MODEL,
-                                               EVALUATOR_MODEL, LLM_MODEL)
-from insurance_system.src.utils.prompts import (CONTEXT_RECALL_EVAL_PROMPT,
-                                                CONTEXT_RELEVANCY_EVAL_PROMPT,
-                                                CORRECTNESS_EVAL_PROMPT)
+from insurance_system.src.utils.config import (
+    EMBEDDING_MODEL,
+    LLM_MODEL,
+)
+from insurance_system.src.utils.prompts import (
+    CONTEXT_RECALL_EVAL_PROMPT,
+    CONTEXT_RELEVANCY_EVAL_PROMPT,
+    CORRECTNESS_EVAL_PROMPT,
+)
 
 load_dotenv()
 
-console = Console()
+# Initialize Console with recording enabled to capture output for file saving
+console = Console(record=True)
 
 
 class LangGraphWrapper:
@@ -136,7 +139,7 @@ async def evaluate_query(query, expected, agent, evaluator_llm):
 async def run_eval():
     console.print(
         Panel.fit(
-            "[bold yellow]🚀 Starting LangChain Evaluation...[/bold yellow]",
+            "[bold yellow]🚀 Starting Evaluation...[/bold yellow]",
             border_style="yellow",
         )
     )
@@ -144,8 +147,6 @@ async def run_eval():
     # Setup
     Settings.llm = OpenAI(model=LLM_MODEL)
     Settings.embed_model = OpenAIEmbedding(model=EMBEDDING_MODEL)
-
-    llm = OpenAI(model=LLM_MODEL)
 
     # Initialize Evaluator (Judge)
     from insurance_system.src.utils.config import EVALUATOR_MODEL
@@ -170,10 +171,8 @@ async def run_eval():
     queries_file = os.path.join(os.path.dirname(__file__), "eval_queries.json")
     try:
         with open(queries_file, "r") as f:
-            test_cases = json.load(f)
-        console.print(
-            f"📄 [dim]Loaded {len(test_cases)} test cases from {queries_file}[/dim]"
-        )
+            test_data = json.load(f)
+        console.print(f"📄 [dim]Loaded test cases from {queries_file}[/dim]")
     except FileNotFoundError:
         console.print(f"[bold red]Error:[/bold red] Could not find {queries_file}")
         return
@@ -184,63 +183,83 @@ async def run_eval():
     relevancy_scores = []
     recall_scores = []
 
-    for case in test_cases:
-        res = await evaluate_query(
-            case["query"], case["expected"], manager, evaluator_llm
-        )
+    # Iterate through categories
+    for category, queries in test_data.items():
+        console.print(f"\n[bold purple reversed] {category} [/bold purple reversed]")
 
-        # Extract model outputs
-        c_score = res["correctness"].score
-        rel_score = res["relevancy"].score
-        rec_score = res["recall"].score
+        for case in queries:
+            res = await evaluate_query(
+                case["query"], case["expected"], manager, evaluator_llm
+            )
 
-        # Add flat scores for analysis
-        res["correctness_score"] = c_score
-        res["relevancy_score"] = rel_score
-        res["recall_score"] = rec_score
+            # Extract model outputs
+            c_score = res["correctness"].score
+            rel_score = res["relevancy"].score
+            rec_score = res["recall"].score
 
-        # Convert Pydantic objects to dict for JSON serialization
-        res["correctness"] = res["correctness"].model_dump()
-        res["relevancy"] = res["relevancy"].model_dump()
-        res["recall"] = res["recall"].model_dump()
+            # Add flat scores for analysis
+            res["correctness_score"] = c_score
+            res["relevancy_score"] = rel_score
+            res["recall_score"] = rec_score
+            res["category"] = category  # Add category to result
 
-        correctness_scores.append(c_score)
-        relevancy_scores.append(rel_score)
-        recall_scores.append(rec_score)
+            # Convert Pydantic objects to dict for JSON serialization
+            res["correctness"] = res["correctness"].model_dump()
+            res["relevancy"] = res["relevancy"].model_dump()
+            res["recall"] = res["recall"].model_dump()
 
-        results.append(res)
+            correctness_scores.append(c_score)
+            relevancy_scores.append(rel_score)
+            recall_scores.append(rec_score)
+
+            results.append(res)
 
     # 4. Summary Report
     total = len(results)
-    c_pass = sum(correctness_scores)
-    rel_pass = sum(relevancy_scores)
-    rec_pass = sum(recall_scores)
+    if total > 0:
+        c_pass = sum(correctness_scores)
+        rel_pass = sum(relevancy_scores)
+        rec_pass = sum(recall_scores)
 
-    console.print("\n")
-    summary_table = Table(title="📊 LANGCHAIN EVALUATION SUMMARY", box=None)
-    summary_table.add_column("Metric", style="bold cyan")
-    summary_table.add_column("Percentage", style="bold magenta")
-    summary_table.add_column("Count", style="white")
+        console.print("\n")
+        summary_table = Table(title="📊 EVALUATION SUMMARY", box=None)
+        summary_table.add_column("Metric", style="bold cyan")
+        summary_table.add_column("Percentage", style="bold magenta")
+        summary_table.add_column("Count", style="white")
 
-    summary_table.add_row(
-        "Answer Correctness", f"{c_pass/total*100:.1f}%", f"({c_pass}/{total})"
-    )
-    summary_table.add_row(
-        "Context Relevancy", f"{rel_pass/total*100:.1f}%", f"({rel_pass}/{total})"
-    )
-    summary_table.add_row(
-        "Context Recall", f"{rec_pass/total*100:.1f}%", f"({rec_pass}/{total})"
-    )
+        summary_table.add_row(
+            "Answer Correctness", f"{c_pass/total*100:.1f}%", f"({c_pass}/{total})"
+        )
+        summary_table.add_row(
+            "Context Relevancy", f"{rel_pass/total*100:.1f}%", f"({rel_pass}/{total})"
+        )
+        summary_table.add_row(
+            "Context Recall", f"{rec_pass/total*100:.1f}%", f"({rec_pass}/{total})"
+        )
 
-    console.print(Panel(summary_table, border_style="blue"))
+        console.print(Panel(summary_table, border_style="blue"))
 
     # Save to JSON
-    output_file = "evaluation_results_langchain.json"
+    output_file = "evaluation_results.json"
     with open(output_file, "w") as f:
         json.dump(results, f, indent=2)
 
     console.print(
         f"\n📄 [dim]Detailed results saved to[/dim] [bold]{output_file}[/bold]"
+    )
+
+    # Save Console Output to File
+    console_output_file = "evaluation_summary.txt"
+    console.save_text(console_output_file, clear=False)
+    console.print(
+        f"📄 [dim]Console output log saved to[/dim] [bold]{console_output_file}[/bold]"
+    )
+
+    # Save Console Output to File (HTML with colors)
+    console_html_file = "evaluation_summary.html"
+    console.save_html(console_html_file)
+    console.print(
+        f"🎨 [dim]Colored report saved to[/dim] [bold]{console_html_file}[/bold]"
     )
 
 

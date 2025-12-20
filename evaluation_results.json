@@ -1,0 +1,192 @@
+[
+  {
+    "query": "What was the date of the incident?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly states the date of the incident as November 16, 2024, which matches exactly with the expected answer."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent directly answered the specific question asked about the date of the incident. The response provided the exact date (November 16, 2024) that matches the expected answer. The information is completely relevant to the query context, and the agent included the specific date detail that implies it retrieved the correct information."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains the exact date (November 16, 2024) that is mentioned in the Expected Answer. All key information from the Expected Answer is present in the Actual Answer."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1,
+    "category": "Needle (Fact Retrieval)"
+  },
+  {
+    "query": "Who is the policyholder?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly identifies Alex Johnson as the policyholder, which matches exactly with the expected answer. The agent provided the complete and accurate information requested."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent directly answered the specific question asked by correctly identifying Alex Johnson as the policyholder. The response is concise, accurate, and directly relevant to the query. The agent provided the specific name requested without adding unnecessary information."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer correctly identifies Alex Johnson as the policyholder, containing all the key information present in the Expected Answer."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1,
+    "category": "Needle (Fact Retrieval)"
+  },
+  {
+    "query": "What is the total repair estimate cost?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly states the total repair estimate cost as $12,400.00, which matches exactly with the expected answer."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent's response directly answers the specific question asked about the total repair estimate cost. The answer provides the exact dollar amount ($12,400.00) which matches the expected answer. The response is concise, relevant to the query context, and contains the specific cost detail that was requested, indicating the agent retrieved the correct information."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains the exact same total repair estimate cost ($12,400.00) as mentioned in the Expected Answer. All key information is present."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1,
+    "category": "Needle (Fact Retrieval)"
+  },
+  {
+    "query": "Does Sarah Smith have a pre-existing condition?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly states that no information about Sarah Smith's pre-existing conditions could be found in the documents. This matches the expected answer which also indicates that no information about Sarah Smith was found. Both answers convey the same core fact - that there is no available information about Sarah Smith's pre-existing conditions."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent correctly acknowledged that no information about Sarah Smith's pre-existing condition status was found in the documents. The response directly addresses the specific question asked without fabricating details or making assumptions. The agent's answer matches the expected answer, indicating it properly handled the absence of relevant information in the claim documents."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The actual answer correctly conveys the key information from the expected answer - that no information about Sarah Smith's pre-existing condition status was found in the documents. Both answers communicate the same essential fact that there is no available information on this topic."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1,
+    "category": "Needle (Fact Retrieval)"
+  },
+  {
+    "query": "What is the specific model of the TV claimed?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer perfectly matches the expected answer, correctly identifying the specific TV model as the Samsung QN90C Series."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent directly answered the specific question asked by correctly identifying the TV model as 'Samsung QN90C Series'. The answer is concise, accurate, and directly relevant to the query about the specific TV model being claimed. The agent provided the exact model information requested without adding unnecessary details or deviating from the question."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains the exact same information as the Expected Answer. It correctly identifies the specific TV model as 'Samsung QN90C Series' with no missing details."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1,
+    "category": "Needle (Fact Retrieval)"
+  },
+  {
+    "query": "Was the sofa replacement approved fully or partially?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly conveys that the sofa replacement was not fully approved, and instead only $250 was approved for cleaning. The actual answer provides additional details about the reasoning (cosmetic damage) and that the insured accepted this partial solution, but it accurately captures the core fact that the replacement was denied and only cleaning was approved for $250."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent directly answered the specific question about whether the sofa replacement was fully or partially approved. The answer correctly states that the replacement was not approved, and instead only $250 for professional leather cleaning was approved. The agent provided specific details about the claim assessment (cosmetic damage determination, $250 allowance for cleaning and conditioning) and mentioned that the insured accepted this partial solution. This matches the expected answer that the replacement was partially denied with only cleaning being approved."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer correctly conveys that the sofa replacement was not fully approved, and instead only $250 was approved for cleaning. The Actual Answer provides the specific amount ($250.00) that was approved for professional leather cleaning and conditioning, which matches the key information in the Expected Answer that only $250 for cleaning was approved initially. The Actual Answer effectively communicates that the replacement request was denied in favor of a cleaning allowance."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1,
+    "category": "Needle (Fact Retrieval)"
+  },
+  {
+    "query": "What was the state change recorded for Flow_Meter_01 at 10:22:15 AM?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly states that the state change recorded for Flow_Meter_01 at 10:22:15 AM was 'ABNORMAL START', which matches exactly with the expected answer."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent directly answered the specific question asked, providing the exact state change ('ABNORMAL START') for Flow_Meter_01 at the specific time (10:22:15 AM). The response contains the specific detail requested (the state change value) and is completely relevant to the query context. The agent provided precisely the information that was expected according to the 'Expected Answer' field."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer correctly includes the exact state change 'ABNORMAL START' for Flow_Meter_01 at 10:22:15 AM, which matches the Expected Answer completely. All key information from the Expected Answer is present in the Actual Answer."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1,
+    "category": "Needle (Fact Retrieval)"
+  },
+  {
+    "query": "Summarize the claim timeline. Include the date of the incident and the valve shutoff (which happened the same day). Also include inspection, settlement, and final payment dates.",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly includes all the core facts from the expected answer: the incident and valve shutoff both occurred on November 16, 2024; the inspection was on November 18; the settlement was reached on November 22; and the final payment was made on November 24. The actual answer is missing the detail about the adjuster authorizing mitigation by DryFast Inc. for $3,500, but this wasn't explicitly requested in the query which only asked for dates of key events."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent's response fully addresses the query by providing all requested timeline elements with correct dates. It includes the incident date (Nov 16), confirms valve shutoff occurred the same day, lists the inspection date (Nov 18), settlement date (Nov 22), and final payment date (Nov 24). The information matches the expected answer and contains the specific dates requested in the query. The agent organized the information clearly in a chronological timeline format."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains all the key facts, dates, and entities present in the Expected Answer. It correctly includes: the incident date (Nov 16, 2024), valve shutoff on the same day, inspection date (Nov 18), settlement date (Nov 22), and final payment date (Nov 24). It also mentions the mitigation authorization by the adjuster for DryFast Inc at $3,500, which was in the Expected Answer."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1,
+    "category": "Summary (Narrative)"
+  },
+  {
+    "query": "First find the incident location (City, State) from the documents. Then, given the incident started at 10:22 AM in that location's time zone, what time was it in New York?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly identifies the incident location as Austin, TX, correctly states that Austin is in Central Time, and correctly calculates that it would be 11:22 AM in New York (Eastern Time) when it's 10:22 AM in Austin. The answer contains all the core correct facts from the expected answer, even though it doesn't explicitly mention the UTC offsets (UTC-6 for CST and UTC-5 for EST)."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent correctly answered the specific question asked. It identified the incident location as Austin, TX (Central Time) and correctly calculated that it would be 11:22 AM in New York (Eastern Time) when it was 10:22 AM in Austin. The agent provided the relevant time zone information and the correct time conversion, which matches the expected answer."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains all the key facts from the Expected Answer. It correctly identifies the incident location as Austin, TX, recognizes that Austin is in Central Time, states that New York is in Eastern Time, and correctly calculates that it was 11:22 AM in New York when it was 10:22 AM in Austin. While the Actual Answer doesn't explicitly mention the UTC offsets (UTC-6 for CST and UTC-5 for EST), it correctly identifies the time zones and provides the accurate time conversion."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1,
+    "category": "MCP (External Tools)"
+  },
+  {
+    "query": "Look up the claim details using your tools. Find the location and date of the loss. Then check the weather for that location and date. Finally, explicitly state if the weather explains the loss based on the facts.",
+    "correctness": {
+      "score": 1,
+      "explanation": "The agent correctly identified the location (Austin, TX) and date (November 16, 2024) of the loss. It properly checked the weather conditions for that date and location, noting the temperature range (max 27.0\u00b0C, min 12.1\u00b0C) and lack of precipitation. The agent correctly concluded that the weather was mild/clear and explicitly stated that 'the weather on that day does not explain the loss,' which matches the expected conclusion. While the agent didn't specifically mention that the loss was mechanical, this wasn't required in the evaluation criteria."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent fully answered the specific question asked. It correctly identified the location (Austin, TX) and date (November 16, 2024) of the loss. It provided specific weather details for that date and location (temperature range of 12.1-27.0\u00b0C, no precipitation, maximum wind speed of 18.4 km/h). Finally, it explicitly stated that the weather does not explain the loss, which matches the expected conclusion. The agent provided all the required information in a clear and relevant manner."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains all the key facts from the Expected Answer. It correctly identifies the location (Austin, TX) and date (November 16, 2024) of the loss. It also accurately reports the weather conditions (mild/clear with temperatures around 27\u00b0C) and explicitly concludes that the weather does not explain the loss. While the Expected Answer mentions that the loss was mechanical, this detail is not required for recall evaluation since we're only checking if the Actual Answer contains all the information from the Expected Answer, not whether it adds additional information."
+    },
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1,
+    "category": "MCP (External Tools)"
+  }
+]
