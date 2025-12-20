@@ -70,9 +70,6 @@ def supervisor_node(state: AgentState):
 """
     )
 
-    # Prepend system prompt if it's not already the first message (simple check)
-    # In LangGraph, we usually pass the full history. We can prepend the system message to the invocation.
-
     response = model.invoke([system_prompt] + list(messages))
     return {"messages": [response]}
 

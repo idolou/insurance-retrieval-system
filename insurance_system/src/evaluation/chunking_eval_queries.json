@@ -1,0 +1,51 @@
+[
+    {
+        "query": "What was the date of the incident?",
+        "expected": "November 16, 2024",
+        "relevant_chunks": [],
+        "type": "fact_retrieval"
+    },
+    {
+        "query": "What is the total repair estimate cost?",
+        "expected": "$12,400.00",
+        "relevant_chunks": [],
+        "type": "fact_retrieval"
+    },
+    {
+        "query": "Who is the policyholder?",
+        "expected": "Alex Johnson",
+        "relevant_chunks": [],
+        "type": "fact_retrieval"
+    },
+    {
+        "query": "What was the Total Vol recorded by Flow_Meter_01 at 11:15:00 AM?",
+        "expected": "448.5 Gal",
+        "relevant_chunks": [],
+        "type": "table_retrieval"
+    },
+    {
+        "query": "Summarize the claim timeline. Include all dates, dollar amounts, and company names involved.",
+        "expected": "Incident on Nov 16, 2024. Valve shutoff same day. Inspection on Nov 18.",
+        "relevant_chunks": [],
+        "type": "summary_retrieval"
+    },
+    {
+        "query": "What was the specific model of the TV claimed?",
+        "expected": "Samsung QN90C Series",
+        "relevant_chunks": [],
+        "type": "fact_retrieval"
+    },
+    {
+        "query": "Was the sofa replacement approved fully or partially?",
+        "expected": "Partially approved",
+        "relevant_chunks": [],
+        "type": "fact_retrieval"
+    },
+    {
+        "query": "What was the deductible amount?",
+        "expected": "$1,000",
+        "relevant_chunks": [],
+        "type": "fact_retrieval"
+    }
+]
+

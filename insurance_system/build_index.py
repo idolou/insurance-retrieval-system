@@ -110,10 +110,12 @@ def build_indices() -> None:
         print(f"❌ Unexpected error building hierarchical index: {e}")
         sys.exit(1)
 
-    # 5. Build Summary Index
-    print("\n🏗️  Building Summary Index (High-level Retrieval)...")
+    # 5. Build Summary Index with MapReduce pre-computation
+    print("\n🏗️  Building Summary Index (High-level Retrieval with MapReduce)...")
     try:
-        create_summary_index(documents, persist_dir=SUMMARY_STORAGE_DIR)
+        create_summary_index(
+            documents, persist_dir=SUMMARY_STORAGE_DIR, llm=Settings.llm, use_mapreduce=True
+        )
         print(f"✅ Summary Index saved to {SUMMARY_STORAGE_DIR}")
     except SummaryIndexError as e:
         print(f"❌ Failed to build summary index: {e}")
