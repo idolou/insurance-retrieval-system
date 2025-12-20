@@ -324,6 +324,16 @@ We use an **LLM-as-a-judge** approach (`src/evaluation/run_eval.py`) to rigorous
 
 > Detailed results: `evaluation_results_langchain.json`
 
+### 📉 Note on Non-Determinism & Query Refinement
+
+We observed two critical factors during our evaluation process:
+
+1.  **Non-Determinism**: Due to the probabilistic nature of LLMs, evaluation scores can vary slightly between runs (±5-10%). A "perfect" score on one run might dip on the next if the model chooses a slightly different phrasing that the judge (another LLM) finds less precise.
+2.  **Query Refinement**: General queries often fail.
+    - _Failed Query_: "Summarize the timeline." (Result: 0% Recall - Hallucinated dates)
+    - _Refined Query_: "Summarize the timeline. Include the date of the incident and the valve shutoff. Also include inspection, settlement, and final payment dates." (Result: 100% Recall)
+    - **Lesson**: The system is powerful but requires **explicit instructions** to retrieve granular data from high-level nodes.
+
 ---
 
 ## ⚙️ Setup & Usage
