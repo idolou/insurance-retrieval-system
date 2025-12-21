@@ -83,10 +83,10 @@ async def main():
                 " - 'Identify the claimant and calculate the total payout vs the policy limit.'"
             )
             CONSOLE.print(
-                " - 'Compare the initial estimate with the final settlement figure.'"
+                " - 'Look up the claim details using your tools. Find the location and date of the loss. Then check the weather for that location and date. Finally, explicitly state if the weather explains the loss based on the facts.'"
             )
             CONSOLE.print(
-                " - 'What was the time in Berlin when the incident occurred?'"
+                " - 'First find the incident location (City, State) from the documents. Then, given the incident started at 10:22 AM in that location's time zone, what time was it in New York?'"
             )
             continue
 
