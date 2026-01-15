@@ -98,7 +98,6 @@ def build_indices() -> None:
     print(f"✅ Loaded {len(documents)} document(s).")
 
     # 4. Build Hierarchical Index
-    # 4. Build Hierarchical Index
     print("\n🏗️  Building Hierarchical Index (Fact Retrieval)...")
     try:
         create_hierarchical_index(documents, persist_dir=HIERARCHICAL_STORAGE_DIR)
