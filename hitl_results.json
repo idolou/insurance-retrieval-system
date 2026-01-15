@@ -1,0 +1,37 @@
+[
+  {
+    "id": "hitl_001",
+    "query": "Provide a bulleted timeline of the key events from the incident to the final payment. (include dates and times)",
+    "response": "Here is a timeline of key events from the incident to the final payment:\n\n- **November 16, 2024**: Incident of water damage occurs due to a plumbing failure at Alex Johnson's residence in Austin, TX.\n- **November 16, 2024**: Leak detected by smart home devices due to a severed 3/8-inch compression supply line.\n- **November 16, 2024**: Automatic valve shutoff activates, stopping the leak after 45 minutes.\n- **November 16, 2024**: Emergency mitigation conducted by DryFast Inc.\n- **November 16, 2024**: Alex Johnson files a claim for property loss (Claim No. HO-2024-8892).\n- **November 17, 2024**: Restoration work completed by Austin Home Restorations LLC.\n- **November 17, 2024**: Claim adjusted by Mike Ross.\n- **November 17, 2024**: Total payout of $19,550.00 approved and issued.\n- **November 17, 2024**: Claim status closed.\n- **Four days post-incident**: Significant moisture reduction documented during the drying process.\n- **Repair completion**: Includes replacing drywall, painting, and installing new hardwood flooring in the living room, plumbing, and vanity work in the master bath.\n- **Valuation and payouts**: Personal property evaluations and compensation based on replacement cost value.\n- **Technical report**: Plumbing failure mode identified.\n- **Subrogation analysis**: Feasibility of liability pursuit analyzed.\n- **Communication log**: Claim process details documented.\n- **Financial reconciliation**: Confirmed payments for emergency mitigation, repairs, and contents replacement.",
+    "human_score": 3,
+    "human_feedback": "The agent was right for the answer but missed dates."
+  },
+  {
+    "id": "hitl_002",
+    "query": "Why was the Persian Rug covered for the full amount while the Sofa was not?",
+    "response": "The Persian Rug was covered for its full amount, which is $3,500, likely because it was likely valued or appraised at that amount and was included in the insurance policy to be covered fully. On the other hand, the Sofa was covered for a remedy of the damage, specifically for water spots and odor, by allowing $250 for professional leather cleaning and conditioning. This suggests that the full replacement of the Sofa was not justified, or the policy didn't cover the Sofa for full replacement value.",
+    "human_score": 4,
+    "human_feedback": "It was right about the sofa, but missed the cause of the Rug full covered."
+  },
+  {
+    "id": "hitl_003",
+    "query": "Did DryFast Inc. meet the drying standards by the end of the mitigation? Cite the moisture content.",
+    "response": "Yes, DryFast Inc. met the drying standards by the end of the mitigation. The moisture content of the Oak Floor was reduced to 12% by November 19, 2024.",
+    "human_score": 5,
+    "human_feedback": "Perfect"
+  },
+  {
+    "id": "hitl_004",
+    "query": "Was there any attempt to recover costs (subrogation) from the supply line manufacturer? Why was it abandoned?",
+    "response": "There was an attempt to recover costs (subrogation) from the supply line manufacturer. However, it was abandoned because the claim value of $19,000 did not justify the forensic expense required for the subrogation process.",
+    "human_score": 5,
+    "human_feedback": "good"
+  },
+  {
+    "id": "hitl_005",
+    "query": "Break down the net payout of $19,550.00. What are the main components?",
+    "response": "The net payout of $19,550.00 is broken down into the following main components:\n\n1. **Emergency Mitigation**\n   - Payee: DryFast Inc.\n   - Status: Paid (Direct)\n   - Amount: $3,500.00\n\n2. **Dwelling Repairs**\n   - Payee: Alex Johnson\n   - Status: Paid (Indemnity)\n   - Amount: $12,400.00\n\n3. **Deductible**\n   - Amount: -$1,000.00 (deducted from the total payout)\n\n4. **Contents**\n   - Rug: $3,500.00\n   - TV: $1,200.00\n   - Laptop: $2,000.00\n   - Sofa Clean: $250.00\n   - All contents paid to Alex Johnson\n\n5. **Additional Living Expenses (ALE)**\n   - Payee: Marriott / Alex Johnson\n   - Status: Reimbursed\n   - Amount: $1,200.00\n\nThese components add up to the net payout amount of $19,550.00.",
+    "human_score": 4,
+    "human_feedback": "It missed the hotel"
+  }
+]

@@ -1,0 +1,217 @@
+{
+    "hard_evals": [
+        {
+            "id": "hard_001",
+            "query": "What is the deductible amount? (Only extract the value)",
+            "expected_pattern": "\\$1,000(\\.00)?",
+            "type": "regex",
+            "description": "Ensure exact currency format for deductible"
+        },
+        {
+            "id": "hard_002",
+            "query": "Who is the policyholder? (Return JSON: {\"name\": \"...\"})",
+            "expected_pattern": null,
+            "type": "json",
+            "schema": {
+                "type": "object",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    }
+                }
+            },
+            "description": "Ensure valid JSON output for policyholder"
+        },
+        {
+            "id": "hard_003",
+            "query": "List the claim ID.",
+            "expected_pattern": "HO-2024-8892",
+            "type": "regex",
+            "description": "Verify Claim ID format"
+        },
+        {
+            "id": "hard_004",
+            "query": "What is the total payout limit? Format: $XX,XXX",
+            "expected_pattern": "\\$[0-9]{1,3}(,[0-9]{3})*(\\.00)?",
+            "type": "regex",
+            "description": "Currency format check"
+        },
+        {
+            "id": "hard_005",
+            "query": "What time did the 'ABNORMAL START' occur? (HH:MM:SS AM/PM)",
+            "expected_pattern": "10:22:15 AM",
+            "type": "regex",
+            "description": "Exact timestamp check from sensor log"
+        },
+        {
+            "id": "hard_006",
+            "query": "Who is the Senior Property Adjuster?",
+            "expected_pattern": "Mike Ross",
+            "type": "regex",
+            "description": "Adjuster name check"
+        },
+        {
+            "id": "hard_007",
+            "query": "First find the incident location (City, State) and time from the documents. Then, what was the ambient temperature (Amb Temp) at The Location at The Time? (Numeric only)",
+            "expected_pattern": "(27(\\.0)?|72)",
+            "type": "regex",
+            "description": "Numeric temperature check from logs"
+        },
+        {
+            "id": "hard_008",
+            "query": "What is the Vendor ID for DryFast Inc?",
+            "expected_pattern": "V-9982",
+            "type": "regex",
+            "description": "Vendor ID validation"
+        },
+        {
+            "id": "hard_009",
+            "query": "Return the list of covered items as a JSON array.",
+            "expected_pattern": null,
+            "type": "json",
+            "schema": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "description": "JSON Array validation"
+        },
+        {
+            "id": "hard_010",
+            "query": "What city is the address 124 Maple Street located in?",
+            "expected_pattern": "Austin",
+            "type": "regex",
+            "description": "City extraction"
+        },
+        {
+            "id": "hard_011",
+            "query": "What is the Licensed Plumber's number (Lic #)?",
+            "expected_pattern": "4482",
+            "type": "regex",
+            "description": "License number extraction"
+        },
+        {
+            "id": "hard_012",
+            "query": "Is the claim approved? (Yes/No)",
+            "expected_pattern": "(Yes|No)",
+            "type": "regex",
+            "description": "Binary Yes/No check"
+        },
+        {
+            "id": "hard_013",
+            "query": "First find the address of the incident property. Then extract the state code from that address.",
+            "expected_pattern": "TX",
+            "type": "regex",
+            "description": "State code check"
+        },
+        {
+            "id": "hard_014",
+            "query": "First identify the sensor or location for the 10:45:00 AM reading. Then, what was the Audio Level detected at that time?",
+            "expected_pattern": "45 dB",
+            "type": "regex",
+            "description": "Exact value string match"
+        },
+        {
+            "id": "hard_015",
+            "query": "Is this document marked confidential? (Answer Yes or No)",
+            "expected_pattern": "(?i)No",
+            "type": "regex",
+            "description": "Check for negative confirmation"
+        },
+        {
+            "id": "hard_016",
+            "query": "What is the coverage type?",
+            "expected_pattern": "(HO-3|HO-5|DP-3)",
+            "type": "regex",
+            "description": "Enum validation"
+        },
+        {
+            "id": "hard_017",
+            "query": "What is the Flow Meter ID?",
+            "expected_pattern": "Flow_Meter_\\d{2}",
+            "type": "regex",
+            "description": "ID pattern check"
+        }
+    ],
+    "llm_evals": [
+        {
+            "id": "llm_001",
+            "query": "What was the date of the incident?",
+            "expected": "November 16, 2024",
+            "agent_type": "needle"
+        },
+        {
+            "id": "llm_002",
+            "query": "What is the total repair estimate cost?",
+            "expected": "$12,400.00",
+            "agent_type": "needle"
+        },
+        {
+            "id": "llm_003",
+            "query": "Who is the policyholder?",
+            "expected": "Alex Johnson",
+            "agent_type": "needle"
+        },
+        {
+            "id": "llm_004",
+            "query": "What was the Total Vol recorded by Flow_Meter_01 at 11:15:00 AM?",
+            "expected": "448.5 Gal",
+            "agent_type": "needle"
+        },
+        {
+            "id": "llm_005",
+            "query": "Summarize the claim timeline. Include all dates, dollar amounts, and company names involved.",
+            "expected": "Incident on Nov 16, 2024. Valve shutoff same day. Inspection on Nov 18.",
+            "agent_type": "summary"
+        },
+        {
+            "id": "llm_006",
+            "query": "What was the specific model of the TV claimed?",
+            "expected": "Samsung QN90C Series",
+            "agent_type": "needle"
+        },
+        {
+            "id": "llm_007",
+            "query": "Was the sofa replacement approved fully or partially?",
+            "expected": "Partially approved",
+            "agent_type": "needle"
+        },
+        {
+            "id": "llm_008",
+            "query": "What was the deductible amount?",
+            "expected": "$1,000",
+            "agent_type": "needle"
+        }
+    ],
+    "hitl_evals": [
+        {
+            "id": "hitl_001",
+            "query": "Provide a bulleted timeline of the key events from the incident to the final payment. (include dates and times)",
+            "description": "Check for correct order: Incident (Nov 16), Inspection (Nov 18), Settlement (Nov 22), Final Payment (Nov 24)."
+        },
+        {
+            "id": "hitl_002",
+            "query": "Why was the Persian Rug covered for the full amount while the Sofa was not?",
+            "description": "Rug = Total Loss (irreversible damage). Sofa = Cosmetic (cleanable). Check for reasoning."
+        },
+        {
+            "id": "hitl_003",
+            "query": "Did DryFast Inc. meet the drying standards by the end of the mitigation? Cite the moisture content.",
+            "description": "Yes. Check for 'Dry Standard Met' and 12.0% Moisture Content on 11/19/24."
+        },
+        {
+            "id": "hitl_004",
+            "query": "Was there any attempt to recover costs (subrogation) from the supply line manufacturer? Why was it abandoned?",
+            "description": "Abandoned because forensic testing cost ($2,500) was prohibitive compared to claim value."
+        },
+        {
+            "id": "hitl_005",
+            "query": "Break down the net payout of $19,550.00. What are the main components?",
+            "description": "Repairs ($12,400 - $1,000 ded), Rug ($3,500), TV ($1,200), Laptop ($2,000), Sofa Clean ($250), Hotel ($1,200)."
+        }
+    ]
+}

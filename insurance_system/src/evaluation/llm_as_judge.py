@@ -43,23 +43,50 @@ class LangGraphWrapper:
 
     def __init__(self, app: Any):
         self.app = app
+        self.last_tool_used = "unknown"
+
+    def _extract_tool_usage(self, messages: list):
+        """Extracts the first major tool used from the message history."""
+        self.last_tool_used = "unknown"
+        for msg in messages:
+            if hasattr(msg, "tool_calls") and msg.tool_calls:
+                # Capture the first tool call
+                tool_name = msg.tool_calls[0]["name"]
+                # We care primarily about expert routing
+                if "expert" in tool_name:
+                    self.last_tool_used = tool_name.replace("insurance_system_src_agents_mcp_tools_", "") # Clean up if namespaced
+                    # Use simple names
+                    if "needle" in self.last_tool_used: self.last_tool_used = "needle"
+                    if "summary" in self.last_tool_used: self.last_tool_used = "summary"
+                    break
+                elif "weather" in tool_name:
+                    self.last_tool_used = "weather"
+                elif "time" in tool_name:
+                    self.last_tool_used = "time"
+                else:
+                    self.last_tool_used = tool_name
 
     async def aquery(self, query_str: str) -> str:
         messages = [HumanMessage(content=query_str)]
         result = await self.app.ainvoke({"messages": messages})
+        self._extract_tool_usage(result["messages"])
         return result["messages"][-1].content
 
     def query(self, query_str: str) -> str:
         # Sync fallback
         messages = [HumanMessage(content=query_str)]
         result = self.app.invoke({"messages": messages})
+        self._extract_tool_usage(result["messages"])
         return result["messages"][-1].content
 
 
-async def evaluate_query(query, expected, agent, evaluator_llm):
+async def evaluate_query(query, expected, agent, evaluator_llm, console=None):
     # Use Global settings for embeddings just in case
     Settings.llm = OpenAI(model=LLM_MODEL)
     Settings.embed_model = OpenAIEmbedding(model=EMBEDDING_MODEL)
+
+    if console is None:
+        console = Console()
 
     console.print(f"\n[bold blue]🔍 Query:[/bold blue] {query}")
 
@@ -70,6 +97,11 @@ async def evaluate_query(query, expected, agent, evaluator_llm):
         agent_response = agent.query(query)
 
     actual_answer = str(agent_response)
+    
+    # Print Router info if available
+    if hasattr(agent, "last_tool_used"):
+        console.print(f"Using Tool: [bold blue]{agent.last_tool_used}[/bold blue]")
+
     console.print(
         Panel(
             actual_answer,
@@ -133,6 +165,8 @@ async def evaluate_query(query, expected, agent, evaluator_llm):
         "correctness": res_correct,
         "relevancy": res_relevancy,
         "recall": res_recall,
+        "agent_used": getattr(agent, "last_tool_used", "unknown"),
+        "agent_response": actual_answer
     }
 
 

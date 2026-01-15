@@ -14,7 +14,7 @@ SIMILARITY_TOP_K: int = 80  # Increased to capture deep table nodes
 EMBEDDING_MODEL: str = "text-embedding-3-small"
 LLM_MODEL: str = "gpt-4o"
 MANAGER_MODEL: str = "gpt-4o-mini"
-EVALUATOR_MODEL: str = "claude-3-7-sonnet-20250219"
+EVALUATOR_MODEL: str = "gpt-4o"
 
 # Reranker Configuration
 RERANKER_MODEL: str = "cross-encoder/ms-marco-MiniLM-L-12-v2"

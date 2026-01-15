@@ -1,0 +1,162 @@
+[
+  {
+    "query": "What was the date of the incident?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer contains the core correct fact, which is the date of the incident: November 16, 2024."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent answered the specific question asked by providing the correct date of the incident, which matches the expected answer. The response is relevant and contains the specific detail requested."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains all the key facts, numbers, dates, and entities present in the Expected Answer, specifically the date 'November 16, 2024'."
+    },
+    "agent_used": "needle",
+    "agent_response": "The date of the incident was November 16, 2024.",
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1
+  },
+  {
+    "query": "What is the total repair estimate cost?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer contains the core correct fact from the expected answer, which is the total repair estimate cost of $12,400.00."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent answered the specific question asked by providing the total repair estimate cost as $12,400.00, which matches the expected answer. The response is relevant and contains the specific detail requested."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains all the key facts and numbers present in the Expected Answer, specifically the total repair estimate cost of $12,400.00."
+    },
+    "agent_used": "needle",
+    "agent_response": "The total repair estimate cost is $12,400.00.",
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1
+  },
+  {
+    "query": "Who is the policyholder?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer contains the core correct fact that the policyholder is Alex Johnson, matching the expected answer."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent answered the specific question asked by stating 'The policyholder is Alex Johnson,' which matches the expected answer. The response contains the specific detail (name) required to confirm it retrieved the correct information. The information is relevant to the query context."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains all the key facts and entities present in the Expected Answer, specifically identifying 'Alex Johnson' as the policyholder."
+    },
+    "agent_used": "needle",
+    "agent_response": "The policyholder is Alex Johnson.",
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1
+  },
+  {
+    "query": "What was the Total Vol recorded by Flow_Meter_01 at 11:15:00 AM?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer contains the core correct facts from the expected answer, including the Total Vol value of 448.5 and the time 11:15:00 AM. The use of 'gallons' instead of 'Gal' does not change the correctness of the information."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent answered the specific question asked by providing the Total Vol recorded by Flow_Meter_01 at 11:15:00 AM as 448.5 gallons. The answer contains specific details that match the expected answer, indicating that it retrieved the correct information. The information is relevant to the query context."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains all the key facts, numbers, and entities present in the Expected Answer. The conversion from 'Gal' to 'gallons' does not alter the meaning or accuracy of the response."
+    },
+    "agent_used": "needle",
+    "agent_response": "The Total Vol recorded by Flow_Meter_01 at 11:15:00 AM was 448.5 gallons.",
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1
+  },
+  {
+    "query": "Summarize the claim timeline. Include all dates, dollar amounts, and company names involved.",
+    "correctness": {
+      "score": 0,
+      "explanation": "The actual answer does not contain the core correct facts from the expected answer. It includes additional details and dates not mentioned in the expected answer, such as the completion of restoration on November 20, 2024, and financial details. The expected answer focuses on the incident date, valve shutoff, and inspection date, which are not clearly addressed in the actual answer."
+    },
+    "relevancy": {
+      "score": 0,
+      "explanation": "The agent's response did not directly answer the specific question asked. The query requested a summary of the claim timeline with specific dates and actions, but the agent provided additional details about the claim process, financials, and companies involved, which were not relevant to the query context. The expected answer focused solely on the incident date, valve shutoff, and inspection date, which the agent failed to provide accurately."
+    },
+    "recall": {
+      "score": 0,
+      "explanation": "Evaluation failed: 1 validation error for EvaluationResult\n  Invalid JSON: key must be a string at line 1 column 2 [type=json_invalid, input_value='{{\"score\": 0, \"explanati...the Expected Answer.\"}}', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.12/v/json_invalid"
+    },
+    "agent_used": "summary",
+    "agent_response": "Here's the summarized timeline of the claim event:\n\n- **November 16, 2024**: Water damage incident occurred at Alex Johnson's residence on 124 Maple Street, Austin, TX. The leak was detected by smart home devices. Emergency mitigation was conducted by DryFast Inc., and Alex Johnson filed a claim for property loss. A forensic analysis of IoT data confirmed the loss timeline.\n- **November 20, 2024**: Restoration was completed by Austin Home Restorations LLC. The claim was adjusted by Mike Ross, resulting in a total payout of $19,550.00, and the claim status was closed. A significant reduction in moisture content was documented four days post-incident during the drying process.\n\nFinancial details include:\n- Total repair estimate: $12,400 for repairs including drywall, painting, new hardwood flooring, plumbing, and vanity work.\n- Insurance policy coverage: Structural damage up to $450,000 and personal property up to $225,000, with a $1,000 deductible applied to dwelling damage payment.\n\nCompanies involved were DryFast Inc. and Austin Home Restorations LLC, highlighting efficient detection, mitigation, and claim handling processes.",
+    "correctness_score": 0,
+    "relevancy_score": 0,
+    "recall_score": 0
+  },
+  {
+    "query": "What was the specific model of the TV claimed?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer contains the core correct facts from the expected answer, as it correctly identifies the TV model as the Samsung QN90C Series."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent's answer directly matches the expected answer, providing the specific model of the TV claimed, which is the Samsung QN90C Series. This indicates that the agent retrieved the correct information relevant to the query."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains all the key facts and entities present in the Expected Answer, specifically mentioning the 'Samsung QN90C Series' model."
+    },
+    "agent_used": "needle",
+    "agent_response": "The specific model of the TV claimed was the Samsung QN90C Series.",
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1
+  },
+  {
+    "query": "Was the sofa replacement approved fully or partially?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer implies partial approval by specifying a monetary amount, which aligns with the expected answer of 'Partially approved.'"
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent's answer implies partial approval by specifying the amount approved ($250.00), which aligns with the expected answer of 'Partially approved.' The answer is relevant and provides specific details indicating the claim was reviewed."
+    },
+    "recall": {
+      "score": 0,
+      "explanation": "The Actual Answer does not explicitly state that the sofa replacement was 'partially approved,' which is a key fact in the Expected Answer. The mention of the $250.00 approval does not clearly convey the partial nature of the approval."
+    },
+    "agent_used": "needle",
+    "agent_response": "The sofa replacement was approved for $250.00, which was accepted by the insured.",
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 0
+  },
+  {
+    "query": "What was the deductible amount?",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer contains the core correct fact from the expected answer, which is the deductible amount of $1,000. The additional '.00' does not change the correctness of the information."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent answered the specific question asked by providing the deductible amount as $1,000.00, which matches the expected answer. The inclusion of '.00' does not affect the correctness or relevancy of the response."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains all the key facts and numbers present in the Expected Answer. The deductible amount of $1,000 is correctly stated, and the additional '.00' does not alter the meaning or accuracy of the response."
+    },
+    "agent_used": "needle",
+    "agent_response": "The deductible amount was $1,000.00.",
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1
+  }
+]
