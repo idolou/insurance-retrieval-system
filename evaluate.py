@@ -90,11 +90,14 @@ async def main():
             r_dict["correctness"] = r["correctness"].model_dump()
             r_dict["relevancy"] = r["relevancy"].model_dump()
             r_dict["recall"] = r["recall"].model_dump()
+            r_dict["faithfulness"] = r["faithfulness"].model_dump()
             
             # Add flat scores for convenience
             r_dict["correctness_score"] = r["correctness"].score
             r_dict["relevancy_score"] = r["relevancy"].score
             r_dict["recall_score"] = r["recall"].score
+            r_dict["faithfulness_score"] = r["faithfulness"].score
+            
             serializable_results.append(r_dict)
             
         with open(output_file, "w") as f:

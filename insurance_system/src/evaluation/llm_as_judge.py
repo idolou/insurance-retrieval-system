@@ -30,6 +30,7 @@ from insurance_system.src.utils.prompts import (
     CONTEXT_RECALL_EVAL_PROMPT,
     CONTEXT_RELEVANCY_EVAL_PROMPT,
     CORRECTNESS_EVAL_PROMPT,
+    FAITHFULNESS_EVAL_PROMPT,
 )
 
 load_dotenv()
@@ -44,6 +45,7 @@ class LangGraphWrapper:
     def __init__(self, app: Any):
         self.app = app
         self.last_tool_used = "unknown"
+        self.last_context = ""
 
     def _extract_tool_usage(self, messages: list):
         """Extracts the first major tool used from the message history."""
@@ -65,6 +67,12 @@ class LangGraphWrapper:
                     self.last_tool_used = "time"
                 else:
                     self.last_tool_used = tool_name
+
+        # Extract Context (Tool Output)
+        for msg in reversed(messages):
+            if msg.type == "tool":
+                self.last_context = msg.content
+                break
 
     async def aquery(self, query_str: str) -> str:
         messages = [HumanMessage(content=query_str)]
@@ -101,6 +109,7 @@ async def evaluate_query(query, expected, agent, evaluator_llm, console=None):
     # Print Router info if available
     if hasattr(agent, "last_tool_used"):
         console.print(f"Using Tool: [bold blue]{agent.last_tool_used}[/bold blue]")
+        # console.print(f"Context Length: {len(getattr(agent, 'last_context', ''))} chars")
 
     console.print(
         Panel(
@@ -148,6 +157,16 @@ async def evaluate_query(query, expected, agent, evaluator_llm, console=None):
         actual_answer=actual_answer,
     )
 
+    # --- 4. Faithfulness ---
+    # Only run if context is available
+    context = getattr(agent, "last_context", "") or "No context available"
+    res_faithfulness = await get_eval_result(
+        FAITHFULNESS_EVAL_PROMPT,
+        query=query,
+        context=context,
+        actual_answer=actual_answer,
+    )
+
     # Create a results table
     table = Table(title="⚖️ Judge Results")
     table.add_column("Metric", style="cyan", no_wrap=True)
@@ -157,6 +176,7 @@ async def evaluate_query(query, expected, agent, evaluator_llm, console=None):
     table.add_row("Correctness", str(res_correct.score), res_correct.explanation)
     table.add_row("Relevancy", str(res_relevancy.score), res_relevancy.explanation)
     table.add_row("Recall", str(res_recall.score), res_recall.explanation)
+    table.add_row("Faithfulness", str(res_faithfulness.score), res_faithfulness.explanation)
 
     console.print(table)
 
@@ -165,6 +185,7 @@ async def evaluate_query(query, expected, agent, evaluator_llm, console=None):
         "correctness": res_correct,
         "relevancy": res_relevancy,
         "recall": res_recall,
+        "faithfulness": res_faithfulness,
         "agent_used": getattr(agent, "last_tool_used", "unknown"),
         "agent_response": actual_answer
     }
@@ -216,6 +237,7 @@ async def run_eval():
     correctness_scores = []
     relevancy_scores = []
     recall_scores = []
+    faithfulness_scores = []
 
     # Iterate through categories
     for category, queries in test_data.items():
@@ -230,21 +252,25 @@ async def run_eval():
             c_score = res["correctness"].score
             rel_score = res["relevancy"].score
             rec_score = res["recall"].score
+            faith_score = res["faithfulness"].score
 
             # Add flat scores for analysis
             res["correctness_score"] = c_score
             res["relevancy_score"] = rel_score
             res["recall_score"] = rec_score
+            res["faithfulness_score"] = faith_score
             res["category"] = category  # Add category to result
 
             # Convert Pydantic objects to dict for JSON serialization
             res["correctness"] = res["correctness"].model_dump()
             res["relevancy"] = res["relevancy"].model_dump()
             res["recall"] = res["recall"].model_dump()
+            res["faithfulness"] = res["faithfulness"].model_dump()
 
             correctness_scores.append(c_score)
             relevancy_scores.append(rel_score)
             recall_scores.append(rec_score)
+            faithfulness_scores.append(faith_score)
 
             results.append(res)
 
@@ -254,6 +280,7 @@ async def run_eval():
         c_pass = sum(correctness_scores)
         rel_pass = sum(relevancy_scores)
         rec_pass = sum(recall_scores)
+        faith_pass = sum(faithfulness_scores)
 
         console.print("\n")
         summary_table = Table(title="📊 EVALUATION SUMMARY", box=None)
@@ -269,6 +296,9 @@ async def run_eval():
         )
         summary_table.add_row(
             "Context Recall", f"{rec_pass/total*100:.1f}%", f"({rec_pass}/{total})"
+        )
+        summary_table.add_row(
+            "Faithfulness", f"{faith_pass/total*100:.1f}%", f"({faith_pass}/{total})"
         )
 
         console.print(Panel(summary_table, border_style="blue"))

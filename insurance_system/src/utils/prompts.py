@@ -117,3 +117,23 @@ CONTEXT_RECALL_EVAL_PROMPT = PromptTemplate(
     """
     ).strip()
 )
+
+# Faithfulness: Is the answer derived from the context?
+FAITHFULNESS_EVAL_PROMPT = PromptTemplate(
+    dedent(
+        """
+    You are an impartial judge evaluating the faithfulness of an AI agent's response.
+
+    Query: {query}
+    Retrieved Context: {context}
+    Actual Agent Answer: {actual_answer}
+
+    Criteria:
+    - Is the Actual Agent Answer fully supported by the Retrieved Context?
+    - If the answer contains information NOT present in the context (hallucination), score 0.
+    - If the answer contradicts the context, score 0.
+
+    Return ONLY valid JSON, no markdown: {{"score": 1, "explanation": "..."}} or {{"score": 0, "explanation": "..."}}
+    """
+    ).strip()
+)
