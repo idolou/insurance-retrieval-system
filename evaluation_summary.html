@@ -3,7 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <style>
-
+.r1 {color: #808000; text-decoration-color: #808000; font-weight: bold}
+.r2 {color: #808000; text-decoration-color: #808000}
+.r3 {color: #af00ff; text-decoration-color: #af00ff; font-weight: bold}
+.r4 {color: #008080; text-decoration-color: #008080; font-weight: bold}
+.r5 {font-weight: bold}
+.r6 {color: #7f7f7f; text-decoration-color: #7f7f7f}
+.r7 {color: #7f7f7f; text-decoration-color: #7f7f7f; font-weight: bold}
+.r8 {color: #008000; text-decoration-color: #008000}
+.r9 {color: #dfdfdf; text-decoration-color: #dfdfdf}
+.r10 {color: #7fbf7f; text-decoration-color: #7fbf7f}
+.r11 {color: #7fbfbf; text-decoration-color: #7fbfbf; font-weight: bold}
+.r12 {color: #7fff7f; text-decoration-color: #7fff7f; font-weight: bold}
+.r13 {color: #800000; text-decoration-color: #800000}
+.r14 {font-style: italic}
+.r15 {color: #008080; text-decoration-color: #008080}
+.r16 {color: #800080; text-decoration-color: #800080}
+.r17 {color: #000080; text-decoration-color: #000080}
+.r18 {color: #008000; text-decoration-color: #008000; font-weight: bold}
+.r19 {color: #800000; text-decoration-color: #800000; font-weight: bold}
+.r20 {color: #000080; text-decoration-color: #000080; font-weight: bold}
+.r21 {color: #c0c0c0; text-decoration-color: #c0c0c0}
+.r22 {color: #00ff00; text-decoration-color: #00ff00; font-weight: bold}
 body {
     color: #000000;
     background-color: #ffffff;
@@ -11,6 +32,389 @@ body {
 </style>
 </head>
 <body>
-    <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><code style="font-family:inherit"></code></pre>
+    <pre style="font-family:Menlo,'DejaVu Sans Mono',consolas,'Courier New',monospace"><code style="font-family:inherit">╭──────────────────────────────────────────────────────╮
+│ <span class="r1">🚀 Running Evaluation Mode: ALL</span>                      │
+╰──────────────────────────────────────────────────────╯
+⚙️ Initializing Agent<span class="r2">...</span>
+
+<span class="r3">=== Running Hard Evals (Guardrails) ===</span>
+<span class="r4">Running Hard Evals...</span>
+
+<span class="r5">[</span><span class="r4">1</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_001</span>
+<span class="r6">Query: What is the deductible amount? </span><span class="r7">(</span><span class="r6">Only extract the </span>
+<span class="r6">value</span><span class="r7">)</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭─ Agent Answer ─╮</span>
+<span class="r9">│</span> $1,000.00      <span class="r9">│</span>
+<span class="r9">╰────────────────╯</span>
+
+<span class="r5">[</span><span class="r4">2</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_002</span>
+<span class="r6">Query: Who is the policyholder? </span><span class="r7">(</span><span class="r6">Return JSON: </span><span class="r7">{</span><span class="r10">&quot;name&quot;</span><span class="r6">: </span>
+<span class="r10">&quot;...&quot;</span><span class="r7">})</span>
+Status: <span class="r8">PASS</span>
+| Router: 
+<span class="r8">needle</span>
+<span class="r9">╭─ Agent A─╮</span>
+<span class="r9">│</span> {&quot;name&quot;: <span class="r9">│</span>
+<span class="r9">│</span> &quot;Alex    <span class="r9">│</span>
+<span class="r9">│</span> Johnson&quot; <span class="r9">│</span>
+<span class="r9">│</span> }        <span class="r9">│</span>
+<span class="r9">╰──────────╯</span>
+
+<span class="r5">[</span><span class="r4">3</span>/<span class="r4">17</span><span class="r5">]</span> 
+Checking 
+<span class="r5">hard_003</span>
+<span class="r6">Query: List </span>
+<span class="r6">the claim </span>
+<span class="r6">ID.</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭──────── Agent Answer ─────────╮</span>
+<span class="r9">│</span> The claim ID is HO-2024-8892. <span class="r9">│</span>
+<span class="r9">╰───────────────────────────────╯</span>
+
+<span class="r5">[</span><span class="r4">4</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_004</span>
+<span class="r6">Query: What is the total payout limit? Format: $XX,XXX</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭──────────── Agent Answer ─────────────╮</span>
+<span class="r9">│</span> The total payout limit is $19,550.00. <span class="r9">│</span>
+<span class="r9">╰───────────────────────────────────────╯</span>
+
+<span class="r5">[</span><span class="r4">5</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_005</span>
+<span class="r6">Query: What time did the </span><span class="r10">&#x27;ABNORMAL START&#x27;</span><span class="r6"> occur? </span><span class="r7">(</span><span class="r6">HH:MM:SS AM/PM</span><span class="r7">)</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭──────────────── Agent Answer ─────────────────╮</span>
+<span class="r9">│</span> The &#x27;ABNORMAL START&#x27; occurred at 10:22:15 AM. <span class="r9">│</span>
+<span class="r9">╰───────────────────────────────────────────────╯</span>
+
+<span class="r5">[</span><span class="r4">6</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_006</span>
+<span class="r6">Query: Who is the Senior Property Adjuster?</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭─────────────── Agent Answer ───────────────╮</span>
+<span class="r9">│</span> The Senior Property Adjuster is Mike Ross. <span class="r9">│</span>
+<span class="r9">╰────────────────────────────────────────────╯</span>
+
+<span class="r5">[</span><span class="r4">7</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_007</span>
+<span class="r6">Query: First find the incident location </span><span class="r7">(</span><span class="r6">City, State</span><span class="r7">)</span><span class="r6"> and time from the documents. Then, what was the </span>
+<span class="r6">ambient temperature </span><span class="r7">(</span><span class="r6">Amb Temp</span><span class="r7">)</span><span class="r6"> at The Location at The Time? </span><span class="r7">(</span><span class="r6">Numeric only</span><span class="r7">)</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭──────────────────────────────────────────── Agent Answer ────────────────────────────────────────────╮</span>
+<span class="r9">│</span> The ambient temperature (Amb Temp) in Austin, TX on November 16, 2024, ranged between 12.1 °C and    <span class="r9">│</span>
+<span class="r9">│</span> 27.0 °C. However, without a specific time of day, the exact ambient temperature at &quot;The Time&quot; cannot <span class="r9">│</span>
+<span class="r9">│</span> be given as a single numeric value.                                                                  <span class="r9">│</span>
+<span class="r9">╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯</span>
+
+<span class="r5">[</span><span class="r4">8</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_008</span>
+<span class="r6">Query: What is the Vendor ID for DryFast Inc?</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭────────────── Agent Answer ──────────────╮</span>
+<span class="r9">│</span> The Vendor ID for DryFast Inc is V-9982. <span class="r9">│</span>
+<span class="r9">╰──────────────────────────────────────────╯</span>
+
+<span class="r5">[</span><span class="r4">9</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_009</span>
+<span class="r6">Query: Return the list of covered items as a JSON </span>
+<span class="r6">array.</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭────────────── Agent Answer ──────────────╮</span>
+<span class="r9">│</span> The list of covered items is as follows: <span class="r9">│</span>
+<span class="r9">│</span>                                          <span class="r9">│</span>
+<span class="r9">│</span> ```json                                  <span class="r9">│</span>
+<span class="r9">│</span> [                                        <span class="r9">│</span>
+<span class="r9">│</span>     &quot;Rug&quot;,                               <span class="r9">│</span>
+<span class="r9">│</span>     &quot;TV&quot;,                                <span class="r9">│</span>
+<span class="r9">│</span>     &quot;Sofa&quot;                               <span class="r9">│</span>
+<span class="r9">│</span> ]                                        <span class="r9">│</span>
+<span class="r9">│</span> ```                                      <span class="r9">│</span>
+<span class="r9">╰──────────────────────────────────────────╯</span>
+
+<span class="r5">[</span><span class="r4">10</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_010</span>
+<span class="r6">Query: What city is the address </span><span class="r11">124</span><span class="r6"> Maple Street </span>
+<span class="r6">located in?</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭───────────────── Agent Answer ──────────────────╮</span>
+<span class="r9">│</span> The address 124 Maple Street is located in      <span class="r9">│</span>
+<span class="r9">│</span> Austin.                                         <span class="r9">│</span>
+<span class="r9">╰─────────────────────────────────────────────────╯</span>
+
+<span class="r5">[</span><span class="r4">11</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_011</span>
+<span class="r6">Query: What is the Licensed Plumber&#x27;s number </span><span class="r7">(</span><span class="r6">Lic </span>
+<span class="r6">#</span><span class="r7">)</span><span class="r6">?</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭───────────────── Agent Answer ─────────────────╮</span>
+<span class="r9">│</span> The Licensed Plumber&#x27;s number (Lic #) is 4482. <span class="r9">│</span>
+<span class="r9">╰────────────────────────────────────────────────╯</span>
+
+<span class="r5">[</span><span class="r4">12</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_012</span>
+<span class="r6">Query: Is the claim approved? </span><span class="r7">(</span><span class="r6">Yes/No</span><span class="r7">)</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭─────── Agent Answer ────────╮</span>
+<span class="r9">│</span> Yes, the claim is approved. <span class="r9">│</span>
+<span class="r9">╰─────────────────────────────╯</span>
+
+<span class="r5">[</span><span class="r4">13</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_013</span>
+<span class="r6">Query: First find the address of the incident </span>
+<span class="r6">property. Then extract the state code from that </span>
+<span class="r6">address.</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭───────────────── Agent Answer ──────────────────╮</span>
+<span class="r9">│</span> The state code from the incident property       <span class="r9">│</span>
+<span class="r9">│</span> address is &quot;TX&quot; (Texas).                        <span class="r9">│</span>
+<span class="r9">╰─────────────────────────────────────────────────╯</span>
+
+<span class="r5">[</span><span class="r4">14</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_014</span>
+<span class="r6">Query: First identify the sensor or location for </span>
+<span class="r6">the </span><span class="r12">10:45:00</span><span class="r6"> AM reading. Then, what was the Audio </span>
+<span class="r6">Level detected at that time?</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭──────────────────────────────────────────── Agent Answer ────────────────────────────────────────────╮</span>
+<span class="r9">│</span> The sensor or location for the 10:45:00 AM reading was Cam_LvRm_02, and the Audio Level detected at  <span class="r9">│</span>
+<span class="r9">│</span> that time was 45 dB.                                                                                 <span class="r9">│</span>
+<span class="r9">╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯</span>
+
+<span class="r5">[</span><span class="r4">15</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_015</span>
+<span class="r6">Query: Is this document marked confidential? </span><span class="r7">(</span><span class="r6">Answer Yes or No</span><span class="r7">)</span>
+Status: <span class="r13">FAIL</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭────────────── Agent Answer ───────────────╮</span>
+<span class="r9">│</span> Yes, the document is marked confidential. <span class="r9">│</span>
+<span class="r9">╰───────────────────────────────────────────╯</span>
+   <span class="r2">Reason:</span> Failed to match regex: <span class="r5">(</span>?i<span class="r5">)</span>No
+
+<span class="r5">[</span><span class="r4">16</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_016</span>
+<span class="r6">Query: What is the coverage type?</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭───────────────────────── Agent Answer ─────────────────────────╮</span>
+<span class="r9">│</span> The coverage type is an HO-3 &#x27;Special Form&#x27; Homeowners Policy. <span class="r9">│</span>
+<span class="r9">╰────────────────────────────────────────────────────────────────╯</span>
+
+<span class="r5">[</span><span class="r4">17</span>/<span class="r4">17</span><span class="r5">]</span> Checking <span class="r5">hard_017</span>
+<span class="r6">Query: What is the Flow Meter ID?</span>
+Status: <span class="r8">PASS</span> | Router: <span class="r8">needle</span>
+<span class="r9">╭─────────── Agent Answer ────────────╮</span>
+<span class="r9">│</span> The Flow Meter ID is Flow_Meter_01. <span class="r9">│</span>
+<span class="r9">╰─────────────────────────────────────╯</span>
+
+
+<span class="r14">                                  🛡️ Hard Evals (Guardrails) - Summary                                   </span>
+┏━━━━━━━━━━┳━━━━━━━┳━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃<span class="r5"> ID       </span>┃<span class="r5"> Type  </span>┃<span class="r5"> Router </span>┃<span class="r5"> Status </span>┃<span class="r5"> Actual (Truncated)              </span>┃<span class="r5"> Error                         </span>┃
+┡━━━━━━━━━━╇━━━━━━━╇━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│<span class="r15"> hard_001 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> $1,000.00                       </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_002 </span>│<span class="r16"> json  </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> {&quot;name&quot;: &quot;Alex Johnson&quot;}        </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_003 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> The claim ID is HO-2024-8892.   </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_004 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> The total payout limit is       </span>│<span class="r13">                               </span>│
+│<span class="r15">          </span>│<span class="r16">       </span>│<span class="r17">        </span>│<span class="r5">        </span>│<span class="r9"> $19,550.00.                     </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_005 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> The &#x27;ABNORMAL START&#x27; occurred   </span>│<span class="r13">                               </span>│
+│<span class="r15">          </span>│<span class="r16">       </span>│<span class="r17">        </span>│<span class="r5">        </span>│<span class="r9"> at 10:22:15 AM.                 </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_006 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> The Senior Property Adjuster is </span>│<span class="r13">                               </span>│
+│<span class="r15">          </span>│<span class="r16">       </span>│<span class="r17">        </span>│<span class="r5">        </span>│<span class="r9"> Mike Ross.                      </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_007 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> The ambient temperature (Amb    </span>│<span class="r13">                               </span>│
+│<span class="r15">          </span>│<span class="r16">       </span>│<span class="r17">        </span>│<span class="r5">        </span>│<span class="r9"> Temp) in Austin, TX o...        </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_008 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> The Vendor ID for DryFast Inc   </span>│<span class="r13">                               </span>│
+│<span class="r15">          </span>│<span class="r16">       </span>│<span class="r17">        </span>│<span class="r5">        </span>│<span class="r9"> is V-9982.                      </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_009 </span>│<span class="r16"> json  </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> The list of covered items is as </span>│<span class="r13">                               </span>│
+│<span class="r15">          </span>│<span class="r16">       </span>│<span class="r17">        </span>│<span class="r5">        </span>│<span class="r9"> follows:  ```json ...           </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_010 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> The address 124 Maple Street is </span>│<span class="r13">                               </span>│
+│<span class="r15">          </span>│<span class="r16">       </span>│<span class="r17">        </span>│<span class="r5">        </span>│<span class="r9"> located in Austin.              </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_011 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> The Licensed Plumber&#x27;s number   </span>│<span class="r13">                               </span>│
+│<span class="r15">          </span>│<span class="r16">       </span>│<span class="r17">        </span>│<span class="r5">        </span>│<span class="r9"> (Lic #) is 4482.                </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_012 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> Yes, the claim is approved.     </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_013 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> The state code from the         </span>│<span class="r13">                               </span>│
+│<span class="r15">          </span>│<span class="r16">       </span>│<span class="r17">        </span>│<span class="r5">        </span>│<span class="r9"> incident property address ...   </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_014 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> The sensor or location for the  </span>│<span class="r13">                               </span>│
+│<span class="r15">          </span>│<span class="r16">       </span>│<span class="r17">        </span>│<span class="r5">        </span>│<span class="r9"> 10:45:00 AM reading...          </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_015 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r19">FAIL</span><span class="r5">   </span>│<span class="r9"> Yes, the document is marked     </span>│<span class="r13"> Failed to match regex: (?i)No </span>│
+│<span class="r15">          </span>│<span class="r16">       </span>│<span class="r17">        </span>│<span class="r5">        </span>│<span class="r9"> confidential.                   </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_016 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> The coverage type is an HO-3    </span>│<span class="r13">                               </span>│
+│<span class="r15">          </span>│<span class="r16">       </span>│<span class="r17">        </span>│<span class="r5">        </span>│<span class="r9"> &#x27;Special Form&#x27; Homeow...        </span>│<span class="r13">                               </span>│
+│<span class="r15"> hard_017 </span>│<span class="r16"> regex </span>│<span class="r17"> </span><span class="r8">needle</span><span class="r17"> </span>│<span class="r5"> </span><span class="r18">PASS</span><span class="r5">   </span>│<span class="r9"> The Flow Meter ID is            </span>│<span class="r13">                               </span>│
+│<span class="r15">          </span>│<span class="r16">       </span>│<span class="r17">        </span>│<span class="r5">        </span>│<span class="r9"> Flow_Meter_01.                  </span>│<span class="r13">                               </span>│
+└──────────┴───────┴────────┴────────┴─────────────────────────────────┴───────────────────────────────┘
+
+<span class="r5">Summary:</span> <span class="r4">16</span>/<span class="r4">17</span> passed <span class="r5">(</span><span class="r4">94.1</span>%<span class="r5">)</span>
+
+<span class="r3">=== Running LLM-as-a-Judge ===</span>
+
+<span class="r20">🔍 Query:</span> What was the date of the incident?
+Using Tool: <span class="r20">needle</span>
+<span class="r8">╭────────────────────────────────────────── </span><span class="r18">🤖 Agent Answer</span><span class="r8"> ───────────────────────────────────────────╮</span>
+<span class="r8">│</span> The date of the incident was November 16, 2024.                                                      <span class="r8">│</span>
+<span class="r8">╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯</span>
+<span class="r14">                                            ⚖️ Judge Results                                             </span>
+┏━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃<span class="r5"> Metric      </span>┃<span class="r5"> Score </span>┃<span class="r5"> Explanation                                                                    </span>┃
+┡━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│<span class="r15"> Correctness </span>│<span class="r16"> 1     </span>│<span class="r21"> The actual answer contains the core correct fact, which is the date of the     </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> incident: November 16, 2024.                                                   </span>│
+│<span class="r15"> Relevancy   </span>│<span class="r16"> 1     </span>│<span class="r21"> The agent answered the specific question asked by providing the correct date   </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> of the incident, which matches the expected answer. The information is         </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> relevant and contains the specific detail requested.                           </span>│
+│<span class="r15"> Recall      </span>│<span class="r16"> 1     </span>│<span class="r21"> The Actual Answer contains all the key facts, numbers, dates, and entities     </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> present in the Expected Answer. Both specify the date of the incident as       </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> November 16, 2024.                                                             </span>│
+└─────────────┴───────┴────────────────────────────────────────────────────────────────────────────────┘
+
+<span class="r20">🔍 Query:</span> What is the total repair estimate cost?
+Using Tool: <span class="r20">needle</span>
+<span class="r8">╭────────────────────────────────────────── </span><span class="r18">🤖 Agent Answer</span><span class="r8"> ───────────────────────────────────────────╮</span>
+<span class="r8">│</span> The total repair estimate cost is $12,400.00.                                                        <span class="r8">│</span>
+<span class="r8">╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯</span>
+<span class="r14">                                            ⚖️ Judge Results                                             </span>
+┏━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃<span class="r5"> Metric      </span>┃<span class="r5"> Score </span>┃<span class="r5"> Explanation                                                                    </span>┃
+┡━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│<span class="r15"> Correctness </span>│<span class="r16"> 1     </span>│<span class="r21"> The actual answer contains the core correct fact from the expected answer,     </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> which is the total repair estimate cost of $12,400.00.                         </span>│
+│<span class="r15"> Relevancy   </span>│<span class="r16"> 1     </span>│<span class="r21"> The agent answered the specific question asked by providing the total repair   </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> estimate cost of $12,400.00, which matches the expected answer. The response   </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> is relevant and contains the specific detail requested.                        </span>│
+│<span class="r15"> Recall      </span>│<span class="r16"> 1     </span>│<span class="r21"> The Actual Answer contains all the key facts and numbers present in the        </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> Expected Answer, specifically the total repair estimate cost of $12,400.00.    </span>│
+└─────────────┴───────┴────────────────────────────────────────────────────────────────────────────────┘
+
+<span class="r20">🔍 Query:</span> Who is the policyholder?
+Using Tool: <span class="r20">needle</span>
+<span class="r8">╭────────────────────────────────────────── </span><span class="r18">🤖 Agent Answer</span><span class="r8"> ───────────────────────────────────────────╮</span>
+<span class="r8">│</span> The policyholder is Alex Johnson.                                                                    <span class="r8">│</span>
+<span class="r8">╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯</span>
+<span class="r14">                                            ⚖️ Judge Results                                             </span>
+┏━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃<span class="r5"> Metric      </span>┃<span class="r5"> Score </span>┃<span class="r5"> Explanation                                                                    </span>┃
+┡━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│<span class="r15"> Correctness </span>│<span class="r16"> 1     </span>│<span class="r21"> The actual answer contains the core correct fact that the policyholder is Alex </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> Johnson, which matches the expected answer.                                    </span>│
+│<span class="r15"> Relevancy   </span>│<span class="r16"> 1     </span>│<span class="r21"> The agent answered the specific question asked by stating &#x27;The policyholder is </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> Alex Johnson,&#x27; which matches the expected answer. The response is relevant and </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> contains the specific detail required, confirming it retrieved the correct     </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> information.                                                                   </span>│
+│<span class="r15"> Recall      </span>│<span class="r16"> 1     </span>│<span class="r21"> The Actual Answer contains all the key facts and entities present in the       </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> Expected Answer. Both mention &#x27;Alex Johnson&#x27; as the policyholder, fulfilling   </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> the criteria for a correct response.                                           </span>│
+└─────────────┴───────┴────────────────────────────────────────────────────────────────────────────────┘
+
+<span class="r20">🔍 Query:</span> What was the Total Vol recorded by Flow_Meter_01 at <span class="r22">11:15:00</span> AM?
+Using Tool: <span class="r20">needle</span>
+<span class="r8">╭────────────────────────────────────────── </span><span class="r18">🤖 Agent Answer</span><span class="r8"> ───────────────────────────────────────────╮</span>
+<span class="r8">│</span> The Total Vol recorded by Flow_Meter_01 at 11:15:00 AM was 448.5 gallons.                            <span class="r8">│</span>
+<span class="r8">╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯</span>
+<span class="r14">                                            ⚖️ Judge Results                                             </span>
+┏━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃<span class="r5"> Metric      </span>┃<span class="r5"> Score </span>┃<span class="r5"> Explanation                                                                    </span>┃
+┡━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│<span class="r15"> Correctness </span>│<span class="r16"> 1     </span>│<span class="r21"> The actual answer contains the core correct facts from the expected answer,    </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> including the Total Vol value of 448.5 and the time of 11:15:00 AM. The use of </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> &#x27;gallons&#x27; instead of &#x27;Gal&#x27; does not change the correctness of the information. </span>│
+│<span class="r15"> Relevancy   </span>│<span class="r16"> 1     </span>│<span class="r21"> The agent answered the specific question asked by providing the Total Vol      </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> recorded by Flow_Meter_01 at 11:15:00 AM as 448.5 gallons. The answer contains </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> specific details, such as the time and the volume, which implies it retrieved  </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> the correct information. The information is relevant to the query context.     </span>│
+│<span class="r15"> Recall      </span>│<span class="r16"> 1     </span>│<span class="r21"> The Actual Answer contains all the key facts, numbers, and entities present in </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> the Expected Answer. The term &#x27;Gal&#x27; in the Expected Answer is correctly        </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> interpreted as &#x27;gallons&#x27; in the Actual Answer, which does not alter the        </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> meaning.                                                                       </span>│
+└─────────────┴───────┴────────────────────────────────────────────────────────────────────────────────┘
+
+<span class="r20">🔍 Query:</span> Summarize the claim timeline. Include all dates, dollar amounts, and company names involved.
+Using Tool: <span class="r20">summary</span>
+<span class="r8">╭────────────────────────────────────────── </span><span class="r18">🤖 Agent Answer</span><span class="r8"> ───────────────────────────────────────────╮</span>
+<span class="r8">│</span> Here is a summary of the claim timeline:                                                             <span class="r8">│</span>
+<span class="r8">│</span>                                                                                                      <span class="r8">│</span>
+<span class="r8">│</span> - **Incident Date**: November 16, 2024                                                               <span class="r8">│</span>
+<span class="r8">│</span> - **Emergency Mitigation**: Conducted by DryFast Inc.                                                <span class="r8">│</span>
+<span class="r8">│</span> - **Claim Adjustment**: Handled by Mike Ross                                                         <span class="r8">│</span>
+<span class="r8">│</span> - **Total Payout**: $19,550.00                                                                       <span class="r8">│</span>
+<span class="r8">│</span> - **Restoration**: Completed by Austin Home Restorations LLC                                         <span class="r8">│</span>
+<span class="r8">│</span>                                                                                                      <span class="r8">│</span>
+<span class="r8">│</span> These are the key dates, dollar amounts, and companies involved in the claim.                        <span class="r8">│</span>
+<span class="r8">╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯</span>
+<span class="r14">                                            ⚖️ Judge Results                                             </span>
+┏━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃<span class="r5"> Metric      </span>┃<span class="r5"> Score </span>┃<span class="r5"> Explanation                                                                    </span>┃
+┡━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│<span class="r15"> Correctness </span>│<span class="r16"> 0     </span>│<span class="r21"> The actual answer does not include the valve shutoff on the same day as the    </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> incident or the inspection on November 18, which are core facts from the       </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> expected answer. Additionally, it introduces new information not present in    </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> the expected answer, such as the involvement of DryFast Inc., Mike Ross, the   </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> total payout, and Austin Home Restorations LLC.                                </span>│
+│<span class="r15"> Relevancy   </span>│<span class="r16"> 0     </span>│<span class="r21"> The agent&#x27;s response did not directly address the specific question asked,     </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> which was to summarize the claim timeline with all dates, dollar amounts, and  </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> company names involved. The expected answer focused on the incident date,      </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> valve shutoff, and inspection date, while the agent provided additional        </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> information not requested, such as emergency mitigation, claim adjustment,     </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> total payout, and restoration details. This indicates a failure to retrieve    </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> the correct claim documents/segments relevant to the query context.            </span>│
+│<span class="r15"> Recall      </span>│<span class="r16"> 0     </span>│<span class="r21"> The Actual Answer does not contain all the key facts present in the Expected   </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> Answer. Specifically, it omits the valve shutoff on the same day as the        </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> incident and the inspection on November 18. Additionally, it includes extra    </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> information not present in the Expected Answer, such as company names and a    </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> payout amount.                                                                 </span>│
+└─────────────┴───────┴────────────────────────────────────────────────────────────────────────────────┘
+
+<span class="r20">🔍 Query:</span> What was the specific model of the TV claimed?
+Using Tool: <span class="r20">needle</span>
+<span class="r8">╭────────────────────────────────────────── </span><span class="r18">🤖 Agent Answer</span><span class="r8"> ───────────────────────────────────────────╮</span>
+<span class="r8">│</span> The specific model of the TV claimed is the Samsung QN90C Series.                                    <span class="r8">│</span>
+<span class="r8">╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯</span>
+<span class="r14">                                            ⚖️ Judge Results                                             </span>
+┏━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃<span class="r5"> Metric      </span>┃<span class="r5"> Score </span>┃<span class="r5"> Explanation                                                                    </span>┃
+┡━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│<span class="r15"> Correctness </span>│<span class="r16"> 1     </span>│<span class="r21"> The actual answer contains the core correct facts from the expected answer, as </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> it correctly identifies the TV model as the Samsung QN90C Series.              </span>│
+│<span class="r15"> Relevancy   </span>│<span class="r16"> 1     </span>│<span class="r21"> The agent answered the specific question asked by providing the exact model of </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> the TV, &#x27;Samsung QN90C Series,&#x27; which matches the expected answer. The         </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> response is relevant and contains the specific detail requested.               </span>│
+│<span class="r15"> Recall      </span>│<span class="r16"> 1     </span>│<span class="r21"> The Actual Answer contains all the key facts and entities present in the       </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> Expected Answer, specifically mentioning the &#x27;Samsung QN90C Series&#x27; model.     </span>│
+└─────────────┴───────┴────────────────────────────────────────────────────────────────────────────────┘
+
+<span class="r20">🔍 Query:</span> Was the sofa replacement approved fully or partially?
+Using Tool: <span class="r20">needle</span>
+<span class="r8">╭────────────────────────────────────────── </span><span class="r18">🤖 Agent Answer</span><span class="r8"> ───────────────────────────────────────────╮</span>
+<span class="r8">│</span> The sofa replacement was approved partially with an amount of $250.00.                               <span class="r8">│</span>
+<span class="r8">╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯</span>
+<span class="r14">                                            ⚖️ Judge Results                                             </span>
+┏━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃<span class="r5"> Metric      </span>┃<span class="r5"> Score </span>┃<span class="r5"> Explanation                                                                    </span>┃
+┡━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│<span class="r15"> Correctness </span>│<span class="r16"> 1     </span>│<span class="r21"> The actual answer contains the core correct fact that the sofa replacement was </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> partially approved, which matches the expected answer.                         </span>│
+│<span class="r15"> Relevancy   </span>│<span class="r16"> 1     </span>│<span class="r21"> The agent answered the specific question asked by stating that the sofa        </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> replacement was approved partially. It also provided additional detail about   </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> the amount approved, which implies it retrieved the correct claim documents.   </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> The information is relevant to the query context.                              </span>│
+│<span class="r15"> Recall      </span>│<span class="r16"> 1     </span>│<span class="r21"> The Actual Answer contains all the key facts present in the Expected Answer.   </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> Both indicate that the sofa replacement was approved partially. The additional </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> detail of the amount ($250.00) in the Actual Answer does not contradict the    </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> Expected Answer.                                                               </span>│
+└─────────────┴───────┴────────────────────────────────────────────────────────────────────────────────┘
+
+<span class="r20">🔍 Query:</span> What was the deductible amount?
+Using Tool: <span class="r20">needle</span>
+<span class="r8">╭────────────────────────────────────────── </span><span class="r18">🤖 Agent Answer</span><span class="r8"> ───────────────────────────────────────────╮</span>
+<span class="r8">│</span> The deductible amount was $1,000.00.                                                                 <span class="r8">│</span>
+<span class="r8">╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯</span>
+<span class="r14">                                            ⚖️ Judge Results                                             </span>
+┏━━━━━━━━━━━━━┳━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃<span class="r5"> Metric      </span>┃<span class="r5"> Score </span>┃<span class="r5"> Explanation                                                                    </span>┃
+┡━━━━━━━━━━━━━╇━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│<span class="r15"> Correctness </span>│<span class="r16"> 1     </span>│<span class="r21"> The actual answer contains the core correct fact from the expected answer,     </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> which is the deductible amount of $1,000. The inclusion of &#x27;.00&#x27; does not      </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> alter the correctness of the information.                                      </span>│
+│<span class="r15"> Relevancy   </span>│<span class="r16"> 1     </span>│<span class="r21"> The agent answered the specific question asked by providing the deductible     </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> amount as $1,000.00, which matches the expected answer of $1,000. The          </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> inclusion of &#x27;.00&#x27; does not affect the correctness or relevancy of the         </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> response.                                                                      </span>│
+│<span class="r15"> Recall      </span>│<span class="r16"> 1     </span>│<span class="r21"> The Actual Answer contains all the key facts and numbers present in the        </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> Expected Answer. Both mention the deductible amount as $1,000, with the Actual </span>│
+│<span class="r15">             </span>│<span class="r16">       </span>│<span class="r21"> Answer providing an equivalent representation of the number.                   </span>│
+└─────────────┴───────┴────────────────────────────────────────────────────────────────────────────────┘
+
+📄 <span class="r6">Detailed results saved to</span> <span class="r5">evaluation_results.json</span>
+
+<span class="r3">=== Running Human-in-the-Loop ===</span>
+╭──────────────────────────────────────────────────────────────────────────────────────────────────────╮
+│ <span class="r1">👨‍🏫 Starting Human-in-the-Loop Grading Session</span>                                                      │
+╰──────────────────────────────────────────────────────────────────────────────────────────────────────╯
+<span class="r8">All cases already graded!</span>
+</code></pre>
 </body>
 </html>

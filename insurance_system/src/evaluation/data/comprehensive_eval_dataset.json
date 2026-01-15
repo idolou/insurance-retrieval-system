@@ -165,7 +165,7 @@
         {
             "id": "llm_005",
             "query": "Summarize the claim timeline. Include all dates, dollar amounts, and company names involved.",
-            "expected": "Incident on Nov 16, 2024. Valve shutoff same day. Inspection on Nov 18.",
+            "expected": "Incident on Nov 16, 2024. Emergency Mitigation by DryFast Inc. Claim Adjustment by Mike Ross. Total Payout $19,550.00. Restoration by Austin Home Restorations LLC.",
             "agent_type": "summary"
         },
         {

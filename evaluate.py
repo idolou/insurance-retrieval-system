@@ -111,7 +111,7 @@ async def main():
         grader.run_grading_session(dataset.get("hitl_evals", []), agent)
 
     # Save Console Output to File
-    console.save_text("evaluation_summary.txt")
+    console.save_text("evaluation_summary.txt", clear=False)
     console.save_html("evaluation_summary.html")
     console.print(f"\n📄 [dim]Console output saved to evaluation_summary.txt and .html[/dim]")
 
