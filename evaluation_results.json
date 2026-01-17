@@ -7,17 +7,22 @@
     },
     "relevancy": {
       "score": 1,
-      "explanation": "The agent answered the specific question asked by providing the correct date of the incident, which matches the expected answer. The information is relevant and contains the specific detail requested."
+      "explanation": "The agent answered the specific question asked by providing the correct date of the incident, which matches the expected answer. The response is relevant and contains the specific detail requested."
     },
     "recall": {
       "score": 1,
-      "explanation": "The Actual Answer contains all the key facts, numbers, dates, and entities present in the Expected Answer. Both specify the date of the incident as November 16, 2024."
+      "explanation": "The Actual Answer contains all the key facts, numbers, dates, and entities present in the Expected Answer. Both answers state the date of the incident as November 16, 2024."
+    },
+    "faithfulness": {
+      "score": 1,
+      "explanation": "The Actual Agent Answer is fully supported by the Retrieved Context, as both indicate the date of the incident as November 16, 2024."
     },
     "agent_used": "needle",
     "agent_response": "The date of the incident was November 16, 2024.",
     "correctness_score": 1,
     "relevancy_score": 1,
-    "recall_score": 1
+    "recall_score": 1,
+    "faithfulness_score": 1
   },
   {
     "query": "What is the total repair estimate cost?",
@@ -27,17 +32,22 @@
     },
     "relevancy": {
       "score": 1,
-      "explanation": "The agent answered the specific question asked by providing the total repair estimate cost of $12,400.00, which matches the expected answer. The response is relevant and contains the specific detail requested."
+      "explanation": "The agent answered the specific question asked by providing the exact total repair estimate cost of $12,400.00, which matches the expected answer. The information is relevant and implies that the correct data was retrieved."
     },
     "recall": {
       "score": 1,
       "explanation": "The Actual Answer contains all the key facts and numbers present in the Expected Answer, specifically the total repair estimate cost of $12,400.00."
     },
+    "faithfulness": {
+      "score": 1,
+      "explanation": "The Actual Agent Answer is fully supported by the Retrieved Context, as both state the total repair estimate cost as $12,400.00."
+    },
     "agent_used": "needle",
     "agent_response": "The total repair estimate cost is $12,400.00.",
     "correctness_score": 1,
     "relevancy_score": 1,
-    "recall_score": 1
+    "recall_score": 1,
+    "faithfulness_score": 1
   },
   {
     "query": "Who is the policyholder?",
@@ -47,23 +57,28 @@
     },
     "relevancy": {
       "score": 1,
-      "explanation": "The agent answered the specific question asked by stating 'The policyholder is Alex Johnson,' which matches the expected answer. The response is relevant and contains the specific detail required, confirming it retrieved the correct information."
+      "explanation": "The agent answered the specific question asked by stating 'The policyholder is Alex Johnson,' which matches the expected answer. The response contains the specific detail (name) required to confirm it retrieved the correct information. The information is relevant to the query context."
     },
     "recall": {
       "score": 1,
-      "explanation": "The Actual Answer contains all the key facts and entities present in the Expected Answer. Both mention 'Alex Johnson' as the policyholder, fulfilling the criteria for a correct response."
+      "explanation": "The Actual Answer contains all the key facts and entities present in the Expected Answer, specifically the name 'Alex Johnson' as the policyholder."
+    },
+    "faithfulness": {
+      "score": 1,
+      "explanation": "The Actual Agent Answer is fully supported by the Retrieved Context, as both identify Alex Johnson as the policyholder."
     },
     "agent_used": "needle",
     "agent_response": "The policyholder is Alex Johnson.",
     "correctness_score": 1,
     "relevancy_score": 1,
-    "recall_score": 1
+    "recall_score": 1,
+    "faithfulness_score": 1
   },
   {
     "query": "What was the Total Vol recorded by Flow_Meter_01 at 11:15:00 AM?",
     "correctness": {
       "score": 1,
-      "explanation": "The actual answer contains the core correct facts from the expected answer, including the Total Vol value of 448.5 and the time of 11:15:00 AM. The use of 'gallons' instead of 'Gal' does not change the correctness of the information."
+      "explanation": "The actual answer contains the core correct facts from the expected answer, including the correct total volume and the correct time. The use of 'gallons' instead of 'Gal' does not change the correctness of the information."
     },
     "relevancy": {
       "score": 1,
@@ -71,73 +86,93 @@
     },
     "recall": {
       "score": 1,
-      "explanation": "The Actual Answer contains all the key facts, numbers, and entities present in the Expected Answer. The term 'Gal' in the Expected Answer is correctly interpreted as 'gallons' in the Actual Answer, which does not alter the meaning."
+      "explanation": "The Actual Answer contains all the key facts, numbers, and entities present in the Expected Answer. Both mention 'Total Vol', 'Flow_Meter_01', '11:15:00 AM', and the volume '448.5', with the only difference being the use of 'gallons' instead of 'Gal', which is an acceptable variation."
+    },
+    "faithfulness": {
+      "score": 1,
+      "explanation": "The Actual Agent Answer is fully supported by the Retrieved Context. The context states '448.5 Gal', and the agent correctly interpreted this as '448.5 gallons', which is consistent with the context."
     },
     "agent_used": "needle",
     "agent_response": "The Total Vol recorded by Flow_Meter_01 at 11:15:00 AM was 448.5 gallons.",
     "correctness_score": 1,
     "relevancy_score": 1,
-    "recall_score": 1
+    "recall_score": 1,
+    "faithfulness_score": 1
   },
   {
     "query": "Summarize the claim timeline. Include all dates, dollar amounts, and company names involved.",
     "correctness": {
-      "score": 0,
-      "explanation": "The actual answer does not include the valve shutoff on the same day as the incident or the inspection on November 18, which are core facts from the expected answer. Additionally, it introduces new information not present in the expected answer, such as the involvement of DryFast Inc., Mike Ross, the total payout, and Austin Home Restorations LLC."
+      "score": 1,
+      "explanation": "The actual answer contains all the core correct facts from the expected answer, including the incident date, companies involved, claim adjustment, and total payout amount."
     },
     "relevancy": {
-      "score": 0,
-      "explanation": "The agent's response did not directly address the specific question asked, which was to summarize the claim timeline with all dates, dollar amounts, and company names involved. The expected answer focused on the incident date, valve shutoff, and inspection date, while the agent provided additional information not requested, such as emergency mitigation, claim adjustment, total payout, and restoration details. This indicates a failure to retrieve the correct claim documents/segments relevant to the query context."
+      "score": 1,
+      "explanation": "The agent's response includes all the specific details requested in the query, such as dates, dollar amounts, and company names. It accurately summarizes the claim timeline and provides relevant information, indicating that it retrieved the correct claim documents or segments."
     },
     "recall": {
-      "score": 0,
-      "explanation": "The Actual Answer does not contain all the key facts present in the Expected Answer. Specifically, it omits the valve shutoff on the same day as the incident and the inspection on November 18. Additionally, it includes extra information not present in the Expected Answer, such as company names and a payout amount."
+      "score": 1,
+      "explanation": "The Actual Answer contains all the key facts, numbers, dates, and entities present in the Expected Answer. It includes the incident date, company names, claim adjustment by Mike Ross, and the total payout amount. The additional detail about the claim status being closed and payment issued does not detract from the completeness of the response."
+    },
+    "faithfulness": {
+      "score": 1,
+      "explanation": "The Actual Agent Answer is fully supported by the Retrieved Context. All dates, dollar amounts, and company names mentioned in the answer are present in the context, and there are no contradictions or hallucinations."
     },
     "agent_used": "summary",
-    "agent_response": "Here is a summary of the claim timeline:\n\n- **Incident Date**: November 16, 2024\n- **Emergency Mitigation**: Conducted by DryFast Inc.\n- **Claim Adjustment**: Handled by Mike Ross\n- **Total Payout**: $19,550.00\n- **Restoration**: Completed by Austin Home Restorations LLC\n\nThese are the key dates, dollar amounts, and companies involved in the claim.",
-    "correctness_score": 0,
-    "relevancy_score": 0,
-    "recall_score": 0
+    "agent_response": "Here's a summary of the claim timeline:\n\n- The incident occurred on November 16, 2024.\n- Emergency mitigation was conducted promptly by DryFast Inc.\n- Restoration was completed by Austin Home Restorations LLC.\n- The claim was adjusted by Mike Ross.\n- The total payout amounted to $19,550.00.\n- The claim status was closed, and payment was issued.",
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1,
+    "faithfulness_score": 1
   },
   {
     "query": "What was the specific model of the TV claimed?",
     "correctness": {
       "score": 1,
-      "explanation": "The actual answer contains the core correct facts from the expected answer, as it correctly identifies the TV model as the Samsung QN90C Series."
+      "explanation": "The actual answer correctly identifies the specific model of the TV as Samsung QN90C Series, matching the expected answer."
     },
     "relevancy": {
       "score": 1,
-      "explanation": "The agent answered the specific question asked by providing the exact model of the TV, 'Samsung QN90C Series,' which matches the expected answer. The response is relevant and contains the specific detail requested."
+      "explanation": "The agent answered the specific question asked by providing the exact model of the TV, 'Samsung QN90C Series', which matches the expected answer. The response is relevant and contains the specific detail required."
     },
     "recall": {
       "score": 1,
       "explanation": "The Actual Answer contains all the key facts and entities present in the Expected Answer, specifically mentioning the 'Samsung QN90C Series' model."
     },
+    "faithfulness": {
+      "score": 1,
+      "explanation": "The Actual Agent Answer is fully supported by the Retrieved Context, as both state the TV model as Samsung QN90C Series."
+    },
     "agent_used": "needle",
-    "agent_response": "The specific model of the TV claimed is the Samsung QN90C Series.",
+    "agent_response": "The specific model of the TV claimed is Samsung QN90C Series.",
     "correctness_score": 1,
     "relevancy_score": 1,
-    "recall_score": 1
+    "recall_score": 1,
+    "faithfulness_score": 1
   },
   {
     "query": "Was the sofa replacement approved fully or partially?",
     "correctness": {
       "score": 1,
-      "explanation": "The actual answer contains the core correct fact that the sofa replacement was partially approved, which matches the expected answer."
+      "explanation": "The actual answer implies partial approval by specifying an allowance of $250.00, which suggests that the full replacement cost was not covered. This aligns with the expected answer of 'Partially approved.'"
     },
     "relevancy": {
       "score": 1,
-      "explanation": "The agent answered the specific question asked by stating that the sofa replacement was approved partially. It also provided additional detail about the amount approved, which implies it retrieved the correct claim documents. The information is relevant to the query context."
+      "explanation": "The agent's response indicates that the sofa replacement was approved with a specific allowance amount, which implies a partial approval. This aligns with the expected answer of 'Partially approved' and provides relevant details, thus answering the specific question asked."
     },
     "recall": {
       "score": 1,
-      "explanation": "The Actual Answer contains all the key facts present in the Expected Answer. Both indicate that the sofa replacement was approved partially. The additional detail of the amount ($250.00) in the Actual Answer does not contradict the Expected Answer."
+      "explanation": "The Actual Answer contains the key fact that the sofa replacement was partially approved, as indicated by the allowance of $250.00, which aligns with the Expected Answer of 'Partially approved.'"
+    },
+    "faithfulness": {
+      "score": 1,
+      "explanation": "The Actual Agent Answer is fully supported by the Retrieved Context. Both state that the sofa replacement was approved with an allowance of $250.00, which was accepted by the insured. There is no additional information or contradiction present in the answer."
     },
     "agent_used": "needle",
-    "agent_response": "The sofa replacement was approved partially with an amount of $250.00.",
+    "agent_response": "The sofa replacement was approved with an allowance of $250.00, which was accepted by the insured.",
     "correctness_score": 1,
     "relevancy_score": 1,
-    "recall_score": 1
+    "recall_score": 1,
+    "faithfulness_score": 1
   },
   {
     "query": "What was the deductible amount?",
@@ -151,12 +186,67 @@
     },
     "recall": {
       "score": 1,
-      "explanation": "The Actual Answer contains all the key facts and numbers present in the Expected Answer. Both mention the deductible amount as $1,000, with the Actual Answer providing an equivalent representation of the number."
+      "explanation": "The Actual Answer contains all the key facts and numbers present in the Expected Answer. The deductible amount of $1,000 is correctly stated, and the additional '.00' does not alter the meaning or accuracy of the response."
+    },
+    "faithfulness": {
+      "score": 1,
+      "explanation": "The Actual Agent Answer is fully supported by the Retrieved Context, as both state the deductible amount as $1,000.00."
     },
     "agent_used": "needle",
     "agent_response": "The deductible amount was $1,000.00.",
     "correctness_score": 1,
     "relevancy_score": 1,
-    "recall_score": 1
+    "recall_score": 1,
+    "faithfulness_score": 1
+  },
+  {
+    "query": "First find the incident location (City, State) from the documents. Then, given the incident started at 10:22 AM in that location's time zone, what time was it in New York?",
+    "correctness": {
+      "score": 0,
+      "explanation": "The actual answer does not mention the incident location or the time zones involved, which are core components of the expected answer. It only provides the converted time without context."
+    },
+    "relevancy": {
+      "score": 0,
+      "explanation": "The agent's answer did not explicitly identify the incident location as Austin, TX, nor did it mention the time zone conversion details. It only provided the converted time, which does not fully address the query's requirement to find and state the incident location and time zone information."
+    },
+    "recall": {
+      "score": 0,
+      "explanation": "The Actual Answer does not mention the incident location (Austin, TX) or the time zones (CST, UTC-6 for Austin and EST, UTC-5 for New York) as specified in the Expected Answer. These details are necessary to fully meet the criteria."
+    },
+    "faithfulness": {
+      "score": 0,
+      "explanation": "The Actual Agent Answer includes the location 'Austin, TX', which is not present in the Retrieved Context. The context only provides timezone information and does not specify any city or state. Therefore, the answer contains information not supported by the context, resulting in a score of 0."
+    },
+    "agent_used": "needle",
+    "agent_response": "The incident time of 10:22 AM in Austin, TX corresponds to 11:22 AM in New York.",
+    "correctness_score": 0,
+    "relevancy_score": 0,
+    "recall_score": 0,
+    "faithfulness_score": 0
+  },
+  {
+    "query": "Look up the claim details using your tools. Find the location and date of the loss. Then check the weather for that location and date. Finally, explicitly state if the weather explains the loss based on the facts.",
+    "correctness": {
+      "score": 1,
+      "explanation": "The actual answer correctly identifies the location (Austin, TX) and date (November 16, 2024) of the loss. It also accurately describes the weather conditions as mild and clear, with no precipitation, and concludes that the weather does not explain the mechanical loss. This matches the core facts and conclusion of the expected answer."
+    },
+    "relevancy": {
+      "score": 1,
+      "explanation": "The agent correctly identified the location (Austin, TX) and date (November 16, 2024) of the loss. It provided detailed weather information for that date and location, concluding that the weather conditions (mild and clear) did not explain the mechanical loss. The response is relevant and answers the specific question asked."
+    },
+    "recall": {
+      "score": 1,
+      "explanation": "The Actual Answer contains all the key facts, numbers, dates, and entities present in the Expected Answer. It correctly identifies the location (Austin, TX), the date (November 16, 2024), and provides detailed weather information that supports the conclusion that the weather does not explain the loss. The explanation aligns with the Expected Answer's conclusion regarding the weather's irrelevance to the mechanical loss."
+    },
+    "faithfulness": {
+      "score": 1,
+      "explanation": "The Actual Agent Answer is fully supported by the Retrieved Context. The weather details provided in the answer match exactly with the retrieved context, and the conclusion that the weather does not explain the loss is consistent with the facts presented (no precipitation, mild temperatures, and calm weather). There is no hallucination or contradiction present."
+    },
+    "agent_used": "needle",
+    "agent_response": "The weather in Austin, TX, on November 16, 2024, was as follows:\n\n- Maximum Temperature: 27.0\u00b0C\n- Minimum Temperature: 12.1\u00b0C\n- Precipitation: 0.0 mm\n- Rain: 0.0 mm\n- Snow: 0.0 cm\n- Maximum Wind Speed: 18.4 km/h\n\nBased on these weather conditions, there was no precipitation (rain or snow) on the date of loss, and the weather was generally calm with mild temperatures. Therefore, the weather does not seem to explain the loss based on these facts.",
+    "correctness_score": 1,
+    "relevancy_score": 1,
+    "recall_score": 1,
+    "faithfulness_score": 1
   }
 ]

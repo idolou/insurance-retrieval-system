@@ -37,26 +37,10 @@ class NeedleAgent:
             self.query_engine = get_hierarchical_query_engine(retriever, llm=llm)
 
             # Inject strict prompt for precision
-            from llama_index.core import PromptTemplate
+            from insurance_system.src.utils.prompts import NEEDLE_AGENT_QA_PROMPT
 
-            qa_prompt_tmpl = (
-                "Context information is below.\n"
-                "---------------------\n"
-                "{context_str}\n"
-                "---------------------\n"
-                "Given the context information and not prior knowledge, "
-                "answer the query specifically and precisely.\n"
-                "If the answer is finding a specific value, date, or name, provide it directly.\n"
-                "If the information is not in the context, say 'Information not found'.\n"
-                "Query: {query_str}\n"
-                "Answer: "
-            )
             self.query_engine.update_prompts(
-                {
-                    "response_synthesizer:text_qa_template": PromptTemplate(
-                        qa_prompt_tmpl
-                    )
-                }
+                {"response_synthesizer:text_qa_template": NEEDLE_AGENT_QA_PROMPT}
             )
 
         except Exception as e:
@@ -92,7 +76,7 @@ class NeedleAgent:
                     name="needle_expert",
                     description=(
                         "The DEFAULT tool. Use this for retrieving specific facts, numbers, dates, costs, names, "
-                        "or any precise details from the claim documents. "
+                        "log entries, financial figures, or finding LOCATIONS of events. "
                         "If the user asks 'what', 'when', 'who', 'how much', use this."
                     ),
                 ),

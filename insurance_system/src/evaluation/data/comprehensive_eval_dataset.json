@@ -185,6 +185,18 @@
             "query": "What was the deductible amount?",
             "expected": "$1,000",
             "agent_type": "needle"
+        },
+        {
+            "id": "llm_009",
+            "query": "First find the incident location (City, State) and time from the documents. Then, given that information, what time was it in New York?",
+            "expected": "Incident location is Austin, TX (CST, UTC-6). New York (EST, UTC-5) is 1 hour ahead. So it was 11:22 AM in New York.",
+            "agent_type": "mcp"
+        },
+        {
+            "id": "llm_010",
+            "query": "Look up the claim details using your tools. Find the location and date of the loss. Then check the weather for that location and date. Finally, explicitly state if the weather explains the loss based on the facts.",
+            "expected": "The agent identifies the location (Austin, TX) and date (Nov 16, 2024). It concludes that the weather (mild/clear, ~27°C) DOES NOT explain the loss (which was mechanical).",
+            "agent_type": "mcp"
         }
     ],
     "hitl_evals": [
